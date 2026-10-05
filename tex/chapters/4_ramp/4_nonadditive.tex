@@ -1,0 +1,140 @@
+In the non-additive ramp loss model, we wish to replace
+\[
+    \zeta_i + \sum_{k \in \K} \gamma_{ik} w_k \geq 2, \tquad i \in \P,
+\]
+by
+\[
+    \zeta_i + \umax{k \in \K} \; \gamma_{ik} w_k \geq 2, \tquad i \in \P.
+\]
+which is equivalent to
+\begin{equation*}
+    \begin{split}
+        \zeta_i - 2 &\geq - \umax{k \in \K} \; \gamma_{ik} w_k\\
+        &= \umin{k \in \K} \; -\gamma_{ik} w_k , \tquad i \in \P. \\
+    \end{split}
+\end{equation*}
+Define
+\[
+    \eta_{ik} = -\gamma_{ik}, \tquad i \in \P, \; k \in \K.
+\]
+Then one formulation of the non-additive ramp-loss model is
+\begin{subequations}
+    \label{eq:NRM}
+    \begin{align}
+        \mathbf{\min} \quad & \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \sum_{k \in \K} \gamma_{ik} w_k \label{eq:NRM-obj} \\
+        \mathbf{\st} \quad & \zeta_i - 2 \geq \eta_{ik'} - \sum_{\substack{k \in \K, \\ \eta_{ik} < \eta_{ik'}}} (\eta_{ik'}-\eta_{ik}) w_k,
+        & \forall i \in \cP, \; k' \in \K, \label{eq:NRM-misP} \\
+        & \zeta_i - 2 \geq - \sum_{k \in \K} 2w_k, & \forall i \in \I, \label{eq:NRM-fix}\\
+        & \sum_{k \in \K} c_k w_k \leq C, & \label{eq:NRM-complex} \\
+        & w \in \{0, 1\}^{\K}, \zeta \in [0,2]^{\cP}. \label{eq:NRM-vars}
+    \end{align}
+\end{subequations}
+The reduced cost of a rule is derived in \autoref{sec:reduced_costs_nonadditive_ramp_loss}.
+However, this reduced cost cannot be easily be modeled inside a MIP\@.
+
+Alternatively, we may consider the following formulation:
+\begin{subequations}
+    \label{eq:NRMa}
+    \begin{align}
+        \mathbf{\min} \quad & \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \sum_{k \in \K} \gamma_{ik} w_k \label{eq:NRMa-obj} \\
+        \mathbf{\st} \quad & \zeta_i - 2 \geq \sum_{k \in \K} u_{ik}\eta_{ik}, & \forall i \in \cP, \label{eq:NRMa-misP} \\
+        & \sum_{k \in \K} u_{ik} = 1, & \forall i \in \cP, \label{eq:NRMa-misP2} \\
+        & u_{ik} \leq w_k, & \forall i \in \cP, \; k \in \K, \label{eq:NRMa-misP3} \\
+        & \sum_{k \in \K} c_k w_k \leq C, & \label{eq:NRMa-complex} \\
+        & w \in \{0, 1\}^{\K}, \zeta \in [0,2]^{\cP}, u \in [0,1]^{\P \times \K}. \label{eq:NRMa-vars}
+    \end{align}
+\end{subequations}
+While this formulation has a large number of variables, the $u$-variables need not be binary.
+The reduced cost of a variable $w_k,\; k \in \K$, is derived in \autoref{sec:reduced_costs_nonadditive_ramp_loss}.
+Implementing column-and-row generation for this master problem formulation is not trivial,
+as a rule corresponds to a $w$-variable and many $u$-variables.
+
+\begin{note}
+    A formulation similar to \eqref{eq:NRMa} may be constructed for the pricing problem \eqref{eq:RP_set_formulation}.
+    Implementing and solving this MIP for a number of test cases revealed that it is not easily solved by SCIP.\@
+    Using proprietary solver Gurobi, as well as some tricks exploiting the nature of the data,
+    performance improved moderately, but not enough to solve the problem in a handful of minutes.
+    Hence, the more compact formulation \eqref{eq:RP} was explored in combination with separation of cutting planes.
+    Ultimately, none of the approaches resulted in the ability to solve the pricing problem efficiently for our dataset.
+\end{note}
+
+Evidently, solving the relaxed non-additive ramp loss model exactly is difficult,
+as even the LP cannot be easily solved via column (and row) generation.
+A pragmatic approach is to rely solely on a pricing heuristic.
+Adapting the heuristic pricer to the non-additive model is possible, but requires substantial work.
+Therefore, we first explore whether the non-additive model gives better results on example instances.
+We consider again the setting and examples in \autoref{sec:ramp-examples}.
+We use formulation \eqref{eq:NRM}, as it is easiest to implement within the existing implementation of the ramp loss model.
+
+\begin{note}
+    In the construction and implementation of \eqref{eq:NRM}, constraint \eqref{eq:NRM-fix} was overlooked.
+    This affects the objective of the empty ruleset if there exist $i \in \P$ such that $\eta_{ik} < 0$ for all
+    $k$ considered in the branching phase.
+    The objective of a non-empty ruleset is correctly modeled.
+    Since we are interested in an empty ruleset, and non-empty rulesets are indeed found as solutions,
+    the mistake of omitting \eqref{eq:NRM-fix} seems to have no effect in practice.
+\end{note}
+
+\begin{example}[Two clouds, non-additive model]\label{ex:two_clouds_nonadditive}
+    Consider again \autoref{ex:two_clouds} and the tested parameters.
+
+    For $C=1$ and any $\beta$, the results are identical to those of the additive model.
+    For $C=2,$ $\beta=0,$ the ruleset differs and is depicted in \autoref{fig:two_clouds_nonadditive_solution_bad_a}.
+    It consists of two rules, and the covered region is identical to the one-rule solution found for the additive model.
+    The objective is also identical.
+    To the model, both solutions are equally good.
+    For classification tasks, they are also identical.
+    If the smaller ruleset is preferred, for instance because of interpretability, then $C$ could be chosen as low as possible so long as the performance,
+    whichever way it is measured, does not decrease.
+    Another solution could be to penalize ruleset complexity in the model.
+    It is important to note that this solution, when considered in the additive model with $\beta =0$,
+    has the exact same objective value as \autoref{fig:two_clouds_solution_simple}.
+    Hence, the choice of this solution in the non-additive model is a coincidence rather than an artifact.
+    In both the additive and non-additive model, the value of $C$ is best kept small to prevent this.
+
+    For $C=2,$ $\beta=0.5$ the solution is similar to \autoref{fig:two_clouds_solution_bad_a} and is shown in \autoref{fig:two_clouds_nonadditive_solution_bad_b}.
+    For $C=2,$ $\beta=1$, the solution contains $x_1 \geq 9.88$, but also another rule, as shown in \autoref{fig:two_clouds_nonadditive_solution_bad_c}.
+    Removing this other rule from the ruleset, leaving just the rule $x_1 \geq 9.88$, results in the same objective.
+    Hence, one may want to prune solutions.
+    One way of pruning solutions is to consider all subsets of the ruleset, and pick the smallest subset that has the same objective value as the full ruleset.
+    Alternatively, one could again limit $C$ or penalize rule complexity.
+
+    Notably, for $\beta > 0.5$, the non-additive model seems less included to produce undesirable rulesets than the additive model.
+    While the additive model yields two-rule solutions for $C=2,$ $\beta>0.5,$
+    the non-additive yields a one-rule solution either immediately or after pruning.
+    This can be partly attributed to the non-additivity that was introduced.
+    Another factor is the negative points' loss, which is calculated in the same way in either model.
+    The loss for negative points is additive, hence using more rules is bad for negative points in or around the covered region.
+
+    \begin{figure}
+    \centering
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_0_nonadditive.set.svg}
+        \caption{}
+        \label{fig:two_clouds_nonadditive_solution_bad_a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.48\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_0.5_nonadditive.set.svg}
+        \caption{}
+        \label{fig:two_clouds_nonadditive_solution_bad_b}
+    \end{subfigure} \\
+        \begin{subfigure}{.48\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_1_nonadditive.set.svg}
+        \caption{}
+        \label{fig:two_clouds_nonadditive_solution_bad_c}
+    \end{subfigure} \\
+    \caption{Solutions to an instance of \autoref{ex:two_clouds} computed with the ramp loss model, configured with $C=2$, $\beta=0.5$ (a) and $C=2$, $\beta=1$ (b), respectively.}
+    \label{fig:two_clouds_nonadditive_solution_bad}
+\end{figure}
+
+\end{example}
+
+We conclude that the non-additive ramp loss model behaves better than the additive ramp loss model.
+In practice, we perform pricing on the additive variant.
+Then, we use the non-additive variant inside the branching stage.
+This effectively means we take the columns generated using the additive variant,
+add these columns to an IP of the non-additive variant, and solve.

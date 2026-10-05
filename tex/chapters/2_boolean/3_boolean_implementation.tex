@@ -1,0 +1,120 @@
+A custom solver is implemented in C++ using the SCIP 10 framework with SoPlex 8~\cite{hojny_scip_2025}.
+Note that the implementation of~\cite{lawless_interpretable_2023} is available on GitHub~\cite{lawless_conlawfaircg_2026}.
+That implementation is writen in Python and uses proprietary software Gurobi.
+Our implementation is fully open source and also available on \href{https://github.com/kalkoen/rule-sets-for-tf}{GitHub}.
+This custom solver includes an efficient heuristic pricer and was designed to support the extensions discussed in the next chapters.
+The custom solver has two modes:
+\begin{enumerate}
+    \item \textbf{Full:} Constructs and solves the full master problem \eqref{eq:BM}, with all possible rules (columns),
+    \item \textbf{Column generation (CG):} Performs the price-then-branch approach.
+\end{enumerate}
+The Full mode can only realistically be solved for datasets with small $\J$ or small $D$.
+It can serve to verify, to some extent, the performance and validity of the column generation approach.
+The CG mode can use up to three pricers:
+\begin{enumerate}
+    \item \textbf{Iterative:} Iterates over all possible rules and computes reduced cost naively,
+    \item \textbf{Exact:} Solves MIP \eqref{eq:BP} to optimality,
+    \item \textbf{Heuristic:} Employs a beam search.
+\end{enumerate}
+The Exact pricer produces a single rule minimizing reduced cost (unless exact pricing is interrupted early).
+The other pricers can be configured to return up to some maximum of rules, and to return a ``diverse'' collection of rules.
+
+We now discuss the Heuristic pricer and the efforts taken to implement it efficiently.
+The Heuristic pricer builds a tree, in which every node is a rule and each layer represents the rules of a given size.
+
+The root node (at depth $0$) is the empty rule $\emptyset$, covering all points.
+The Heuristic pricer starts by constructing all children of the root node and computing the reduced cost.
+Then the nodes in this layer are pruned: only the nodes with the lowest reduced cost are kept.
+The beam width at this depth of the tree determines the number of nodes kept.
+This process repeats: in iteration $\nu$, the children of each node at depth $\nu-1$ are constructed.
+Next, the number of nodes at level $\nu$ are reduced to the beam width of layer $\nu$.
+
+Computing a node's reduced cost naively costs $\Theta(nd)$ operations,
+where $d$ is the depth of the node, which is the rule's size.
+For large datasets, this can be slow.
+We note that there exists overlap between the computations of parents and those of their descendents.
+We may exploit this overlap.
+Let $k_\text{parent}, k_\text{child}$ be the rules corresponding to some parent and child node, respectively.
+Recall that the reduced cost
+\begin{equation}
+        \hat \rho_{k_\text{child}} =  \sum_{i \in \cN} \Ind(k_\text{child} \in \K_i)
+    -\sum_{i \in \cP}  \mu_i  \Ind(k_\text{child} \in \K_i) +\lambda  c_{k_\text{child}}.  \label{eq:BP_redcost_node}
+\end{equation}
+Define $\I_k$ as the set of points covered by rule $k$, so
+\begin{equation}
+    \I_k \coloneqq \{i \in \I \fw k \in \K_i\} = \left\{i \in \I \fw \bigwedge_{j \in k} X_{ij}\right\}, \tquad k \in \K.\label{eq:boolean_I_k}
+\end{equation}
+Define $\P_k$ and $ \N_k$ analogously.
+Observe that
+\[k_\text{parent} \notin \K_i \implies k_\text{child} \notin \K_i, \tquad i \in \I.\]
+In other words, a point that does not satisfy the parent rule can never satisfy the child rule,
+because the child rule is more restrictive.
+Then
+\[
+    \I_{k_\text{child}} \subseteq \I_{k_\text{parent}}.
+\]
+The analogous property holds for $\P_k$ and $\N_k$.
+It follows that
+\begin{equation}
+    \begin{split}
+        \hat \rho_{k_\text{child}} = \; &  |\cN_{k_\text{child}}|
+    -\sum_{i \in \cP_{k_\text{child}}}  \mu_i +\lambda c_{k_\text{child}} \\
+        = \; & |\cN_{k_\text{parent}}| - |\cN_{k_\text{parent}} \cap \N_{k_\text{child}}| \\
+    & -\left(\sum_{i \in \cP_{k_\text{parent}}} \mu_i - \sum_{i \in \cP_{k_\text{parent}} \cap \P_{k_\text{child}}} \mu_i \right) \\
+        & +\lambda (c_{k_\text{parent}}+1) \\
+        = \; & \hat{\rho}_{k_\text{parent}} - |\cN_{k_\text{parent}} \cap \N_{k_\text{child}}|
+        + \sum_{i \in \cP_{k_\text{parent}}\cap \P_{k_\text{child}}} \mu_i
+        + \lambda.
+    \end{split}
+    \label{eq:BP_redcost_node_deriv}
+\end{equation}
+To use this equation, we may store $\P_k$, $\N_k$ and the reduced cost for each node.
+In our implementation, the sets are stored as bitmaps, reducing memory footprint and allowing for efficient treatment of
+\[\cP_{k_\text{parent}} \cap \P_{k_\text{child}} \quad \text{and} \quad \N_{k_\text{parent}} \cap \N_{k_\text{child}}.\]
+The cost of this approach is memory.
+For every node kept in the search tree, these bitmaps need to be stored.
+To avoid unnecessary memory use, these bitmaps are computed after pruning,
+meaning these bitmaps are never created for pruned nodes.
+
+The heuristic pricer can also be configured to do a ``deep'' search.
+In this case, pruning is not done per layer but per parent node.
+Setting the ``beam width'' (which is no longer a beam width, but a parent's degree) to $m$ or higher,
+this effectively means the heuristic pricer does enumeration of all rules up to size $D$, only through this memory-heavy but computationally-efficient approach.
+Depending on the available memory, the number of points number of features and $D$, the iterative pricer may be preferred.
+
+We compiled our implementation on Eindhoven University of Technology's High Performance Cluster (HPC), allowing us to
+perform many experiments simultaneously.
+The HPC is a shared computer.
+Hence, we cannot guarantee experiments are always run under the same load conditions.
+Furthermore, we did not specifically request the same exact hardware to be used for each experiment.
+Therefore, running times are not to be compared between experiments.
+
+To test whether our implementation performs similarly to the implementation used in \cite{lawless_interpretable_2023}
+we perform a benchmark.
+We test our implementation on datasets marked ``small'' in the paper.
+Some of the datasets could not be traced back.
+The others were downloaded from the UCI Machine Learning Repository~\cite{kelly_markelle_uci_nodate}.
+We set $C$ to the mean value reported in the paper, which was reportedly the average
+$C$ yielding the best test accuracy.
+For continuous variables, binarization is performed with $9$ quantiles.
+Categorical variables are one-hot encoded.
+We employ the heuristic pricer with beam widths $(100,50,50,20)$, identical to the paper.
+The exact pricer is used when the heuristic pricer does not find any rule with negative reduced cost.
+The pricing stage is limited to 2 hours.
+The branching stage is limited to 1 hour, but in practice this limit is never reached.
+Like in the original paper, 10-fold stratified cross validation is used.
+
+\begin{adjustwidth}{-2cm}{-2cm}
+\begin{table}[h]
+    \input{gen/benchmark/tab_accuracy}
+    \caption{Results for the benchmark between our implementation and the implementation of \cite{lawless_conlawfaircg_2026}.
+    Metrics are reported in ``[Mean] ([Standard deviation])'' format. ``Accuracy'' is abbreviated to ``Acc.''.}
+    \label{tab:benchmark_accuracy}
+\end{table}
+\end{adjustwidth}
+
+The results are given in \autoref{tab:benchmark_accuracy}.
+Test accuracies are similar for both implementations.
+Not evident from the table is that our implementation is slower.
+In some cases, the time limit of the pricing stage is reached.
+We attribute this to the speed at which the exact pricer solves the pricing problem.

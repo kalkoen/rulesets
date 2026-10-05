@@ -1,0 +1,117 @@
+The results for $C=1$ are summarized in \autoref{tab:threshold_interpretable_results_C_1}.
+We report accuracy (Acc.), precision (Prec.) and recall (Rec.).
+A threshold is shown as both an absolute value (i.e. $-0.20$) and a quantile level
+with respect to the observed activity scores of this TF in the training dataset (i.e. $Q(0.50)$).
+With merely one rule, a remarkable accuracy can be achieved.
+Increasing $D$ consistently yields the same rule, plus a new clause.
+Furthermore, the rulesets found for $Q_y=0.5$ and $Q_y=0.6$ are distinct.
+There is a performance jump going from $D=1$ to $D=2$, less so going from $D=2$ to $D=3$.
+This suggests considering a compound rule, rather than simply a clause, has some effect, but
+adding more clauses in the compound rule does not appear to have much effect.
+
+The results for $C=2$ are summarized in \autoref{tab:threshold_interpretable_results_C_2}.
+By allowing for two rules, accuracy only increases marginally.
+Increasing $D$ from $2$ to $3$ again yields practically no performance gain.
+Notably, increasing $D$ now yields qualitatively different rulesets.
+Another observation is that for $Q_y=0.5$, $C=2$, $D=2$, both rules involve the same TF\@.
+
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex2/PDL1ex2_tab_interpretable_mw_0_C_1}
+    \caption{Results for the full Broad dataset for $C=1$ and small rules ($D=1,2,3$).}
+    \label{tab:threshold_interpretable_results_C_1}
+\end{table}
+
+\begin{table}[h]
+    \bwtable{gen/PDL1ex2/PDL1ex2_tab_interpretable_mw_0_C_2}
+    \caption{Results for the full Broad dataset for $C=2$ and small rules ($D=1,2,3$).}
+    \label{tab:threshold_interpretable_results_C_2}
+\end{table}
+
+The results for the second experiment are shown in \autoref{fig:threshold_accuracy_mw_0.svg}.
+First observe that setting $C=5, \; D=3$ in the threshold model
+is comparable to setting $C=20, \; D=3$ in the boolean model.
+Therefore, compared to the experiment described in \autoref{sec:boolean-methodology},
+this experiment considers lower ruleset complexity.
+As seen in previous tables, low values of $C$ yield reasonable performance.
+While accuracy increases with $C$, the increase is marginal considering the increase in perceived ruleset complexity.
+To clarify, a table like \autoref{tab:threshold_interpretable_results_C_1} for $C=5, D=3$ would span several pages.
+Increasing $D$ has little effect on performance and even $D=1$ shows reasonable performance for low $Q_y$.
+However, as seen in the previous experiment, there is some performance jump going from $D=1$ to $D=2$.
+
+The cross-validation results for $Q_y=0.5, 0.6$ and $D=2$ are shown in
+\autoref{fig:threshold_train_test_accuracy_mw_0.svg}.
+If $C=1$, then train and test accuracy are close.
+Increasing $C$ marginally improves training accuracy, but does not significantly improve test accuracy.
+Hence, it appears that increasing $C$ causes overfitting rather than learning.
+
+At this point, it appears that the most effective rulesets are the absolute simplest ones:
+those with one rule and only one or two TF\@.
+It may be that more complicated rulesets simply do not perform better on this dataset.
+It may also be that the model does not behave as intended.
+Hence, we study an alternative approach with an independent Python implementation in \autoref{sec:threshold_greedy}.
+
+Finally, the ruleset frequency counts are given in
+\autoref{tab:threshold_cross_interpretable_mw_0_C_1}.
+This reveals that rulesets are sometimes (nearly) consistent, but not always.
+A possible explanation for the inconsistency is that some TF are known to bind, for instance RELA and NFKB1.
+It is therefore possible that the complex claimed to be promoting PD-L1 expression is a complex of
+RELA, NFKB1 and STAT2.
+However, NFKB1 only appears once in the entire table.
+More generally, the high cross-correlation between TF activity scores as observed in \autoref{fig:corr_activity}
+suggests that TF could be effectively interchangeable in the dataset.
+Whether this is a real-life phenomenon or an artifact of the TF estimation technique is unclear.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.7\textwidth]{gen/PDL1ex2/PDL1ex2_fig_accuracy_mw_0.svg}
+    \caption{Accuracy of results for the full Broad dataset for $C=1,2,3,4,5$, $D=1,2,3,4$ and $Q_y=0.5,0.6,0.7,0.8,0.9.$}
+    \label{fig:threshold_accuracy_mw_0.svg}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.8\textwidth]{gen/PDL1ex2/fig_train_test_accuracy_mw_0.svg}
+    \caption{Confidence intervals ($95\%)$ for train and test accuracy of results under 10-fold stratified cross-validation on the Broad dataset, $C=1,2,3.$}
+    \label{fig:threshold_train_test_accuracy_mw_0.svg}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0_C_1}
+    \caption{Ruleset frequency count for the results of 10-fold stratified cross validation on the Broad dataset.
+    In the frequency count, the threshold values and directions have been disregarded.
+    Therefore, this table shows how often distinct TF combinations appear when only one rule is to be deduced from a cross-validation split of the Broad dataset}
+    \label{tab:threshold_cross_interpretable_mw_0_C_1}
+\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.2_C_1}
+%    \label{tab:threshold_cross_interpretable_mw_0.2_C_1}
+%\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.4_C_1}
+%    \label{tab:threshold_cross_interpretable_mw_0.4_C_1}
+%\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.6_C_1}
+%    \label{tab:threshold_cross_interpretable_mw_0.6_C_1}
+%\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.8_C_1}
+%    \label{tab:threshold_cross_interpretable_mw_0.8_C_1}
+%\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.8_C_1}
+%    \label{tab:threshold_cross_interpretable_mw_1.0_C_1}
+%\end{table}
+%

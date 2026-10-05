@@ -1,0 +1,74 @@
+As a first experiment, we use the boolean model on the full Broad dataset,
+binarized in pre-processing via quantile thresholding.
+The idea is to allow a moderate ruleset complexity (meaning a reasonably high $C$)
+and study the performance of the ruleset in terms of accuracy.
+At this point we are not interested in preventing overfitting, but merely the existence of a performant ruleset.
+
+Let $\bm{v}$ be a vector containing measurements.
+Define $Q_{\bm{v}}\colon[0,1] \to \R$ as the quantile function (or percentile function) over the measurements in $\bm{v}$.
+The quantile function uses linear interpolation when given an unobserved quantile level as input value.
+The target boolean for point $i$ is
+\[y_i \geq Q_{\bm{y}}(Q_y),\]
+where $Q_y \in [0,1]$ is the chosen target quantile level.
+
+Note that the choice of $Q_y$ determines the balance of positive and negative samples in the dataset.
+For $Q_y = 0.5,$ the target is simply whether a point's PD-L1 expression is at least the median.
+By construction, this leads to a (nearly) perfectly balanced dataset.
+For $Q_y = 0.9$, on the other hand, the dataset is heavily imbalanced, as only a tenth of the samples are positive.
+It is important to keep this in mind when evaluating models.
+Notably, the empty ruleset $\emptyset$ achieves an accuracy of $Q_y$ for all $Q_y \in [0,1]$.
+This is because the empty ruleset covers no points and a fraction of $Q_y$ points is negative by construction.
+Hence, a ruleset for $Q_y = 0.9$, should show at least $0.9$ accuracy, and ideally much higher.
+Other performance measures that may be considered in the case of imbalanced datasets are precision and recall.
+Precision measures the fraction of positively classified points that is truly positive.
+Recall measures the fraction of positive points that was positively classified.
+%\begin{definition}[Precision]
+%    The precision of a ruleset $S$ is
+%    \[
+%        \text{Precision}(S) = \frac
+%        {\left|\left\{i \in \I : \hat{y}_S(\bm{X}_i) = 1 \wedge y_i = 1\right\}\right|}
+%        {\left|\left\{i \in \I : \hat{y}_S(\bm{X}_i) = 1\right\}\right|}
+%    \]
+%\end{definition}
+
+Denote by $\nq$ the number of thresholds to use for each TF\@.
+Then for some TF with observed activity score vector $\bm{a},$ we consider the binary features
+\begin{equation}\label{eq:BM_TF_activity_quantiles}
+    \begin{split}
+        a_{\cdot} &\geq Q_{\mathbf{a}}\left(\frac{1}{n_\text{quantiles}+1}\right), \\
+        a_{\cdot} &\geq Q_{\mathbf{a}}\left(\frac{2}{n_\text{quantiles}+1}\right), \\
+        \vdots & \tquad \vdots \\
+        a_{\cdot} &\geq Q_{\mathbf{a}}\left(\frac{n_\text{quantiles}}{n_\text{quantiles}+1}\right).
+    \end{split}
+\end{equation}
+Here, $\cdot$ is a placeholder for a point $i$.
+All these binary features combined form $\bm{X}.$
+
+We consider two variants of the experiment.
+In the first variant, only the binary features described in \eqref{eq:BM_TF_activity_quantiles} are used.
+This means that rules with more than one TF represent simultaneous activity of these TF~.
+The second variant also adds the reverse binary features, corresponding to the upper-bounds
+\begin{equation}\label{eq:BM_TF_activity_quantiles_reverse}
+    \begin{split}
+        a_{\cdot} &\leq Q_{\mathbf{a}}\left(\frac{1}{n_\text{quantiles}+1}\right), \\
+        a_{\cdot} &\leq Q_{\mathbf{a}}\left(\frac{2}{n_\text{quantiles}+1}\right), \\
+        \vdots & \tquad \vdots \\
+        a_{\cdot} &\leq Q_{\mathbf{a}}\left(\frac{n_\text{quantiles}}{n_\text{quantiles}+1}\right).
+    \end{split}
+\end{equation}
+A rule can then be a combination of lower- and upper-bounds.
+Assume for now that a TF appears at most once in a rule.
+Then a rule can represent simultaneous activity of some TF and inactivity of others.
+An upper-bound can be interpreted as an ``interfering'' TF that, when present,
+prevents other TF from acting together.
+
+We solve the model (via the price-then-branch heuristic) for
+\[C = 20, \quad D = 3, \quad \nq = 1, 3, 5, 7, 9. \]
+where $C$ is the maximum ruleset complexity and $D$ is the maximum rule size.
+Recall that, in accordance with~\cite{lawless_interpretable_2023}, a rule's complexity is $1$ plus the number of features in it.
+As such, a ruleset complexity of $20$ is equivalent to five rules of size three.
+A ruleset complexity of $18$ is equivalent to six rules of size two.
+
+We employ a heuristic pricer with beam widths $(1000, 500, 500)$.
+We also employ the exact pricer.
+We limit pricing (the finding of rules) to 23 hours and branching to 1 hour.

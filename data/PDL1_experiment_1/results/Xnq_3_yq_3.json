@@ -1,0 +1,89 @@
+{
+    "binary": [
+        [
+            "FOSL1>=-0.04 Q(0.50)",
+            "MYC>=-7.09 Q(0.25)",
+            "RELA>=-1.33 Q(0.25)"
+        ],
+        [
+            "IRF1>=-0.88 Q(0.25)",
+            "SOX2>=-0.29 Q(0.25)",
+            "STAT2>=-0.20 Q(0.50)"
+        ],
+        [
+            "STAT1>=0.07 Q(0.75)",
+            "STAT2>=0.80 Q(0.75)",
+            "TBX21>=0.54 Q(0.75)"
+        ]
+    ],
+    "dualbound": 257.0,
+    "obj": 257.0,
+    "obj_cg": 257.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 512.0,
+            "pricer": 0,
+            "red_cost": -244.0,
+            "time": 0.275159
+        },
+        {
+            "lp_objective": 268.0,
+            "pricer": 0,
+            "red_cost": -44.0,
+            "time": 0.533801
+        },
+        {
+            "lp_objective": 268.0,
+            "pricer": 0,
+            "red_cost": -20.0,
+            "time": 0.7850119999999999
+        },
+        {
+            "lp_objective": 265.5,
+            "pricer": 0,
+            "red_cost": -9.0,
+            "time": 1.047999
+        },
+        {
+            "lp_objective": 260.0,
+            "pricer": 0,
+            "red_cost": -3.75,
+            "time": 1.300384
+        },
+        {
+            "lp_objective": 257.0,
+            "pricer": 0,
+            "red_cost": -1.2142857142857082,
+            "time": 1.548919
+        },
+        {
+            "lp_objective": 257.0,
+            "pricer": 0,
+            "red_cost": -0.6666666666666661,
+            "time": 1.799868
+        },
+        {
+            "lp_objective": 257.0,
+            "pricer": 0,
+            "red_cost": -0.08333333333333393,
+            "time": 2.051778
+        },
+        {
+            "lp_objective": 257.0,
+            "pricer": 1,
+            "red_cost": -0.5833333333333339,
+            "time": 98.79154
+        },
+        {
+            "lp_objective": 257.0,
+            "pricer": 0,
+            "red_cost": -0.2222222222222221,
+            "time": 99.041243
+        }
+    ],
+    "soltime": 0.044668,
+    "soltime_cg": 191.926997,
+    "status": 1,
+    "status_cg": 1
+}

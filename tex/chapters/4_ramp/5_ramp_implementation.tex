@@ -1,0 +1,74 @@
+The custom solver described in \autoref{sec:boolean-implementation} is capable of solving the ramp loss model.
+This means there is another option, namely the model type, which is either ``Boolean'' or ``Threshold''.
+The model type ``Threshold'' solves both the threshold model (\autoref{ch:threshold-model})
+and the ramp loss model, as the threshold model is a special case of the ramp loss model,
+precisely the case $\beta = 0.$
+
+The implementation for both model types share relevant parts of the codebase.
+Notably, both model types use the same basis for the heuristic pricer.
+The key difference is how the reduced cost is computed inside the search tree.
+We will now discuss how this is done for the ramp loss model.
+Let $k_\text{parent}, k_\text{child}$ be the rules corresponding to some parent and child node, respectively.
+Then the reduced cost of the child node is given by
+\begin{equation}
+        \hat \rho_{k_\text{child}} =  \sum_{i \in \cN} \gamma_{ik_\text{child}}
+    -\sum_{i \in \cP}  \mu_i \gamma_{ik_\text{child}} +\lambda  c_{k_\text{child}}.  \label{eq:RP_redcost_node}
+\end{equation}
+We now wish to express $\gamma_{ik_\text{child}}$ in terms of $\gamma_{ik_\text{parent}}$.
+Ideally, we can then store $\gamma$-values cleverly in the search tree, and compute
+$\hat \rho_{k_\text{child}}$ from $\hat \rho_{k_\text{parent}}$ with relatively little effort.
+Denote by $l$ the clause that is added in $k_\text{child}$ with respect to $k_\text{parent}.$
+Recall the definition of $\gamma_{ik}$ in \eqref{eq:f_min}.
+Evidently,
+\[
+  \gamma_{ik_\text{child}} \leq \gamma_{ik_\text{parent}}.
+\]
+Precisely, observe that
+\begin{equation}\label{eq:RP_gamma_diff}
+    \gamma_{ik_\text{child}} = \gamma_{ik_\text{parent}} - (\gamma_{ik_\text{parent}} - \gamma_{il})\Ind\{\gamma_{il} < \gamma_{ik_\text{parent}}\}.
+\end{equation}
+For convenience, we denote
+\begin{equation}\label{eq:RP_delta_gamma}
+    \Delta \gamma_{ik} = (\gamma_{ik_\text{parent}} - \gamma_{il})\Ind\{\gamma_{il} < \gamma_{ik_\text{parent}}\}
+\end{equation}
+It follows that
+\begin{equation}
+    \begin{split}
+        \hat \rho_{k_\text{child}} = \; & \hat{\rho}_{k_\text{parent}} - \sum_{i \in \cN} \Delta \gamma_{ik_\text{child}}
+        + \sum_{i \in \P} \Delta \mu_i \gamma_{ik_\text{child}}
+        + \lambda.
+    \end{split}
+    \label{eq:RP_redcost_node_deriv}
+\end{equation}
+There are two important cases in which $\Delta \gamma_{ik} = 0$.
+First, if $\gamma_{ik_\text{parent}} = 0,$ as $\gamma_{il}$ cannot be lower.
+Second, if $\gamma_l = 2,$ as $\gamma_{ik_\text{parent}}$ cannot be higher.
+Define
+\begin{equation}
+    \overline \I_k \coloneqq \{i \in \I \fw \gamma_{ik} > 0\} \tquad k \in \K.\label{eq:ramp_I_k}
+\end{equation}
+In other words, $\overline \I_k$ is the set of points that are covered by rule $k$ or are in the margin.
+Define $\overline \N$ and $\overline \P$ analogously.
+Then, instead of summing over $\N$ and $\P$, we may sum over
+\[
+    \overline \N \cap \{i \in \N : \gamma_{il} < 2\} \quad \text{and} \quad \overline \P \cap \{i \in \P : \gamma_{il} < 2\},
+\]
+respectively.
+Observe that
+\[
+    \overline \I_{k_\text{child}} \subseteq \overline \I_{k_\text{parent}}.
+\]
+and
+\[
+    \overline \I_{k_\text{child}} = \overline \I_{k_\text{parent}} \setminus \{i \in \I \fw \gamma_{il} = 0\}.
+\]
+We store $\overline \I_k$ for each node $k$ in the search tree.
+Furthermore, we do not store every $\gamma_{ik}$, as this would require many variables in each node of the search tree.
+Instead, we store the key-value pair $(i, \gamma_{ik_\text{child}})$ at node $k_\text{child}$ if $\gamma_{ik_\text{child}}$ changed with respect to the parent.
+Hence, finding the value of $\gamma_{ik_\text{parent}}$ requires traversing up the search tree until there is a hit.
+
+Finally, we note that allowing a TF to appear at most once in a rule can speed up heuristic pricing.
+When this restriction is enforced, the number of possible children of each node is reduced.
+This is relatively easy to implement for the threshold model and the ramp loss model,
+but is less convenient to implement for the boolean model, as it would require additional input to specify which binarized features
+belong to the same TF\@.

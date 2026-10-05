@@ -1,0 +1,85 @@
+\section{Boolean model integer gap}\label{sec:boolean_model_appendix}
+
+The integer gap is defined as
+\[
+    \frac{\text{Optimal value of the IP} - \text{Optimal value of the LP relaxation}}{\text{Optimal value of the LP relaxation}}.
+\]
+The optimal value of the LP relaxation is a lower bound for the optimal value of an IP\@.
+When pricing completed, which is true for green cells that do not say ``Limit'',
+the LP relaxation value observed is the true optimal LP relaxation value.
+Hence, no integer solution with an objective value better than it exists.
+\autoref{tab:PDL1ex1_solve_time} shows that pricing finished for all instances, and this argument holds.
+\autoref{tab:PDL1ex1neg_solve_time} shows that pricing only finished in some cases.
+For the cases in which pricing completed, the gap is small.
+Hence, for these cases, we conclude that there do not exist meaningfully better rulesets than the ones we found.
+It also implies branch-and-price would not be meaningfully better than price-then-branch in this case.
+For the cases where pricing did not converge, this conclusion cannot be made.
+
+\begin{table}
+    \input{gen/PDL1ex1/tab_PDL1ex1_gap}
+    \caption{Integer gap for the boolean model on the full Broad dataset for various $\nq$ and $Q_y$,
+        only lower-bounds}
+    \label{tab:PDL1ex1_solve_time}
+\end{table}
+
+\begin{table}
+    \input{gen/PDL1ex1neg/tab_PDL1ex1neg_gap}
+    \caption{Integer gap for the boolean model on the full Broad dataset for various $\nq$ and $Q_y$,
+        both lower-bounds and upper-bounds}
+    \label{tab:PDL1ex1neg_solve_time}
+\end{table}
+
+
+%\begin{table}[h]
+%    \centering
+%    \begingroup
+%    \renewcommand{\cline}[1]{}
+%    \rowcolors{2}{gray!10}{white}
+%    \arrayrulecolor{black}
+%    \input{gen/PDL1ex3/PDL1ex3_tab_interpretable_mw_0_C_1}
+%    \endgroup
+%    \caption{}
+%    \label{tab:tpm_interpretable_results_C_1}
+%\end{table}
+%
+%\begin{table}[h]
+%    \centering
+%    \begingroup
+%    \renewcommand{\cline}[1]{}
+%    \rowcolors{2}{gray!10}{white}
+%    \arrayrulecolor{black}
+%    \input{gen/PDL1ex3/PDL1ex3_tab_interpretable_mw_0_C_2}
+%    \endgroup
+%    \caption{}
+%    \label{tab:tpm_interpretable_results_C_2}
+%\end{table}
+
+
+% \begin{table}[h]
+%  \centering
+%  \begin{minipage}{0.1\linewidth}
+%   \centering
+%   \input{gen/exclusion/tab_exclusion_Qy_0.5_D_1_mw_0_depth_3}
+%  \end{minipage}
+%  \hfill
+%  \begin{minipage}{0.85\linewidth}
+%   \centering
+%   \input{gen/exclusion/tab_exclusion_Qy_0.5_D_2_mw_0_depth_3}
+%  \end{minipage}
+%  \caption{TF exclusion table as described in \autoref{sec:exclusion}. Case $Q_y=0.5$, $D=1$ (left) and $D=2$ (right).}
+%  \label{tab:exclusion_Qy_0.5_mw_0_depth_3}
+% \end{table}
+%  \begin{table}[h]
+%  \centering
+%  \begin{minipage}{0.1\linewidth}
+%   \centering
+%   \input{gen/exclusion/tab_exclusion_Qy_0.6_D_1_mw_0_depth_3}
+%  \end{minipage}
+%  \hfill
+%  \begin{minipage}{0.85\linewidth}
+%   \centering
+%   \input{gen/exclusion/tab_exclusion_Qy_0.6_D_2_mw_0_depth_3}
+%  \end{minipage}
+%  \caption{TF exclusion table based as described in \autoref{sec:exclusion}. Case $Q_y-0.6$, $D=1$ (left) and $D=2$ (right).}
+%  \label{tab:exclusion_Qy_0.6_mw_0_depth_3}
+% \end{table}

@@ -1,0 +1,30 @@
+First, we focus on simple rulesets for low PD-L1 expression thresholds.
+High values of $Q_y$ led to very little learning as discussed in \autoref{sec:boolean-results}.
+Therefore, we restrict ourselves to $Q_y = 0.5, 0.6.$
+We are interested in the performance of very simple rulesets and what they look like.
+Therefore, we study
+\[C = 1,2 \quad \text{and} \quad D = 1,2,3,\]
+training on Broad in full.
+We fix $\nq = 9$ and consider both lower-bounds and upper-bounds.
+The use of the exact pricer has proven to be time-consuming, especially for higher $\nq$.
+We are interested in high $\nq$ to rule out the effect of course discretization on ruleset performance.
+To avoid wasting time and compute (that could otherwise be used by other users of the HPC),
+we use only the heuristic pricer with beam widths $(1000,1000)$ for $D=2$ and $(1000,1000,1000)$ for $D=3.$
+While this removes optimality guarantees like those discussed in \autoref{sec:boolean_model_appendix},
+rulesets still provide a proof that a certain performance can be attained.
+Furthermore, optimal solutions for small $C$ and small $D$ will be discussed in \autoref{sec:threshold_greedy}.
+
+The total time limit is set to 3 hours, which is much more than needed for this setup.
+
+Next, we study the effect of increasing $C$ and $D$ on performance.
+Again, Broad is used in full for training.
+The settings for this experiment are analogous to the experiment above.
+
+Finally, we study the generalization of simple rulesets for $Q_y=0.5, 0.6.$
+We apply 10-fold stratified cross-validation on Broad.
+Then we compare train and test accuracy.
+We set $D = 2$ and study $C=1,2,3$.
+We also study the consistency of these solutions by counting how often each ruleset occurs among splits.
+In this count, we disregard the threshold value and direction (lower-bound or upper-bound) of each clause,
+but identify a ruleset only by which TFs appear together in each rule.
+Ideally, the ruleset found is consistent, as it is meant to be a general rule governing PD-L1 expression.

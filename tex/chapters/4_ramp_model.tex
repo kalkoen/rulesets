@@ -1,0 +1,96 @@
+In this chapter, we explore an alternative loss function, the ramp loss, inspired by the support vector machine (SVM).
+The threshold model discussed in Section~\ref{ch:threshold-model} utilizes the so-called hard-margin loss (\autoref{fig:loss_functions}c), also known as \zo loss.
+This means a correctly classified point induces a loss of $0$, while an incorrectly classified point induces a loss of $1$.
+It may be beneficial to assign a lower loss to misclassified points that are ``close'' to the rule set.
+
+The SVM is a mathematical programming-based binary classification method developed by Vapnik in 1998 and Cortes and Vapnik in 1995~\cite{vapnik_statistical_1998, cortes_support-vector_1995, brooks_support_2011}.
+The classifier finds a hyperplane in the feature space that aims to separate positive datapoints from negative datapoints.
+The formulation proposed by Vapnik and co-authors uses the hinge loss, a continuous measure for misclassification.
+Specifically, the misclassification error is directly proportional to the distance between the point and the plane.
+The behavior of the hinge loss is illustrated in \autoref{fig:loss_functions}a.
+The hinge loss makes the SVM sensitive to outliers.
+One method to increase robustness of the SVM, studied by several authors (\cite{brooks_support_2011, belotti_spatial_2024}),
+is the use of the ramp loss, illustrated in \autoref{fig:loss_functions}b.
+
+Besides being more robust than the hinge loss, the ramp loss has additional advantages.
+Points that are ``close'' to a rule induce a lower loss.
+This could reveal rules that would otherwise remain unchosen due to noise;
+if many positive and negative points live near the border of an otherwise good rule,
+the hard-margin loss can turn out large despite the rule being promising.
+This is especially true in the case of a small selection of thresholds (i.e., a limited number quantile levels)
+as opposed to full freedom in selecting thresholds.
+In the former case, it may be that an available threshold happens to fall on the ``wrong side'' of a
+relevant cloud of points.
+A ramp loss could ease this pain by reducing the loss of points that are close to this threshold.
+Additionally, the ramp loss could prove more robust than \zo loss,
+as the change in loss as a result of a perturbation of the input is limited.
+This is due to the reduced ``steepness'' of the ramp loss as opposed to the hard-margin loss.
+
+This chapter covers the modification of the threshold model from the hard-margin loss to the ramp loss,
+which is our contribution.
+The resulting ramp loss model is a generalization of the threshold model.
+
+Two variants are considered: ``additive'' and ``non-additive''.
+The latter is an attempt to overcome issues with the former.
+A mathematical description of the additive model is treated in
+\autoref{sec:ramp-model-description} and \autoref{sec:ramp-pricing-problem}.
+Examples of the model's behavior on simple, artificial examples are covered in \autoref{sec:ramp-examples}.
+These examples are in two dimensions and help develop a visual intuition.
+The subsequently developed non-additive variant is covered in \autoref{sec:ramp-nonadditive}.
+Implementation is discussed in \autoref{sec:ramp-implementation}.
+The experiments and their results are discussed
+in \autoref{sec:ramp-methodology} and \autoref{sec:ramp-results}, respectively.
+
+Readers who are mainly interested in the experiments and their results are advised to continue reading
+\autoref{sec:ramp-examples}.
+This is the section with examples, which helps to build an intuition for the model.
+\autoref{sec:ramp-nonadditive} is mathematical and may be skipped by these readers,
+but contains more examples worth reading about.
+
+\begin{figure}
+    \includesvg[width=0.5\textwidth]{gen/loss_functions_y_1_corrected.svg}
+    \caption{Loss for a positive datapoint $i$ subject to rule $X_{\cdot j} \geq \alpha$ plotted
+    against the feature value $X_{ij}$ with (a) the hinge loss, (b) the ramp loss and (c) the hard margin loss.
+    The width of the margin is given by $\beta > 0$.
+    An observation whose feature value $X_{ij}$ falls between $\alpha-\beta$ and $\alpha + \beta$ lies in the margin.}
+    \label{fig:loss_functions}
+\end{figure}
+
+
+\section{Model description}\label{sec:ramp-model-description}
+\input{chapters/4_ramp/1_ramp_model_description}
+
+\section{Pricing problem}\label{sec:ramp-pricing-problem}
+\input{chapters/4_ramp/2_ramp_pricing_problem}
+
+\subsection{Complexity}\label{subsec:ramp-pricing-problem-complexity}
+\input{chapters/4_ramp/pp/4_1_1_pricing_problem_complexity}
+
+\subsection{Mixed Integer Programming formulations}\label{subsec:ramp-pricing-problem-mip}
+\input{chapters/4_ramp/pp/4_1_2_pricing_problem_MIP}
+
+%\subsection{Custom branching rule}\label{subsec:ramp-branching-rule}
+%\input{chapters/4_ramp/pp/4_1_90_custom_branching_rule}
+
+\subsection{Cutting planes}\label{subsec:ramp-cutting-planes}
+\input{chapters/4_ramp/pp/4_1_3_cutting_planes}
+
+\subsection{Separation}\label{subsec:separation}
+\input{chapters/4_ramp/pp/4_1_4_separation}
+
+\section{Examples}\label{sec:ramp-examples}
+\input{chapters/4_ramp/3_ramp_examples}
+
+\section{Non-additive variant}\label{sec:ramp-nonadditive}
+\input{chapters/4_ramp/4_nonadditive}
+
+\section{Implementation}\label{sec:ramp-implementation}
+\input{chapters/4_ramp/5_ramp_implementation}
+
+\section{Methodology}\label{sec:ramp-methodology}
+\input{chapters/4_ramp/6_ramp_methodology}
+
+\section{Results}\label{sec:ramp-results}
+\input{chapters/4_ramp/7_ramp_results}
+
+

@@ -1,0 +1,30 @@
+The results thus far are arguably disappointing.
+While high test accuracy can be achieved by the boolean model on a variety of
+datasets that include both continuous and discrete features before binarization,
+such performance is not achieved for our dataset and the rulesets found are inconsistent.
+
+We conduct several additional experience in an attempt to understand why these problems occur.
+In \autoref{sec:tissue_status}, we apply the model to subsets of the data.
+In particular, we consider the tumors and metastases separately.
+This may reveal that tissue status affects TF behavior and may yield better results.
+In \autoref{sec:exclusion} we study the effect of excluding TF on performance, to identify
+whether there exist TFs or TF combinations that are important capturing PD-L1 expression inside a ruleset.
+If performance does not meaningfully decrease for any exclusions,
+then this suggests that there do not exist rules that are meaningfully better than others,
+and that optimal rulesets should be interpreted with extreme caution.
+In \autoref{sec:gene_expression}, we use the model on raw gene expression data and study its behavior.
+This may provide an indication that our TF activity data is not suitable for this kind of analysis,
+but that the method could be effective on other kinds of biological data.
+
+\section{Tissue status}\label{sec:tissue_status}
+\input{chapters/5_experiments/5_2_tissue_status}
+
+\clearpage
+
+\section{Transcription Factor Exclusion}\label{sec:exclusion}
+\input{chapters/5_experiments/5_3_exclusion}
+
+\section{Gene expression as input}\label{sec:gene_expression}
+\input{chapters/5_experiments/5_1_expression_data}
+
+

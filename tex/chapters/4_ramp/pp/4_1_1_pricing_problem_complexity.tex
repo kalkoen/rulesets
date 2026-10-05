@@ -1,0 +1,104 @@
+In this section we discuss the complexity of the pricing problem \eqref{eq:RP_set_formulation} for various definitions of rule complexity.
+It turns out to be NP-hard in general.
+In \autoref{ch:boolean-model}, the rule complexity of a rule $S \subseteq \L$ was defined as \[c(S)=1+|S|.\]
+\begin{theorem}
+    \cite{lawless_interpretable_2023}
+    \label{thm:np-hard-lawless}
+    The problem \eqref{eq:RP_set_formulation} is NP-hard for $c(S) = 1 + |S|.$
+\end{theorem}
+
+\begin{proof}
+    The proof is analogous to the one given in~\cite{lawless_interpretable_2023} and is by reduction from the minimum vertex cover (MVC) problem, which is known to be NP-complete.
+    Let $G=(V,E)$ be an undirected graph with at least one edge, otherwise the problem has a trivial solution.
+    We construct an instance of \eqref{eq:RP_set_formulation} that finds a minimum cardinality vertex cover of $G$.
+    Take $\P = \emptyset.$
+    For each vertex $v \in V,$ create a clause $l_v = (v, 1) \in \L$.
+    For each edge $e = \{u,v\} \in E,$ create a point $i_e \in \N$ such that
+    \[X_{i_e l_v} = \begin{cases}
+                        0, & \text{if $v \in e$}, \\
+                        2, & \text{otherwise}.
+    \end{cases}\]
+    Choose $\beta = 1.$ It follows that
+    \[
+        f_{i_{e}}(k) \in \{0, 2\}, \tquad e \in E, \; k \in \K.
+    \]
+    Precisely, we have that
+    \[f_{i_e}(S) = \begin{cases}
+                         0, & \text{if $\exists l_v \in S \fw v \in e$,} \\
+                         2, & \text{otherwise},
+    \end{cases} \tquad i_e \in \N, \; S \subseteq \L.
+    \]
+    Additionally, let $\lambda = 1/(1 + |\L|).$
+    This leads to the problem
+    \[\umin{S \subseteq \L} \quad \sum\limits_{i \in \N} f_i(S) + \frac{1 + |S|}{1 + |V|}.\]
+    If $S$ is not a vertex cover, then there is some $e \in E$ such that $f_{i_e}(S) = 2.$ So
+    \[
+        \sum\limits_{i \in \N} f_i(S) \geq 2.
+    \]
+    Consequently, the objective value is at least $2$.
+    If $S$ is a vertex cover, then the sum evaluates to $0$, since for all $e \in E$ we have $f_{i_e}(S) = 0.$
+    In this case, the objective is at most $1$, because
+    \[\frac{1 + |S|}{1 + |V|} \leq 1.\]
+    Since this objective value is strictly better,
+    an optimal solution $S$ is a vertex cover and minimizes the above fraction.
+    This is equivalent to minimizing $|S|$.
+    So the problem finds a minimum cardinality vertex cover.
+    Therefore, this instance of the pricing problem, constructible in polynomial time, solves the MVC problem. \qedhere
+\end{proof}
+
+Analogously, the problem \eqref{eq:RP_set_formulation} is NP-hard for $c(S) = |S|.$
+This proof is not applicable for the case $c(S) = 1,$ which was chosen in \autoref{ch:threshold-model}.
+
+\begin{theorem}
+    \label{thm:np-hard}
+    The problem \eqref{eq:RP_set_formulation} is NP-hard for $c(S) = 1$.
+\end{theorem}
+
+\begin{proof}
+    The proof is again by reduction from the minimum vertex cover (MVC) problem and uses a similar construction.
+    Let $G=(V,E)$ be an undirected graph with at least one edge.
+    Recall the instance described in the proof of \autoref{thm:np-hard-lawless}.
+    Augment the instance by creating for each $v \in V$ a point $i_v \in \P$ with
+    \[X_{i_v l_{\overline{v}}} = \begin{cases}
+                                    0, & \text{if $v = \overline{v}$}, \\
+                                    2, & \text{otherwise},
+    \end{cases} \tquad v,\overline{v} \in V.\]
+    It follows that
+    \[
+        f_{i_v}(S) = \begin{cases}
+                           0, & \text{if $l_v \in S$,} \\
+                           2, & \text{otherwise},
+        \end{cases}
+        \tquad v \in V, \; S \subseteq \L.
+    \]
+    Let $\lambda = 0$ and $\mu_i = 1/(1 + |V|), \; i \in \P.$
+    The problem is then given by
+    \[\umin{S \subseteq \L} \quad \sum\limits_{i \in \N} f_i(S) - \frac{1}{1+|V|} \sum\limits_{i \in \P} f_i(S).\]
+    Observe that the solution containing every $l_v, \; v \in V$ has objective value $0$.
+    Let $S$ be an optimal solution.
+    Then the corresponding objective value is at most $0$, which implies
+    \[
+        \sum\limits_{i \in \N} f_i(S) \leq \frac{1}{1+|V|} \sum\limits_{i \in \P} f_i(S)
+    \]
+    Note that
+    \[
+        \frac{1}{1+|V|} \sum\limits_{i \in \P} f_i(S) \leq \frac{1}{1+|V|} \sum\limits_{i \in \P} 2 = \frac{2|V|}{1+|V|} < 2,
+    \]
+    Therefore
+    \[
+        \sum\limits_{i \in \N} f_i(S) < 2.
+    \]
+    Since $f_i(S) \in \{0,2\}$ for all $i$,
+    it follows that
+    \[\sum\limits_{i \in \N} f_i(S) = 0.\]
+    This again implies that $S$ corresponds to a vertex cover.
+    It also follows that solution $S$ minimizes
+    \[
+        \begin{split}
+            -\frac{1}{1+|V|} \sum\limits_{i \in \P} f_i(S) &= -\frac{1}{1+|V|} \sum\limits_{i_v \in \P} 2 \cdot \Ind(l_v \notin S)
+            \\ &= -\frac{2\left(|V| - |S|\right)}{1 + |V|} \\ &= -\frac{2|V|}{1 + |V|} + \frac{2|S|}{1+|V|}.
+        \end{split}
+        \]
+    which is equivalent to minimizing $|S|$.
+    Therefore, this instance of the pricing problem, constructible in polynomial time, solves the MVC problem. \qedhere
+\end{proof}

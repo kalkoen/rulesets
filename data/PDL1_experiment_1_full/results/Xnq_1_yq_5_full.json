@@ -1,0 +1,17 @@
+{
+    "binary": [
+        [
+            "FOSL1>=-0.04 Q(0.50)",
+            "STAT2>=-0.20 Q(0.50)"
+        ]
+    ],
+    "dualbound": 230.0,
+    "obj": 230.0,
+    "obj_cg": 0.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [],
+    "soltime": 0.124002,
+    "soltime_cg": 0.0,
+    "status": 1,
+    "status_cg": 0
+}

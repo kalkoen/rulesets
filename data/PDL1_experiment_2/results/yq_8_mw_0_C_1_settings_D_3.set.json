@@ -1,0 +1,46 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "NFKB1>=3.400773",
+            "RELA>=3.314760",
+            "-FOXO1>=-0.032672"
+        ]
+    ],
+    "dualbound": 158.0,
+    "margin_width": 0.0,
+    "obj": 158.0,
+    "obj_cg": 158.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 170.0,
+            "pricer": 0,
+            "red_cost": -12.0,
+            "time": 1.998802
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "NFKB1>=3.400773",
+            "RELA>=3.314760",
+            "-FOXO1>=-0.032672",
+            1.0
+        ]
+    ],
+    "soltime": 0.004167,
+    "soltime_cg": 3.716487,
+    "status": 1,
+    "status_cg": 1
+}

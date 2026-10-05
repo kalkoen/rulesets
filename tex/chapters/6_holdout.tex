@@ -1,0 +1,53 @@
+In this chapter, we use some of the rules found for the Broad dataset to predict PD-L1 expression
+(specifically whether it exceeds a threshold) in the Sanger dataset.
+The performance of these rulesets is also compared to the corresponding optimal ruleset for the Sanger dataset itself.
+
+There are two ways of evaluating a ruleset produced from a train dataset on a test dataset:
+\begin{itemize}
+    \item \textbf{Absolute inference:} The ruleset is characterized by the absolute values of the thresholds.
+    For instance, if the clause is \[\text{STAT2 $\geq -0.20 \; Q(0.5)$},\]
+    then \[\text{STAT2 $\geq -0.20$}\] is used for the test dataset.
+    \item \textbf{Relative inference:} The ruleset is characterized by the quantile level
+    with respect to the observed TF activity values in the inference dataset.
+    For instance if the clause is \[\text{STAT2 $\geq -0.20 \; Q(0.5)$},\]
+    then \[\text{STAT2 $\geq a$}\] is used for the test dataset,
+    where $a$ is the $0.5$ quantile of STAT2 activity in the test dataset.
+\end{itemize}
+During cross-validation experiments, absolute inference was used, as both train and test datasets were subsets of
+the same dataset.
+It may be that Sanger is biased with respect to Broad,
+for instance due to a difference in measurement techniques or lab environment.
+Therefore, relative inference may be the better choice.
+Accuracy for both types of inference is reported in \autoref{tab:holdout_C_1}.
+Absolute inference structurally yields a lower score, illustrating that clauses are, in this setting, best
+interpreted in terms of their relative threshold, meaning their quantile with respect to observed data.
+Relative inference yields an accuracy that is more comparable with train accuracy.
+
+The idea is not to evaluate every result obtained on the Sanger dataset, but only those deemed most promising.
+The selection made in \autoref{tab:holdout_C_1} is based on the results in \autoref{sec:threshold-results}.
+
+We compare this with the optimal rulesets for the Sanger dataset.
+Ideally, the (relative) test accuracies  in \autoref{tab:holdout_C_1} are close to the train accuracies in \autoref{tab:holdout_optimal_C_1}
+If not, then the rulesets from Broad do not generalize well, or there is substantial overfitting when training on Sanger.
+
+The optimal rulesets for Sanger for the same parameter choices are given in \autoref{tab:holdout_optimal_C_1}.
+These results are qualitatively different, suggesting that the rulesets found for Broad do not generalize to Sanger.
+The optimal rulesets for the Sanger dataset also score several percentage points higher, so we do not consider these scores close.
+
+\begin{adjustwidth}{-3cm}{-3cm}
+    \begin{table}
+        \bwtable{gen/holdout/tab_C_1}
+        \caption{Performance of various one-rule rulesets on both Broad and Sanger.
+        Performance for absolute inference is indicated  with ``(Abs.)''
+            and performance for relative inference is indicated with ``(Rel.)''}
+        \label{tab:holdout_C_1}
+    \end{table}
+\end{adjustwidth}
+
+\begin{adjustwidth}{-3cm}{-3cm}
+    \begin{table}
+        \bwtable{gen/holdout/tab_optimal_C_1.tex}
+        \caption{Optimal rulesets for the Sanger dataset}
+        \label{tab:holdout_optimal_C_1}
+    \end{table}
+\end{adjustwidth}

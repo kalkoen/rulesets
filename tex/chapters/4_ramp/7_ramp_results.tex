@@ -1,0 +1,43 @@
+The train and test accuracies are given in \autoref{fig:pdl1_experiment_2_cross_train_test_mw}.
+It shows results for $Q_y=0.5$ (top row) and $Q_y=0.6$ (bottom row).
+The first column corresponds to $\beta=0$.
+Hence, the first column is a variant of \autoref{fig:threshold_train_test_accuracy_mw_0.svg}.
+The margin width $\beta$ increases with the column index, the last column corresponding to $\beta=1$.
+
+From this plot, there is no clear improvement in test accuracy for $\beta>0$.
+Increasing $\beta$ does appear to dampen the effect of $C$ on train accuracy.
+For larger $\beta$, increasing $C$ leads to less improvement in train accuracy.
+Hence, the ramp loss model may be less prone to overfitting.
+It may also indicate that the ramp loss model is less capable of learning altogether.
+Considering the confidence intervals for test accuracy,
+no significant improvement in test accuracy can be established.
+There may even be a decrease in test accuracy as $\beta$ increases.
+
+Based on the plot, we study $\beta=0.6$ in more detail.
+The ruleset frequency table is given in \autoref{tab:threshold_cross_interpretable_mw_0.6_C_1}.
+For $Q_y=0.5$, the ruleset found is now consistent among all splits.
+The opposite is true for $Q_y=0.6$.
+Interestingly, the reverse was true for $\beta=0$, as seen in \autoref{tab:threshold_cross_interpretable_mw_0_C_1}.
+It appears therefore that the introduction of the ramp loss,
+which lead to the development of the non-additive model, did not lead to more consistent rulesets being found.
+Hence, there appears to be no advantage of using the ramp loss model over the threshold model.
+
+\clearpage
+
+\begin{landscape}
+    \vspace*{\fill}
+    \begin{figure}[h]
+        \includesvg[width=\textwidth]{gen/PDL1ex2cross/train_test_mw.svg}
+        \caption{Confidence intervals for train and test accuracies for the ramp loss model, $C=1,2,3$, $D=2$, \\ $\beta=0,0.2,0.4,0.6,0.8,1$.}
+        \label{fig:pdl1_experiment_2_cross_train_test_mw}
+    \end{figure}
+    \vspace*{\fill}
+\end{landscape}
+
+
+\begin{table}[h]
+    \centering
+    \input{gen/PDL1ex2cross/tab_cross_interpretable_mw_0.6_C_1}
+    \caption{}
+    \label{tab:threshold_cross_interpretable_mw_0.6_C_1}
+\end{table}

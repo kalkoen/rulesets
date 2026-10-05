@@ -1,0 +1,70 @@
+Next, consider $\bm{z} \in [0,1]^m$, the variables
+\[
+    \gamma_1 \leq \gamma_2 \leq \cdots \leq \gamma_m
+\]
+and the constraint family
+\begin{equation}\label{eq:RP-neg-onedim}
+    \gamma \geq \gamma_i - \sum_{i' = 1}^{i} (\gamma_i - \gamma_{i'}) z_{i'}, \tquad i \in [m],
+\end{equation}
+which translates directly to \eqref{eq:RP-neg}.
+A violated inequality exists if and only if
+\[
+    \gamma < \gamma_i -  \sum_{i' = 1}^{i} (\gamma_i - \gamma_{i'}) z_{i'}
+\]
+for some $i \in [m].$
+Therefore, we are interested in a maximizer of the right hand side.
+We assume $m \geq 2$, as $m=1$ is a trivial case.
+Define $g: [m] \to \R$ by
+\[
+    g(i) = \gamma_i - \sum_{i' = 1}^{i} (\gamma_i - \gamma_{i'}) z_{i'}.
+\]
+Let $i \in [m-1].$ Then
+\[
+    \begin{split}
+        g(i+1) - g(i) &= \gamma_{i+1} - \sum_{i' = 1}^{i+1} (\gamma_{i+1} - \gamma_{i'}) z_{i'} - \gamma_i + \sum_{i' = 1}^{i} (\gamma_i - \gamma_{i'}) z_{i'} \\
+        &= \gamma_{i+1} - \sum_{i' = 1}^{i} (\gamma_{i+1} - \gamma_{i'}) z_{i'} - \gamma_i + \sum_{i' = 1}^{i} (\gamma_i - \gamma_{i'}) z_{i'} \\ & \tquad -  (\gamma_{i+1} - \gamma_{i+1})z_{i+1}  \\
+        &= \gamma_{i+1} - \gamma_i - \sum_{i' = 1}^{i} (\gamma_{i+1} - \gamma_{i'} - \gamma_i + \gamma_{i'}) z_{i'} \\
+        &= \gamma_{i+1} - \gamma_i - \sum_{i' = 1}^{i} (\gamma_{i+1} - \gamma_i) z_{i'} \\
+        &= (\gamma_{i+1} - \gamma_i) \left(1 - \sum_{i' = 1}^{i} z_{i'}\right).
+    \end{split}
+\]
+Write
+\[
+    S_i = \sum_{i'=1}^{i} z_{i'},
+\] so that
+\[
+    g(i+1) - g(i) = (\gamma_{i+1} - \gamma_i)(1 - S_i).
+\]
+Because $\bm{z} \geq 0$, the sequence $(S_i)_{i \in [m]}$ is non-decreasing.
+Since $\gamma_{i+1} \geq \gamma_i$ for all $i \in [m-1]$, it follows that
+\begin{equation}\label{eq:sep-neg-obs-1}
+    g(i+1) > g(i) \quad \iff \quad  S_i < 1 \quad \wedge \quad  \gamma_{i+1} > \gamma_i.
+\end{equation}
+Furthermore,
+\begin{equation}\label{eq:sep-neg-obs-2}
+    S_i \leq 1 \quad \implies g(i+1) \geq g(i).
+\end{equation}
+\begin{theorem}\label{thm:sep-neg-opt}
+    Let $i^* \in [m-1]$ be the largest index such that
+    \[
+        S_{i^*} = \sum_{i' = 1}^{i^*} z_{i'} \leq 1,
+    \]
+    which exists because $S_1 = z_1 \leq 1$.
+    Then $i^*+1$ is a maximizer for $g$.
+\end{theorem}
+
+\begin{proof}
+    Let $i^*$ be as described.
+    Recall that $(S_i)_{i \in [m]}$ is non-decreasing.
+    We have that $S_i \leq 1$ for $i \leq i^*$ and $S_i > 1$ for $i \in [m]$ such that $i > i^*$.
+    It follows by \eqref{eq:sep-neg-obs-2} that $g(i+1) \geq g(i)$ for all $i \in [m-1]$ such that $i \leq i^{*}.$
+    By the contrapositive of the forward implication in \eqref{eq:sep-neg-obs-1}, we furthermore have that
+    $g(i+1) \leq g(i)$ for every $i \in [m-1]$ such that $i \geq i^*+1$.
+    Therefore, $g(i) \leq g(i^*+1)$ for all $i \in [m]$.
+    We conclude that $i^*+1$ is a maximizer for $g$.
+\end{proof}
+Consider $i^*$ as described by \autoref{thm:sep-neg-opt}.
+If $g(i^*+1) > \gamma$, then the corresponding constraint \eqref{eq:RP-neg-onedim} is violated.
+Otherwise, no violated inequality exists.
+Finding $i^*$ can be done in linear time.
+Sorting $\bm{\gamma}$ is done during pre-processing.

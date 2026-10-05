@@ -1,0 +1,87 @@
+{
+    "binary": [
+        [
+            "FOSL1>=1.42 Q(0.90)",
+            "AR<-2.54 Q(0.30)",
+            "MYC<-7.51 Q(0.20)"
+        ],
+        [
+            "RELA>=0.64 Q(0.60)",
+            "STAT6>=0.60 Q(0.50)",
+            "STAT3<-0.91 Q(0.30)"
+        ],
+        [
+            "STAT1>=-0.23 Q(0.70)",
+            "FOXO1<-1.04 Q(0.20)",
+            "GATA2<0.60 Q(0.60)"
+        ],
+        [
+            "STAT3>=1.55 Q(0.80)",
+            "TBX21>=1.28 Q(0.90)",
+            "SPI1<3.52 Q(0.90)"
+        ],
+        [
+            "STAT6>=1.84 Q(0.80)",
+            "AR<-2.54 Q(0.30)",
+            "GATA2<0.60 Q(0.60)"
+        ]
+    ],
+    "dualbound": 51.0,
+    "obj": 51.0,
+    "obj_cg": 51.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 77.0,
+            "pricer": 0,
+            "red_cost": -6.0,
+            "time": 0.669678
+        },
+        {
+            "lp_objective": 60.0,
+            "pricer": 0,
+            "red_cost": -4.0,
+            "time": 1.341763
+        },
+        {
+            "lp_objective": 54.0,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 1.925582
+        },
+        {
+            "lp_objective": 53.0,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 2.459473
+        },
+        {
+            "lp_objective": 53.0,
+            "pricer": 1,
+            "red_cost": -3.0,
+            "time": 338.744655
+        },
+        {
+            "lp_objective": 52.0,
+            "pricer": 0,
+            "red_cost": -0.75,
+            "time": 339.260592
+        },
+        {
+            "lp_objective": 52.0,
+            "pricer": 1,
+            "red_cost": -1.666666666666667,
+            "time": 755.170667
+        },
+        {
+            "lp_objective": 51.0,
+            "pricer": 1,
+            "red_cost": -1.0,
+            "time": 1192.002067
+        }
+    ],
+    "soltime": 0.009061,
+    "soltime_cg": 1613.231736,
+    "status": 1,
+    "status_cg": 1
+}

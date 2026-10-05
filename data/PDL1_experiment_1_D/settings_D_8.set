@@ -1,0 +1,5 @@
+rs/method = 1
+rs/cg_timelimit = 7200
+limits/time = 10800
+rs/exact/D = 8
+rs/heuristic/beam_widths = "1000,500,500,500,500,500,500,500"

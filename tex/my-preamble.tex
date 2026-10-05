@@ -1,0 +1,179 @@
+\usepackage{graphicx} % Required for inserting images
+\usepackage{svg}
+\usepackage{amsopn}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage{makecell}
+\usepackage{booktabs, multirow}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{varwidth}
+\usepackage{todonotes}
+\usepackage{floatrow}
+\usepackage{bm}
+\usepackage{xspace}
+\usepackage{subcaption}
+\usepackage[most]{tcolorbox}
+\usepackage[table]{xcolor}
+\usepackage{changepage}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pdflscape}
+\usepackage{parskip}
+
+\usepackage{mathpazo}
+\usepackage{microtype}
+\usepackage{dsfont}
+%\usepackage[twoside]{geometry}
+%\usepackage[twoside, bindingoffset=12mm]{geometry}
+
+\newlength{\origtw}\setlength{\origtw}{\textwidth}
+\newlength{\origth}\setlength{\origth}{\textheight}
+
+\usepackage[twoside,
+            textwidth=\origtw, textheight=\origth,
+            hcentering,          % equal inner/outer margins
+            bindingoffset=6mm    % per page, added at the spine
+           ]{geometry}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{1.5em}
+
+% Create a shortcut for your "New Content" block
+\newtcolorbox{newcontent}{
+    colback=green!10!white, % 10% green, 90% white
+    colframe=white,         % Hide the border
+    sharp corners,          % Make it look like a highlight, not a box
+    breakable,              % Let it span multiple pages
+    enhanced,
+    after skip=1em,         % Space after the block
+    before skip=1em         % Space before the block
+}
+
+\sisetup{
+  group-separator = {\,},
+  group-minimum-digits = 4 % Ensures it separates even 4-`digit numbers like 1 800
+}
+\newcolumntype{V}[1]{>{\begin{varwidth}{#1}\centering\arraybackslash}c<{\end{varwidth}}}
+
+\floatsetup[table]{objectset=centering}
+
+\floatsetup[table]{objectset=centering, capposition=top}
+\floatsetup[figure]{capposition=bottom}
+
+
+%% Allow the S column to handle the "(std)" part without crashing
+%\usepackage{siunitx}
+%
+%\sisetup{
+%  separate-uncertainty=true,
+%  table-align-uncertainty=true,
+%  table-format = 1.2(4)
+%}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\cL}{\mathcal{L}}
+\renewcommand{\L}{\cL}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\Ind}{\mathds{1}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\PN}{\mathcal{P} \cup \cN}
+\renewcommand{\P}{\cP}
+\newcommand{\N}{\cN}
+\newcommand{\pun}{\P \cup \N}
+\newcommand{\bs}{\mathcal{S}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+
+
+\renewcommand{\min}{\text{\textbf{min }}}
+\renewcommand{\max}{\text{\textbf{max }}}
+\newcommand{\din}{d^{\text{in}}}
+\newcommand{\dout}{d^{\text{out}}}
+\newcommand{\opt}{\text{OPT}}
+\newcommand{\zopt}[1][]{\ifx&#1&\bm{\overline{z}}_{\opt}\else{\overline{z}}_{\opt,#1}\fi}
+\newcommand{\gopt}[1][]{\ifx&#1&\bm{\overline{\gamma}}_{\opt}\else{\overline{\gamma}}_{\opt,#1}\fi}
+\newcommand{\sopt}{S_\opt}
+\newcommand{\st}{\text{\textbf{s.t.}}\;}
+\newcommand{\zo}{0\mbox{-}1\xspace}
+\newcommand{\fw}{\,:\,}
+\newcommand{\topt}{\tau^{\opt}}
+\newcommand{\tg}{\tau^{g}}
+
+\newcommand{\umin}[1]{\mathop{\text{\textbf{min}}}\limits_{\,#1}}
+\newcommand{\umax}[1]{\mathop{\text{\textbf{max}}}\limits_{\,#1}}
+\newcommand{\smin}[1]{\text{\textbf{max}}_{#1}}
+\newcommand{\smax}[1]{\text{\textbf{max}}_{#1}}
+\newcommand{\conv}{\text{conv}}
+
+\newcommand{\nq}{n_{\text{quantiles}}}
+
+\newtheoremstyle{mydef}
+  {1em}{1em}   % space above, below (independent of \partopsep)
+  {}           % body font
+  {}           % indent
+  {\bfseries}  % head font
+  {.}          % punctuation after head
+  {.5em}       % space after head
+  {}           % head spec
+\theoremstyle{mydef}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+%\renewcommand{\tableautorefname}{Table}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Sub-section}
+\renewcommand{\chapterautorefname}{Chapter}
+\newcommand{\exampleautorefname}{Example}
+\newcommand{\claimautorefname}{Claim}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\propositionautorefname}{Proposition}
+%\newcommand{\theoremautorefname}{Proposition}
+\newcommand{\observationautorefname}{Observation}
+\newcommand{\conjectureautorefname}{Conjecture}
+
+\newcommand{\tquad}{\quad \quad \quad}
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{references.bib}
+\AtEveryBibitem{%
+  \ifentrytype{article}{%
+    \clearfield{url}
+    \clearfield{urldate}
+  }{}
+}
+
+\newcommand{\bwtable}[1]{%
+    \begin{adjustwidth}{-2cm}{-2cm}
+        \centering
+        \begingroup
+        \rowcolors{2}{gray!10}{white}
+        \arrayrulecolor{black}
+        \input{#1}
+        \endgroup
+    \end{adjustwidth}%
+}
+
+\newenvironment{note}{\par\noindent\textbf{Note: }}{\par}
+
+%\usepackage{noindentafter}
+%\NoIndentAfterEnv{definition}
+
+

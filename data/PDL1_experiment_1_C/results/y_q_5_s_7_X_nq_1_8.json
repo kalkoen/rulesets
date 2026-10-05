@@ -1,0 +1,84 @@
+{
+    "binary": [
+        [
+            "NFKB1>=0.36 Q(0.50)",
+            "STAT2>=-0.20 Q(0.50)",
+            "STAT6>=0.58 Q(0.50)"
+        ],
+        [
+            "RELA>=0.04 Q(0.50)",
+            "FOXO1<-0.24 Q(0.50)",
+            "STAT6<0.58 Q(0.50)"
+        ]
+    ],
+    "dualbound": 200.0,
+    "obj": 200.0,
+    "obj_cg": 199.23076923076923,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 306.0,
+            "pricer": 0,
+            "red_cost": -96.0,
+            "time": 0.037076
+        },
+        {
+            "lp_objective": 210.0,
+            "pricer": 0,
+            "red_cost": -20.0,
+            "time": 0.06607099999999999
+        },
+        {
+            "lp_objective": 201.5,
+            "pricer": 0,
+            "red_cost": -6.4,
+            "time": 0.095417
+        },
+        {
+            "lp_objective": 199.42857142857142,
+            "pricer": 0,
+            "red_cost": -4.571428571428573,
+            "time": 0.12517899999999998
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 0,
+            "red_cost": -2.7179487179487216,
+            "time": 0.154285
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 0,
+            "red_cost": -0.46153846153846967,
+            "time": 0.183336
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 0,
+            "red_cost": -0.21794871794871717,
+            "time": 0.212132
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 1,
+            "red_cost": -1.5576923076923093,
+            "time": 25.088851
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 1,
+            "red_cost": -1.3076923076923022,
+            "time": 53.166896
+        },
+        {
+            "lp_objective": 199.23076923076923,
+            "pricer": 1,
+            "red_cost": -0.30128205128204666,
+            "time": 83.12121
+        }
+    ],
+    "soltime": 0.067401,
+    "soltime_cg": 109.326205,
+    "status": 1,
+    "status_cg": 1
+}

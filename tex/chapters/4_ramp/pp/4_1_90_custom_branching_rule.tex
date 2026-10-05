@@ -1,0 +1,64 @@
+
+%
+%We now introduce the problem-specific set branching approach.
+%Each node $\nu$ corresponds to a set $\bs^\nu$, which contains disjoint subsets of $\L$.
+%In each node $\nu,$ we restrict the problem to
+%\begin{equation}\label{eq:custom_branching_set_constraints}
+%    \forall_{S \in \bs^\nu} \sum_{l \in S} z_l \geq 1, \quad \text{and} \quad \forall_{l \notin \bigcup_{S \in \bs^\nu} S} \; z_l = 0.
+%\end{equation}
+%Furthermore, we may update bounds on $\gamma_i$ for all $i \in \pun.$ Precisely,
+%\begin{align}
+%    \gamma_i & \leq \underset{S \in \bs^\nu}{\min} \underset{l \in S}{\max} \gamma_{il} ,  & i \in \P, \label{eq:custom_branching_bound_P} \\
+%    \gamma_i & \geq \underset{l \in \bigcup_{S \in \bs^\nu}}{\min} \gamma_{il} ,  & i \in \N. \label{eq:custom_branching_bound_N} \\
+%\end{align}
+%Constraint \eqref{eq:custom_branching_bound_P} upper bounds $\gamma_i$,
+%using the fact that at least one clause per $S \in \bs^\nu$ will be chosen.
+%While this constraint is valid, a possibly more powerful approach is to change constraints \eqref{eq:TP_ramp-pos}.
+%To do this, define $S^\nu_i$, $i \in \P$, as a set such that
+%\[\underset{l \in S^\nu}{\max} \gamma_{il} = \underset{S \in \bs^\nu}{\min} \underset{l \in S}{\max} \gamma_{il}.\]
+%Essentially, the set $S^\nu_i$ is the set with the tightest $\gamma_i$-bound over all $S \in \bs^\nu$.
+%Then define
+%\[\hat{\gamma}^\nu_i  =  \underset{l \in S^\nu_i}{\max} \gamma_{il}. \]
+%Now replace constraints \eqref{eq:TP_ramp-pos} by
+%\[ \gamma_i \leq \hat{\gamma}^\nu_i- (\hat{\gamma}^\nu_i - \gamma_{il})z_l, \quad i \in \cP, \; l \in \L \text{ such that } \gamma_{il} < \hat{\gamma}^\nu_i. \label{eq:TP_ramp-pos_branch} \\\]
+%Constraint \eqref{eq:custom_branching_bound_N} lower-bounds $\gamma_i$,
+%using the fact that only clauses inside some set $S \in \bs^\nu$ can be used.
+%However, this constraint follows directly from constraints \eqref{eq:TP_ramp-neg} when $\forall_{l \notin \bigcup_{S \in \bs^\nu}} \; z_l = 0$.
+%The branching procedure is as follows:
+%\begin{enumerate}
+%    \item At node $\nu$, choose a set $S \in \bs^\nu$ such that $|S| \geq 2$,
+%    \item Partition $S$ into subsets $S_1, S_2$,
+%    \item Create the following branches:
+%    \begin{enumerate}
+%        \item A branch $\nu_1$ with $\bs^{\nu_1} = \bs^\nu \cup \{S_1\} \setminus{\{S\}},$
+%        \item A branch $\nu_2$ with $\bs^{\nu_2} = \bs^\nu \cup \{S_2\} \setminus{\{S\}},$
+%        \item If $|\bs^\nu| < D,$ a branch $\nu_3$ with $S^{\nu_3} = \bs^\nu \cup \{S_1, S_2\} \setminus{\{S\}}.$
+%    \end{enumerate}
+%\end{enumerate}
+%If no more branching is possible at a node $\nu$, meaning step 1 fails, then $\bs^\nu$ contains only sets of size 1.
+%Hence, it encodes a binary solution.
+%The root node $\nu_\text{root}$ has $\bs^{\nu_\text{root}} = \{\L\}$.
+%
+%The idea is that clever choices in steps 1 and 2 of the branching procedure yield a binary solution high up in the branching tree,
+%thanks to the continuously updated bounds on $\bm{\gamma}$.
+%This raises the question: how should $S$ and $S_1, S_2$ be chosen at each node?
+%
+%Denote the optimal LP solution at node $\nu$ by $\overline{\bm{z}}^\nu, \overline{\bm{\gamma}}^\nu.$
+%Define
+%\[T^\nu = \{l \in \L \fw \overline{z}^\nu_l > 0 \}. \]
+%Then define
+%\[T_i^\nu = \{l \in T^\nu \fw  \overline{\gamma}^\nu_i > \gamma_{il}\}, \quad i \in \P. \]
+%Observe that for any $l \in T^\nu,$ we have by constraint \eqref{eq:TP_ramp-pos} that
+%\[\overline{z}^\nu_l = 1 \implies \overline{\gamma}^\nu_i \leq \gamma_{il} \iff l \notin T_i^\nu. \]
+%Conversely,
+%\[l \in T_i^\nu \implies \overline{z}^\nu_l \in (0,1). \]
+%Hence, if there exists $i \in P$ such that $T_i^\nu \neq \emptyset,$ variables in this set are good candidates for branching.
+%In time $\mathcal{O}(nm)$, the sets $T_i^\nu,\, i \in \P$ can be computed.
+%We distinguish two cases
+%\todo{The exact choices here will need to be discussed}
+%\begin{enumerate}[label=(\alph*)]
+%    \item If there is no non-empty $T_i^\nu$, we choose an arbitrary $S \in \bs^\nu$ and split it fifty-fifty (or approximately)
+%    \item Otherwise we choose a $T_i^\nu$ such that $S \cap T_i^\nu \neq \emptyset$ for some $S \in \bs^\nu$.
+%    We choose $T_i^\nu$ such that $|S \cap T_i^\nu|$ is as large as possible.
+%    Then .....
+%\end{enumerate}

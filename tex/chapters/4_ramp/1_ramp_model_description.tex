@@ -1,0 +1,103 @@
+We will now reformulate \eqref{eq:BM} to incorporate a multidimensional generalization of the ramp loss.
+To do this, first observe that the objective \eqref{eq:BM-obj} can be written as
+\begin{equation*}
+    \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \sum_{k \in \K} \gamma_{ik} w_k,
+\end{equation*} where
+\[\gamma_{ik} = \begin{cases}
+                    1, & \text{if $k \in \K_i$,} \\
+                    0, & \text{otherwise}.
+\end{cases}\]
+In $\gamma_{ik}$, we recognize a hard-margin loss.
+Specifically, for a negative point $i \in \cN$, the value $\gamma_{ik}$ is exactly the loss induced if $k$ is used.
+Similarly, constraint \eqref{eq:BM_orig-misP} can be written as
+\begin{equation*}
+    \zeta_i + \sum_{k \in \K} \gamma_{ik} w_k \geq 1, \quad \forall i \in \cP.
+\end{equation*}
+If a positive point $i \in \cP$ is uncovered, this implies the sum will be zero and hence $\zeta_i = 1$, which corresponds to an induced loss of $1$.
+The value $\gamma_{ik}$ represents a reduction of this loss if rule $k$ is used.
+If $k$ covers the point, this value is $1$.
+Using rule $k$ then allows $\zeta_i$ to be reduced to $0$.
+
+By defining $\bm{\gamma}$ suitably, we can introduce a multidimensional variant of the ramp loss.
+When doing so, the values of $\bm{\gamma}$ need no longer be binary, hence $\bm{\zeta}$ should no longer be binary.
+Furthermore, the ramp loss of a point is anywhere between $0$ and $2$.
+The ramp loss model is therefore given by
+\begin{subequations}
+    \label{eq:RM}
+    \begin{align}
+        \mathbf{\min} \quad & \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \sum_{k \in \K} \gamma_{ik} w_k \label{eq:RM-obj} \\
+        \mathbf{\text{s.t.}} \quad & \zeta_i + \sum_{k \in \K} \gamma_{ik} w_k \geq 2, & \forall i \in \cP \label{eq:RM-misP} \\
+        & \sum_{k \in \K} c_k w_k \leq C, & \label{eq:RM-complex} \\
+        & w \in \{0, 1\}^{\K}, \zeta \in [0,2]^{\cP}, \label{eq:RM-vars}
+    \end{align}
+\end{subequations}
+To define $\bm{\gamma}$, we first define a decision function $\bm{d}: \P(\L) \to \R^\I$ such that $d_i(k)$ is
+non-negative if rule $k$ covers point $i$ and negative otherwise.
+Furthermore, the value $d_i(k)$ quantifies how far $i$ is from the boundary of $k$.
+Define
+\begin{equation}\label{eq:decision_function}
+    d_i(k) = \umin{(j,\alpha) \in k} X_{ij} - \alpha, \tquad i \in \I, \; k \in \K\setminus\{\emptyset\}.
+\end{equation}
+If $k$ covers $i$, then any element in the minimum is non-negative, meaning $d_i(k)$ is the distance to the closest threshold.
+If rule $k$ does not cover $i$, then there exists some clause $(j,\alpha) \in k$ that cuts off $i$.
+Choose such $(j,\alpha)$.
+It follows that $X_{ij} - \alpha < 0$ and so $d_i(k) < 0$.
+By extension, we have in this case that
+\[
+    d_i(k) = -\umax{(j,\alpha) \in k \fw X_{ij} < \alpha} \alpha - X_{ij}, \tquad i \in \I.
+\]
+This means that $d_i(k)$ is the (negated) distance to the furthest unsatisfied threshold.
+Therefore, the value $-d_i(k)$ can be interpreted as a distance to the covered region.
+To account for the empty rule, we set
+\begin{equation}
+    d_i(\emptyset) = \infty, \tquad i \in \I. \label{eq:decision_function_empty_rule}
+\end{equation}
+Denote by $\beta$ the margin width, as illustrated in \autoref{fig:loss_functions}b.
+While the margin width is a variable in the Support Vector Machine~\cite{belotti_spatial_2024},
+it is a constant in our model.
+We define
+\begin{equation}\label{eq:gamma_ik}
+    \gamma_{ik} = \begin{cases}
+                      0, & \text{if $d_i(k) \leq -\beta$}, \\
+                      1 + \frac{1}{\beta}d_i(k), & \text{if $d_{i}(k) \in (-\beta, \beta]$}, \\
+                      2, & \text{if $d_i(k) > \beta$},
+    \end{cases} \tquad i \in \I, \; k \in \K.
+\end{equation}
+This definition realizes a generalized ramp loss in the master problem \eqref{eq:RM}.
+
+We refer to this model as the ``additive'' ramp loss model.
+This name is due to the additive nature of loss reduction for positive points.
+Recall \eqref{eq:RM-misP}.
+Several rules, when used together, can all contribute to reducing a $\zeta$-variable.
+For example, if point $i$ lies in several margins, the corresponding loss $\zeta_i$ can still be $0$,
+which is equivalent to being far inside the covered region of the ruleset.
+
+
+As $\beta \to 0,$ the ramp loss converges pointwise to the hard-margin loss (multiplied by $2$)
+for all values of $X_{ij}$ except the corresponding $\alpha$.
+Assuming no feature values lies on such threshold,
+it follows that the ramp loss model is equivalent to the threshold model when $\beta$ is arbitrarily small.
+To see this, observe that for $\beta$ small enough, $\bm{\gamma}$ and $\bm{\zeta}$ are those used in
+the threshold model, multiplied by $2$.
+
+In a realistic setting, it is to be expected that few, or none, of the datapoints lie exactly on a threshold.
+There are two reasons for this.
+First, continuous measurements typically include a measurement error,
+making it less likely for several datapoints to have an equal feature value.
+Second, the linear interpolation used in the quantile function is likely to yield a non-observed value.
+Therefore, in a practical setting with continuous features,
+the ramp loss model with $\beta$ arbitrarily small is practically equivalent to the threshold model.
+For convenience, we define for the special case $\beta = 0$,
+\begin{equation}\label{eq:ramp_gamma_mw_0}
+    \begin{split}
+        \gamma_{ik} &= 2 \cdot \Ind(d_i(k) \geq 0) \\
+        &=
+        \begin{cases}
+            0, & \text{if $\exists (j,\alpha)\in k \fw X_{ij} < \alpha$},\\
+            2, & \text{if $X_{ij} \geq \alpha \quad \forall (j,\alpha) \in k$},\\
+        \end{cases} \tquad i \in \I, \; k \in \K.
+    \end{split}
+\end{equation}
+For this choice of $\bm{\gamma}$, the model is exactly equivalent to the threshold model.
+We then use the implementation of the ramp loss model with $\beta = 0$ to solve the threshold model.
+The goal is now to express the pricing problem in terms of $\bm{\gamma}$ and study how this problem may be solved.

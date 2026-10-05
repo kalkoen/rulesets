@@ -1,0 +1,29 @@
+{
+    "binary": [
+        [
+            "x2>=0.800000"
+        ]
+    ],
+    "dualbound": 3.0,
+    "obj": 3.0,
+    "obj_cg": 3.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 4.0,
+            "pricer": 0,
+            "red_cost": 1.0,
+            "time": 0.043490999999999995
+        }
+    ],
+    "relaxation": [
+        [
+            "x2>=0.800000",
+            1.0
+        ]
+    ],
+    "soltime": 0.025242,
+    "soltime_cg": 0.166455,
+    "status": 1,
+    "status_cg": 0
+}

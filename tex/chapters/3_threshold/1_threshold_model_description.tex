@@ -1,0 +1,66 @@
+Recall the boolean model as described in \autoref{sec:boolean-model-description}.
+In this setting, feature values are continuous, so $\bm{X}_j \in \R^\J, \; j \in \J$.
+A clause represents a lower-bound, and consists of a feature and a threshold.
+An upper-bound is equivalent to a lower-bound on the negated feature, i.e.
+\[X_{\cdot j} \leq \alpha \iff -X_{\cdot j} \geq -\alpha.\]
+Hence, without loss of generality, only lower-bounds are considered.
+We denote the set of possible clauses by $\cL \subseteq \J \times \mathbb{R}.$
+The candidate rule set remains $\K = 2^\L$, the power set of $\cL$.
+In this setting,
+\begin{equation}
+    \K_i = \left\{k \in \K : \underset{(j,\alpha) \in k}{\bigwedge} X_{ij} \geq \alpha\right\}, \tquad i \in \I. \label{eq:threshold_K_i}
+\end{equation}
+The master problem formulation \eqref{eq:BM} remains unchanged.
+
+While a threshold can theoretically be any value,
+it suffices to consider only thresholds $\{X_{ij}\}_{i \in \I}$ for any feature $j$.
+Any other threshold yields a clause that is equivalent, at least in training, to one already considered.
+For example, if \[\J = \{a\},\; \I=\{1,2\} \text{ and } X_{1 a} = 1, \; X_{2 a} = 2,\] the only relevant lower-bounds are
+\[X_{\cdot a} \geq 1 \quad \text{and} \quad X_{\cdot a} \geq 2.\]
+Hence, we consider
+\begin{equation}
+    \cL = \left\{\left(j, X_{ij}\right) : j \in \J, \; i \in \I\right\}.\label{eq:threshold_L_full}
+\end{equation}
+The pricing problem IP is similar to \eqref{eq:BP}.
+The difference is that we now speak of $z_l, \; l \in \L$, and we define $S_i$ as
+\begin{equation}\label{eq:S_i_threshold}
+    S_i = \{(j,\alpha) \in \cL : X_{ij} < \alpha\}, \tquad i \in \I.
+\end{equation}
+Hence, $S_i$ the set of clauses that cut off point $i$.
+The IP is given by
+\begin{subequations}
+    \label{eq:TP}
+    \begin{align}
+        \min \quad & \sum_{i \in \cN} \delta_i - \sum_{i \in \cP} \mu_i \delta_i +
+        \lambda c(\bm{z}) \label{eq:TP-obj} \\
+        \st \quad & D\delta_i + \sum_{l \in S_i} z_l \leq D, & i \in \I, \label{eq:TP-con1}\\
+        & \delta_i +  \sum_{l \in S_i} z_l \geq  1, & i \in \I,  \label{eq:TP-con2}\\
+        & \sum_{l \in \L} z_l \leq D, \quad \label{eq:TP-complex}\\
+        & \mathrlap{\delta\in \{0,1\}^\I,~z\in\{0,1\}^{\cL}.}\label{eq:TP-vars}
+    \end{align}
+\end{subequations}
+
+We impose another constraint in this setting: the use of at most one clause per feature $j \in \J$.
+This constraint can be written as
+\begin{equation}
+    \sum_{(j',\alpha) \in \cL \,:\, j' = j} z_{(j', \alpha)} \leq 1, \tquad \quad j \in \J. \label{eq:TP_one-per-feature}
+\end{equation}
+If negated feature values are added as separate features to model upper-bounds,
+then \eqref{eq:TP_one-per-feature} does not prevent a lower-bound and an upper-bound on the same feature from being used in one rule.
+To achieve this, a separate constraint family may be used.
+
+Note that $|\L| = |\I||\J|.$ In our case, $|\L| \approx 800 \cdot 20 \approx 16 000.$
+This is rather large, causing $|\K|$ to explode.
+An alternative is to choose
+\begin{equation}\label{eq:threshold_L_quantile}
+    \cL = \left\{ \left(j, Q_{\bm{X}_j}(q)\right) : j \in \J, \; q \in \bm{q} \right\}.
+\end{equation}
+where $\bm{q}$ is a vector of predefined quantile levels.
+In particular, given a number of quantiles $\nq$, one can consider the quantile level vector
+\[ \bm{q} = \left(\frac{\nu}{\nq + 1}\right)_{\nu = 1,\dots,\nq},\]
+as chosen in \autoref{sec:boolean-methodology}.
+This approach is equivalent to pre-binarizing and using the boolean-featured model.
+
+To simplify interpretability of and control over the model, we define rule complexity as
+\[c_k = 1, \tquad k \in \K.\]
+This implies that $C$ is the maximum cardinality of a ruleset.

@@ -1,0 +1,162 @@
+We consider the supervised binary classification setting studied in~\cite{lawless_interpretable_2023}.
+%We refer to this source as the ``original paper''.
+What follows is a recap that closely follows this paper.
+Given is a training set of $n$ points, denoted by $\I$, from an underlying (unknown) distribution.
+Each point has $m$ features from set $\J$, plus a label \[(\X_i, y_i), \quad i \in \I = \{1, \dots, n\}.\]
+In this setting, feature values $\X_i \in \{0,1\}^\J$ and labels
+$y_i \in \{-1,1\}$ for all $i \in \I$.
+A point $i$ is said to possess feature $j$ if $X_{ij} = 1$, where $X_{ij}$ is the $j$-th element of vector $\X_{i}$.
+A point $i$ is said to be positive if $y_i = 1$ and negative otherwise.
+
+Theoretically, binary features are not restrictive.
+For example, categorical features can be expressed as binary features via one-hot encoding.
+Real-valued features can be discretized into a number of binary features via thresholds,
+i.e., binary features reflecting $X_{ij} \leq v$ or $X_{ij} \geq v$ may be introduced for various $v$.
+The number of features can grow rapidly with this approach.
+
+The objective of this model is to learn a ruleset as described earlier.
+Mathematically, define the set of possible clauses as $\cL = \J$.
+A rule is a subset of $\cL$.
+The candidate rule set is given by  $\K = 2^\L$, i.e.\ the power set of $\L$.
+Let $\K_i$ be the set of rules satisfied by point $i$, so
+\begin{equation}
+    \K_i = \left\{k \in \K : \underset{j \in k}{\bigwedge} X_{ij} \right\}, \quad i \in \I. \label{eq:boolean_K_i}
+\end{equation}
+In other words, $\K_i$ is the set of rules that cover point $i$.
+Observe that $\emptyset \in \K$ and that the conjunction in \eqref{eq:boolean_K_i}
+is always true for $k=\emptyset$.
+So $\emptyset \in \K_i$ for any $i \in \I$.
+Therefore, the ``empty rule'', $\emptyset$, covers all points under this definition.
+
+
+
+\begin{definition}[DNF Classifier, \cite{lawless_interpretable_2023}]\label{def:dnf_classifier}
+    Given a ruleset $S \subseteq \K$, the DNF classifier is defined as follows:
+    \[\hat{y}_S(\textbf{X}_i) ~=~
+    \begin{cases}
+        1, & \text{if } \abs{\K_i \cap S} > 0, \\
+        0, &\text{else.}
+    \end{cases}\]
+\end{definition}
+
+There exist $2^m$ possible rules, i.e. $|\K| = 2^m$.
+Therefore, as $m$ grows, enumerating all possible rules quickly becomes intractable.
+In practice, one may wish to restrict $S$, for example by limiting the number of clauses to $D$.
+This restricts the number of possible rules to \[\sum_{d=0}^D \binom{m}{d}.\]
+
+
+The aim is to minimize the \emph{\zo classification error}, which counts the number of datapoints that are misclassified by a rule set $S$.
+Hence, it is the sum of the \emph{\zo loss} of each datapoint.
+
+\begin{definition}[\zo loss and \zo classification error]\label{def:01_loss}
+    The \emph{\zo loss} of point $i$ subject to ruleset $S$ is
+    \[\ell_S(\bm{X}_i) = \Ind\left(\hat{y}_S(\bm{X}_i) \neq y_i\right) =
+    \begin{cases}
+        \Ind(\abs{\K_i \cap S }= 0), & \text{if } y_i = 1,\\
+        \Ind(\abs{\K_i \cap S} > 0), &\text{otherwise},
+    \end{cases}\]
+    where $\Ind(\mathcal{A})$ is the indicator function (i.e., $\Ind(\mathcal{A}) = 1$ if $\mathcal{A}$ is true and 0 otherwise).
+The \emph{\zo classification error} of ruleset $S$ is
+    \[\ell_S(\bm{X}) =
+    \sum_{i \in \I} \ell_S(\bm{X}_i). \]
+\end{definition}
+Closely related is the accuracy, which is the fraction of correctly classified points.
+\begin{definition}[Accuracy]
+    The \emph{accuracy} of a ruleset $S$ is
+    \[
+        \text{Accuracy}(S) = \frac{1}{n}\left|\left\{i \in \I : \hat{y}_S(\bm{X}_i) = y_i\right\}\right|.
+    \]
+\end{definition}
+Minimizing the \zo classification error is equivalent to maximizing the classification accuracy, as illustrated in
+the introduction to this chapter.
+
+
+We now formulate the problem of finding a ruleset with minimum \zo classification error as an Integer Program (IP).
+Partition the points into two sets, the positive class and the negative class:
+\[\cP = \{i \in \I : y_i = 1\} \text{ and } \cN = \{i \in \I : y_i \neq 1\}.\]
+Let $w_k \in \{0,1\}$ be a variable indicating if rule $k \in \K$ is used in the rule set.
+Let $\zeta_i\in\{0,1\}$  be a variable indicating if point $i\in \pun$ is misclassified.
+The IP is given by
+
+
+%\begin{alignat}{3}
+%\textbf{min} && \quad \sum_{i\in \cal{P}} \zeta_i +\sum_{i\in \cal{N}} \zeta_i ~~ \label{obj:01}  \\
+%	\textbf{s.t.}  && \quad
+%	 \zeta_i + \sum_{k\in \K_i} w_k \geq & 1 , \quad && \forall i \in \cal{P}, \label{const:accP01} \\
+%	 && w_k  \leq &   \zeta_i , \quad  && \forall i \in {\cal N}, k \in \K_i,  \label{const:accZ01} \\[.1cm]
+%	%	& w_k,  ~\zeta_i  \in\{0,1\}, \quad \forall {k\in \cal{K}}, i \in {\cal P} \cup {\cal N}. ~~ \label{const:accBin01} \\
+%	&& w\in \{0,1\}^{\abs{\K}},~ & \zeta\in \{0,1\}^{\abs{\cP \cup {\cal N}}} \label{const:accBin01}
+%\end{alignat}
+
+\begin{subequations}
+    \label{eq:BM_orig}
+    \begin{align}
+        \mathbf{\min} \quad & \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \zeta_i \label{eq:BM_orig-obj} \\
+        \st \quad & \zeta_i + \sum_{k \in \K_i} w_k \geq 1, && \forall i \in \cP, \label{eq:BM_orig-misP} \\
+        & w_k \leq \zeta_i, && \forall i \in \cN,\; k \in \K_i, \label{eq:BM_orig-misN} \\
+        & w \in \{0, 1\}^{\K}, \quad \zeta \in \{0, 1\}^{\cP \cup \cN}. \quad && \label{eq:BM_orig-vars}
+    \end{align}
+\end{subequations}
+The objective of this IP is exactly the \zo classification error.
+To see that this IP is correct, consider first \eqref{eq:BM_orig-misP}.
+Let $i \in \P$.
+If $w_k = 1$ for some $k \in \K_i,$ then $i$ is covered by the ruleset.
+Indeed, then $\zeta_i=0$ is valid and optimal.
+If not, then $i$ is not covered and $\zeta_i = 1$ to satisfy the constraint.
+In either case, $\zeta_i$ correctly represents whether $i$ is misclassified.
+Now consider \eqref{eq:BM_orig-misN}.
+If $w_k = 1$ for some $k \in \K_i$, then $i$ is covered and \eqref{eq:BM_orig-misN} implies $\zeta_k = 1$.
+Otherwise, $\zeta_i =0$ is valid and optimal.
+In either case, $\zeta_i$ correctly represents whether $i$ is misclassified.
+
+
+This formulation has one integer variable per point and multiple constraints per negative datapoint.
+For a large number of points, the IP becomes large.
+In many practical classification tasks, the number of positive points is small compared to the total.
+To limit the size of the IP, the Hamming loss may be considered.
+In the Hamming loss, we do not count the number of negative points that are misclassified, but we count
+the total number of times a negative point is misclassified by a rule.
+
+\begin{definition}[Hamming loss \cite{lawless_interpretable_2023}] The \emph{Hamming loss} of point $i$ under ruleset $S$ is given by
+\[\ell^{h}_S(\bm{X}_i) =
+\begin{cases}
+    \Ind(\abs{\K_i \cap S }= 0), & \text{if } y_i = 1,\\
+    \abs{\K_i \cap S}, &\text{otherwise.}
+\end{cases}\]
+\end{definition}
+
+It has been illustrated that Hamming loss is a good alternative to \zo loss in practical settings~\cite{lawless_interpretable_2023}.
+
+Furthermore, it is useful in practice to restrict the complexity of a ruleset.
+Define the complexity of a rule $k \in \K$ as
+\begin{equation}
+    c_k = 1 + |k|, \label{eq:boolean_ck}
+\end{equation}
+so one plus the number of features in the rule.
+The complexity of a ruleset $S \subseteq \K$ is given by $\sum_{k\in S} c_k,$ which we bound by $C$.
+
+The new IP that uses Hamming loss becomes
+
+\begin{subequations}
+    \label{eq:BM}
+    \begin{align}
+        \mathbf{\min} \quad & \sum_{i \in \cP} \zeta_i + \sum_{i \in \cN} \sum_{k \in \K_i} w_k \label{eq:BM-obj} \\
+        \mathbf{\text{s.t.}} \quad & \zeta_i + \sum_{k \in \K_i} w_k \geq 1, & \forall i \in \cP, \label{eq:BM-misP} \\
+        & \sum_{k \in \K} c_k w_k \leq C, & \label{eq:BM-complex} \\
+        & w \in \{0, 1\}^{\K}, \zeta \in \{0, 1\}^{\cP}. \label{eq:BM-binary2}
+    \end{align}
+\end{subequations}
+For a positive point $i$, the justification given for \eqref{eq:BM_orig} still holds.
+For a negative point $i$, there is no $\zeta_i$, but instead the number of rules wrongly covering it are counted
+directly in the objective.
+
+The number of possible rules $|\K|$ grows quickly as $m$ grows.
+Therefore, column generation is used to solve the LP relaxation of this problem.
+A simple approach for obtaining an integer solution is employing a price-then-branch heuristic.
+In this technique, the relaxed master problem (RMP) is first solved to optimality.
+Next, the restricted integer master problem, with only the previously generated columns, is solved to optimality using a standard IP solver.
+While it is possible to solve the problem exactly via a branch-and-price approach,
+this is harder to implement, it is slower,
+and it is unclear whether it improves the quality of the output significantly.
+In some cases, the price-then-branch heuristic can reveal that an exact solution is
+only marginally better in terms of objective.

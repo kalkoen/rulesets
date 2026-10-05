@@ -1,0 +1,28 @@
+As we have seen, the relaxation of \eqref{eq:RP} is not tight.
+In practice, solving the MIP in this form is slow.
+To tighten the formulation, we study cutting planes for \eqref{eq:RP-pos}.
+Next, we will derive separation algorithms for both these cutting planes and the constraints \eqref{eq:RP-neg}.
+
+When considering only the constraints \eqref{eq:RP-pos},
+the problem is a special case of the Mixed Vertex Packing Problem~\cite{atamturk_mixed_2000}.
+From this, it follows that for a given point $i$, the relevant cutting planes are
+\begin{equation}\label{eq:RP-pos-cutting-planes}
+\begin{split}
+    &\gamma \leq 2 - \sum_{l\in T}\overline{\gamma}_{il}z_l, \quad \\
+    &T = \{l_1, l_2, \dots l_t\} \subseteq \L \text{ such that } \gamma_{l_{j-1}} > \gamma_{l_{j}} \text { for } j = 2, \dots, t,
+\end{split}
+\end{equation}
+where
+\begin{align*}
+    \overline\gamma_{il_1} &= 2 - \gamma_{il_1}, \\
+    \overline\gamma_{il_j} &= 2 - \gamma_{il_j} - (2 - \gamma_{il_{j-1}}) = \gamma_{il_{j-1}} - \gamma_{il_j}, \quad j = 2, \dots, t.
+\end{align*}
+For more details we refer to \autoref{sec:cutting_planes_vertex_packing}.
+Another way to approach the derivation of these cutting planes is via Extended Polymatroid Inequalities (EPIs),
+recognizing that $f$ is supermodular.
+\cite{kucukyavuz_mixed-integer_2023, atamturk_submodular_2020, lovasz_submodular_1983}
+This approach is not treated in the report, but may be of interest to the reader.
+
+The idea is now to solve \eqref{eq:RP} by adding the cutting planes \eqref{eq:RP-pos-cutting-planes} and the constraints
+\eqref{eq:RP-neg} when necessary.
+To do this, we need an efficient separation algorithm.

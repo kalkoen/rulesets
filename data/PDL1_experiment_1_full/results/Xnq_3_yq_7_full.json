@@ -1,0 +1,23 @@
+{
+    "binary": [
+        [
+            "AR>=-0.67 Q(0.75)",
+            "FOSL1>=0.58 Q(0.75)",
+            "IRF1>=1.11 Q(0.75)"
+        ],
+        [
+            "FOSL1>=0.58 Q(0.75)",
+            "MYC>=-2.54 Q(0.75)",
+            "STAT6>=1.57 Q(0.75)"
+        ]
+    ],
+    "dualbound": 163.0,
+    "obj": 163.0,
+    "obj_cg": 0.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [],
+    "soltime": 17.210765,
+    "soltime_cg": 0.0,
+    "status": 1,
+    "status_cg": 0
+}

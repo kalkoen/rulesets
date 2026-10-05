@@ -1,0 +1,122 @@
+% Required packages
+\usepackage{amsfonts,cancel}
+%amssymb, amsmath, amsthm
+\usepackage{thmtools,enumitem}
+\usepackage{algorithm}
+\usepackage{mathtools}
+\usepackage{dsfont}
+%\usepackage{tcolorbox}
+\usepackage{bbm}
+%\usepackage{todonotes}
+\usepackage{tensor}
+%\usepackage{caption}
+\usepackage{bm}
+%\usepackage{hyperref}
+%\usepackage[section]{placeins}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{comment}
+\usepackage{afterpage}
+\usepackage{float}
+
+\newcommand{\zeros}{\mathbf{0}}
+\newcommand{\ones}{\mathbf{1}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bxi}{\boldsymbol{\xi}}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\barb}{\bar{b}}
+
+\newcommand{\epi}{\mathrm{epi}}
+\newcommand{\Rea}{{\Bbb R}}
+\newcommand{\Int}{{\Bbb Z}}
+\newcommand{\Rat}{{\Bbb Q}}
+\newcommand{\Cmp}{{\Bbb C}}
+\newcommand{\Nat}{{\Bbb N}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+\renewcommand{\S}{\mathcal{S}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\inv}{\text{inv}}
+\newcommand{\oRR}{\overline{\RR}}
+\newcommand{\interior}{\mathrm{int}}
+\newcommand{\Fix}{\mathrm{Fix}}
+\newcommand{\Tau}{\mathrm{T}}
+\newcommand{\graph}{\mathrm{gph}}
+\newcommand{\diam}[1]{\operatorname{diam}\,\left( #1 \right)}
+\newcommand{\dom}[1]{\texttt{dom}\,\left( #1 \right)}
+\newcommand{\Ind}[1]{\mathds{1}_{\left[ #1 \right]}}
+%\DeclarePairedDelimiter{\dotp}{\langle}{\rangle}
+\newcommand{\Exp}[1]{\mathbb E \left[ #1 \right]} % Variance
+\newcommand{\Var}[1]{\mathrm{Var} \left[ #1 \right]}
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\pfail}{\delta}
+\newcommand{\Qhat}[2]{\overline{\mathbf{Q}}_{#1}^{#2}}
+\newcommand{\Vhat}[2]{\overline{\mathbf{V}}_{#1}^{#2}}
+%\newcommand{\Exp}[1]{\mathbb E \left[ #1 \right]} 
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\cl}[1]{#1}
+\newcommand{\oo}[1]{{\color{red}#1}}
+\newcommand{\dw}[1]{{\color{purple}#1}}
+\newcommand{\ignore}[1]{}
+
+\newcommand{\mysecx}{\vspace{.02cm}}
+\newcommand{\mysec}[1]{\mysecx {\bf #1: }}
+
+\mathchardef\mhyphen="2D % Define a "math hyphen"
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%\captionsetup[subfigure]{labelformat=empty}
+
+%\usepackage{titlesec} % or RequirePackage[loadonly]{titlesec} in a cls file
+%\titleformat{\subsubsection}[runin]{\normalfont\bfseries}{\thesubsubsection.}{3pt}{}
+
+
+
+%\newtheorem{assumption}{Assumption}
+%\newtheorem{definition}{Definition}
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{corollary}{Corollary}[theorem]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{remark}{Remark}
+%\newtheorem{definition}[theorem]{Definition}
+
+
+% Add your name/color. Use \<name>edit{} for edits and \<name>comment{} for comments

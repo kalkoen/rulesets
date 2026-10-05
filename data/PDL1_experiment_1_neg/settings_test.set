@@ -1,0 +1,7 @@
+rs/type=0
+rs/method = 1
+rs/cg_timelimit = 7200
+limits/time = 10800
+rs/exact/D = 3
+rs/heuristic/beam_widths = "1000,500,500"
+rs/exact/binary_pricing_constraint_type = 0

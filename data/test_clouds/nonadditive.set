@@ -1,0 +1,6 @@
+rs/type = 1
+rs/rule_complexity_type = 0
+rs/method = 0
+rs/full/D = 2
+limits/time = 10800
+rs/threshold/nonadditive = TRUE

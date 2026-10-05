@@ -1,0 +1,63 @@
+Performance for the first variant is shown in \autoref{fig:pdl1ex1_accuracy}.
+Performance barely increases as $\nq$ increases, though there appears to be some effect for lower $Q_y$.
+Importantly, performance for low $Q_y$ is moderate, while performance for high $Q_y$ is bad.
+For $Q_y = 0.9,$ for instance, accuracy is close to $0.9$,
+while an accuracy of $0.9$ can be achieved with an empty ruleset.
+The same is observed for $Q_y = 0.8$.
+For $Q_y = 0.5$, however, an accuracy of over $0.70$ is achieved.
+
+Performance for the second variant is shown in \autoref{fig:pdl1ex1neg_accuracy}.
+The analysis is analogous.
+Notably, the extra features yield modest increase in performance overall,
+suggesting that lower-bounds may be important for finding relevant rulesets.
+
+This method also gives results on the best possible rulesets that exist.
+Its conclusion that, in a majority of the cases, there do not exist meaningfully better rulesets,
+in the sense that no meaningfully higher accuracy can be reached.
+For further details we refer the reader to \autoref{sec:boolean_model_appendix}.
+
+Based on these results, choosing $Q_y = 0.5 $ or $Q_y = 0.6$ is preferred.
+Nevertheless, the results are arguably underwhelming,
+compared to the accuracies that are achieved on benchmark datasets.
+While it may be possible to find consistent rulesets describing relevant phenomena,
+rulesets of this form with moderate complexity ($C=20$) are not good predictors for thresholded PD-L1 expression.
+
+Still, we are interested in the behavior of the model as we restrict complexity.
+How much does performance drop?
+What do simple rulesets look like?
+Are they consistent among splits of the dataset?
+
+To study these results, we will tailor the model to thresholds to speed up computation
+and to set the scene for future extensions.
+
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.8\textwidth]{gen/PDL1ex1/fig_PDL1ex1_accuracy.svg}
+    \caption{Ruleset performance for the first variant of the experiment,
+        only considering binary features \eqref{eq:BM_TF_activity_quantiles}.}
+    \label{fig:pdl1ex1_accuracy}
+\end{figure}
+
+%\begin{figure}[h]
+%    \centering
+%    \includesvg[width=0.8\textwidth]{gen/PDL1ex1/fig_PDL1ex1_solve_time.svg}
+%    \caption{Pricing phase solve time for the first variant of the experiment, only considering binary features \eqref{eq:BM_TF_activity_quantiles} }
+%    \label{fig:pdl1ex1_solve_time}
+%\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.8\textwidth]{gen/PDL1ex1neg/fig_PDL1ex1neg_accuracy.svg}
+    \caption{Ruleset performance for the first variant of the experiment,
+        considering both features \eqref{eq:BM_TF_activity_quantiles} and \eqref{eq:BM_TF_activity_quantiles_reverse}.}
+    \label{fig:pdl1ex1neg_accuracy}
+\end{figure}
+
+%\begin{figure}[h]
+%    \centering
+%    \includesvg[width=0.8\textwidth]{gen/PDL1ex1neg/fig_PDL1ex1neg_solve_time.svg}
+%    \caption{Pricing phase solve time for the first variant of the experiment,
+%        considering both features \eqref{eq:BM_TF_activity_quantiles} and \eqref{eq:BM_TF_activity_quantiles_reverse}}
+%    \label{fig:pdl1ex1neg_solve_time}
+%\end{figure}

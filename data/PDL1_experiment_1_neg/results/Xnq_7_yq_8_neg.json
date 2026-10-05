@@ -1,0 +1,87 @@
+{
+    "binary": [
+        [
+            "AR>=-1.84 Q(0.50)",
+            "IRF1>=1.11 Q(0.75)",
+            "STAT4<-0.01 Q(0.25)"
+        ],
+        [
+            "FOS>=0.60 Q(0.62)",
+            "MYC>=-5.82 Q(0.38)",
+            "FOXO1<-1.28 Q(0.12)"
+        ],
+        [
+            "FOSL1>=1.11 Q(0.88)",
+            "NFATC1>=1.03 Q(0.75)",
+            "AR<-2.28 Q(0.38)"
+        ],
+        [
+            "MYC>=-1.01 Q(0.88)",
+            "RELA>=3.06 Q(0.88)",
+            "FOXO1<0.10 Q(0.62)"
+        ],
+        [
+            "RELA>=0.75 Q(0.62)",
+            "MYC<-3.87 Q(0.62)",
+            "SOX2<0.11 Q(0.38)"
+        ]
+    ],
+    "dualbound": 60.0,
+    "obj": 60.0,
+    "obj_cg": 60.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 85.0,
+            "pricer": 0,
+            "red_cost": -7.0,
+            "time": 0.884307
+        },
+        {
+            "lp_objective": 67.0,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 1.732857
+        },
+        {
+            "lp_objective": 65.0,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 2.468624
+        },
+        {
+            "lp_objective": 64.0,
+            "pricer": 1,
+            "red_cost": -2.0,
+            "time": 620.995931
+        },
+        {
+            "lp_objective": 63.0,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 621.797993
+        },
+        {
+            "lp_objective": 62.666666666666664,
+            "pricer": 1,
+            "red_cost": -1.666666666666667,
+            "time": 1143.540619
+        },
+        {
+            "lp_objective": 62.0,
+            "pricer": 1,
+            "red_cost": -2.0,
+            "time": 1751.391006
+        },
+        {
+            "lp_objective": 61.0,
+            "pricer": 1,
+            "red_cost": -1.0,
+            "time": 2366.185528
+        }
+    ],
+    "soltime": 0.016673999999999998,
+    "soltime_cg": 3054.262302,
+    "status": 1,
+    "status_cg": 1
+}

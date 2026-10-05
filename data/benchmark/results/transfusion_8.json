@@ -1,0 +1,85 @@
+{
+    "binary": [
+        [
+            "Frequency>=5.00 Q(0.60)",
+            "Recency<8.00 Q(0.50)",
+            "Time<42.10 Q(0.70)"
+        ]
+    ],
+    "dualbound": 143.0,
+    "obj": 143.0,
+    "obj_cg": 140.5,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 161.0,
+            "pricer": 0,
+            "red_cost": -13.0,
+            "time": 0.028411
+        },
+        {
+            "lp_objective": 148.0,
+            "pricer": 0,
+            "red_cost": -9.0,
+            "time": 0.049985999999999996
+        },
+        {
+            "lp_objective": 144.5,
+            "pricer": 1,
+            "red_cost": -5.0,
+            "time": 0.7276469999999999
+        },
+        {
+            "lp_objective": 141.5,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 0.745552
+        },
+        {
+            "lp_objective": 141.5,
+            "pricer": 0,
+            "red_cost": -0.25,
+            "time": 0.762521
+        },
+        {
+            "lp_objective": 141.4,
+            "pricer": 1,
+            "red_cost": -4.0,
+            "time": 1.995618
+        },
+        {
+            "lp_objective": 140.8,
+            "pricer": 1,
+            "red_cost": -1.5999999999999996,
+            "time": 3.435157
+        },
+        {
+            "lp_objective": 140.8,
+            "pricer": 0,
+            "red_cost": -0.8999999999999999,
+            "time": 3.452459
+        },
+        {
+            "lp_objective": 140.6,
+            "pricer": 1,
+            "red_cost": -0.9999999999999991,
+            "time": 4.931863
+        },
+        {
+            "lp_objective": 140.6,
+            "pricer": 1,
+            "red_cost": -1.1999999999999993,
+            "time": 5.938935
+        },
+        {
+            "lp_objective": 140.5,
+            "pricer": 1,
+            "red_cost": -0.5,
+            "time": 6.8960349999999995
+        }
+    ],
+    "soltime": 0.038305,
+    "soltime_cg": 11.536889,
+    "status": 1,
+    "status_cg": 1
+}

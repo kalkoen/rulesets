@@ -1,0 +1,88 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "FOSL1>=30.576000",
+            "-NFATC1>=-3.888000",
+            "-SPI1>=-32.810000"
+        ]
+    ],
+    "dualbound": 398.0,
+    "margin_width": 0.0,
+    "obj": 398.0,
+    "obj_cg": 398.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 766.0,
+            "pricer": 0,
+            "red_cost": -368.0,
+            "time": 9.584594
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -80.0,
+            "time": 13.86695
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -36.0,
+            "time": 14.719314
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -30.66666666666668,
+            "time": 15.565916
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -12.000000000000007,
+            "time": 16.407104
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -7.333333333333343,
+            "time": 17.258823
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -6.000000000000002,
+            "time": 18.153808
+        },
+        {
+            "lp_objective": 398.0,
+            "pricer": 0,
+            "red_cost": -5.999999999999993,
+            "time": 19.063681
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "FOSL1>=30.576000",
+            "-NFATC1>=-3.888000",
+            "-SPI1>=-32.810000",
+            1.0
+        ]
+    ],
+    "soltime": 0.023042,
+    "soltime_cg": 20.032013,
+    "status": 1,
+    "status_cg": 1
+}

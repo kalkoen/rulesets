@@ -1,0 +1,142 @@
+We now describe a polynomial-time separation algorithm for $\eqref{eq:RP-pos-cutting-planes}$ and then for $\eqref{eq:RP-neg}.$
+
+Separation of \eqref{eq:RP-pos-cutting-planes} for fixed $i$ can be done in $\mathcal{O}(m  \log m)$ time using a greedy algorithm.
+Without loss of generality, consider a fixed point $i$ and
+\[
+    2 \geq \gamma_1 \geq \gamma_2 \geq \cdots \geq \gamma_m \geq 0,
+\]
+each corresponding to a clause.
+Assume the $z$-variables are ordered accordingly.
+Let $(\bm{z}, \gamma)$ be a solution to the (partial) LP\@.
+Note that $\bm{z} \geq 0$.
+Observe that a violated constraint exists if and only if there exist
+\[
+    \tau_1 < \tau_2 < \cdots < \tau_t \in [m].
+\] such that
+\begin{equation}\label{eq:violated_pos_cons}
+    \gamma > 2 - \sum_{\kappa = 1}^t \overline{\gamma}_{\tau_\kappa}z_{\tau_\kappa},
+\end{equation}
+where
+\begin{align*}
+    \overline\gamma_{\tau_1} &= 2 - \gamma_{\tau_1}, \\
+    \overline\gamma_{\tau_j} &= 2 - \gamma_{\tau_j} - (2 - \gamma_{\tau_{j-1}}) = \gamma_{\tau_{j-1}} - \gamma_{\tau_j}, \quad j = 2, \dots, t.
+\end{align*}
+If the inequality holds for a minimizer of the right hand side, then we have found a new constraint.
+If the inequality does not hold for this minimizer, we may conclude that no violated constraint exists.
+Finding a minimizer of the right hand side is equivalent to finding a maximizer of
+\begin{equation}\label{eq:sep-pos-sum}
+    \sum_{\kappa = 1}^t \overline{\gamma}_{\tau_\kappa}z_{\tau_\kappa}.
+\end{equation}
+
+Denote $\gamma_0$ = 2 and $\tau_0 = 0$ for convenience.
+We propose the following algorithm.
+
+\begin{algorithm}[h!]
+\caption{Algorithm to find a maximizer of \eqref{eq:sep-pos-sum}}
+\label{alg:sep-pos}
+\begin{algorithmic}[1]
+\Require $\gamma, \bm{z}$
+\State $i \gets 1$
+\While{$\left\{\sigma \fw \gamma_\sigma < \gamma_{\tau_{i-1}}\right\} \neq \emptyset$}
+    \State Choose a $\tau_i$ such that
+    $z_{\tau_i} = \max\left\{z_\sigma : \gamma_{\sigma_i} < \gamma_{\tau_{i-1}}\right\}.$
+    \State $i \gets i + 1.$
+\EndWhile \\
+\Return $(\tau_\kappa)_{\kappa=1,\dots,i-1}.$
+\end{algorithmic}
+\end{algorithm}
+
+This algorithm can be implemented to run in $O(m\log m)$ time by first sorting (the indices of) $\bm{z}$
+and iterating over the sorted list, keeping in mind that $\tau$ values must be increasing.
+
+\begin{theorem}\label{thm:sep-pos}
+    \autoref{alg:sep-pos} returns a subset \[\tau_1 < \tau_2 < \cdots < \tau_t \in [m]\] that maximizes
+    \[
+        \sum_{\kappa = 1}^t \overline{\gamma}_{\tau_\kappa}z_{\tau_\kappa}.
+    \]
+\end{theorem}
+
+\begin{proof}
+    Let
+    \[
+        \tau_1 < \tau_2 < \cdots < \tau_t \in [m]
+    \]
+    be a sequence.
+    Define
+    \[
+        u_{\sigma} = \umax{\tau \geq \sigma} \; z_{\tau}, \tquad \sigma \in [m].
+    \]
+    Now observe that
+    \begin{equation}\label{eq:sep-pos-proof-1}
+        \begin{split}
+            S(\tau) = \sum_{\kappa = 1}^t \overline{\gamma}_{\tau_\kappa}z_{\tau_\kappa}
+            & = \sum_{\kappa = 1}^t z_{\tau_\kappa} \sum_{\sigma = \tau_{\kappa-1}+1}^{\tau_{\kappa}} (\gamma_{\sigma-1} - \gamma_{\sigma}) \\
+            & = \sum_{\kappa = 1}^t \sum_{\sigma = \tau_{\kappa-1}+1}^{\tau_{\kappa}} z_{\tau_\kappa}(\gamma_{\sigma-1} - \gamma_{\sigma}) \\
+            & \leq \sum_{\kappa = 1}^t \sum_{\sigma = \tau_{\kappa-1}+1}^{\tau_{\kappa}} u_{\sigma}(\gamma_{\sigma-1} - \gamma_{\sigma}) \\
+            & \leq \sum_{\sigma = 1}^m u_{\sigma}(\gamma_{\sigma-1} - \gamma_\sigma).
+        \end{split}
+    \end{equation}
+    The first inequality holds because
+    \[
+         \tau_\kappa \geq \sigma \quad \implies z_{\tau_\kappa} \leq u_\sigma,
+    \]
+    and $\gamma_{\sigma-1} - \gamma_\sigma \geq 0$ for all $\sigma \in [m]$.
+    The second holds because the ranges $\{\tau_{\kappa-1}+1, \dots, \tau_\kappa\}, \; \kappa=1,\dots,t$
+    partition $\{1, \dots, \tau_t\}$ and the omitted terms are non-negative.
+
+    We now claim that the greedy method yields a solution that attains this upper-bound.
+    Denote by $g_1 < g_2 < \dots < g_{t_g} \in [m]$ a solution produced by the greedy algorithm.
+    Denote for convenience $g_0 = 0.$
+    Let $\kappa \in [t_g].$ The candidate set in iteration $\kappa$ is
+    \[
+        \{\sigma \fw \gamma_{\sigma} < \gamma_{g_{\kappa-1}}\}.
+    \]
+    Since $\gamma$ values are non-increasing, it follows that this set equals
+    \[
+        \{\sigma \geq s_\kappa\}
+    \]
+    for some $s_\kappa > g_{\kappa-1}$.
+    Hence, the choice in iteration $\kappa$, satisfies
+    \[
+        z_{g_\kappa} = u_{s_\kappa}.
+    \]
+    Now let $\sigma \in \{g_{\kappa-1} + 1, \dots, g_\kappa\}$ such that $\gamma_{\sigma} < \gamma_{\sigma-1} $.
+    If that condition does not hold, then
+    \[
+        \gamma_{\sigma - 1} - \gamma_{\sigma} = 0,
+    \]
+    so $\sigma$ does not contribute to the bound derived in \eqref{eq:sep-pos-proof-1}.
+    It follows that \[
+                        \gamma_{\sigma} < \gamma_{\sigma-1} \leq \gamma_{g_{\kappa-1}}.
+    \]
+    So $\sigma \geq s_\kappa$.
+    By definition of $u$, we then have that $u_{\sigma} \leq u_{s_\kappa} = z_{g_\kappa}.$
+    Since $\sigma \leq g_\kappa$, by definition of $u$ it holds that $u_\sigma \geq z_{g_\kappa}.$
+    So \[
+           z_{g_\kappa} \leq u_{\sigma} \leq z_{g_\kappa}.
+    \]
+    Hence, equality holds on this entire range.
+
+    For $\sigma > g_{t_g}, $ the greedy algorithm terminated, so there is no $\sigma'$ such that $\gamma_{\sigma'} < \gamma_{g_{t_g}}$,
+    meaning $\gamma_\sigma = \gamma_{g_{t_g}}$ for all $\sigma > g_{t_g}$.
+    Therefore
+    \begin{equation}\label{eq:sep-pos-proof-2}
+        \begin{split}
+            S(\bm{g})
+            & = \sum_{\kappa = 1}^{t_g} \sum_{\sigma = g_{\kappa-1}+1}^{g_\kappa}
+                z_{g_\kappa}(\gamma_{\sigma-1} - \gamma_\sigma) \\
+            & = \sum_{\kappa = 1}^{t_g} \sum_{\sigma = g_{\kappa-1}+1}^{g_\kappa}
+                u_{\sigma}(\gamma_{\sigma-1} - \gamma_\sigma) \\
+            & = \sum_{\sigma = 1}^m u_{\sigma}(\gamma_{\sigma-1} - \gamma_\sigma).
+        \end{split}
+    \end{equation}
+    The second equality uses that $u_\sigma = z_{g_\kappa}$ whenever
+    $\gamma_{\sigma-1} - \gamma_\sigma > 0$.
+    The third uses that the ranges
+    $\{g_{\kappa-1}+1, \dots, g_\kappa\}$ partition $\{1, \dots, g_{t_g}\}$
+    and all remaining terms are zero.
+    Combined with \eqref{eq:sep-pos-proof-1}, it follows that
+    \[S(\bm{g}) \geq S(\bm{\tau})\]
+    for any feasible sequence $\bm{\tau}$.
+    So, $S(\bm{g})$ is a maximizer of \eqref{eq:sep-pos-sum}.
+\end{proof}

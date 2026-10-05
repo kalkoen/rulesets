@@ -1,0 +1,23 @@
+{
+    "binary": [
+        [
+            "FOS>=-0.98 Q(0.25)",
+            "RELA>=0.03 Q(0.50)",
+            "STAT2>=-0.20 Q(0.50)"
+        ],
+        [
+            "FOSL1>=0.58 Q(0.75)",
+            "MYC>=-7.09 Q(0.25)",
+            "STAT2>=-0.85 Q(0.25)"
+        ]
+    ],
+    "dualbound": 241.0,
+    "obj": 241.0,
+    "obj_cg": 0.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [],
+    "soltime": 29.29563,
+    "soltime_cg": 0.0,
+    "status": 1,
+    "status_cg": 0
+}

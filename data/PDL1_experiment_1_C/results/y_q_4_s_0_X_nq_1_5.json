@@ -1,0 +1,45 @@
+{
+    "binary": [
+        [
+            "RELA>=0.00 Q(0.50)",
+            "SPI1<0.38 Q(0.50)"
+        ],
+        [
+            "STAT2>=-0.18 Q(0.50)"
+        ]
+    ],
+    "dualbound": 237.0,
+    "obj": 237.0,
+    "obj_cg": 225.75,
+    "obj_relaxation": 232.0,
+    "pricing_steps": [
+        {
+            "lp_objective": 382.0,
+            "pricer": 0,
+            "red_cost": -145.0,
+            "time": 0.094932
+        },
+        {
+            "lp_objective": 237.0,
+            "pricer": 0,
+            "red_cost": -29.0,
+            "time": 0.176754
+        },
+        {
+            "lp_objective": 225.75,
+            "pricer": 0,
+            "red_cost": -7.5,
+            "time": 0.260894
+        },
+        {
+            "lp_objective": 225.75,
+            "pricer": 0,
+            "red_cost": -3.25,
+            "time": 0.342555
+        }
+    ],
+    "soltime": 0.48750299999999996,
+    "soltime_cg": 26.912543,
+    "status": 1,
+    "status_cg": 1
+}

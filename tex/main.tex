@@ -1,0 +1,70 @@
+\documentclass[twoside, openright]{book}
+\title{Thesis}
+\author{k.w.a.j.v.d.berk }
+\date{September 2026}
+
+
+\input{my-preamble}
+
+\title{Partners in Crime: Attempting to Infer Combinatorial Regulation from Bulk Transcriptomics}
+
+\newcommand{\supervisors}{%
+    Christopher Hojny \\
+    Federica Eduati \\
+    Bi-rong Wang
+}
+
+\author{Koen van den Berk \\  \\ Supervised by: \\ \supervisors}
+
+\begin{document}
+
+    \frontmatter
+    \maketitle
+
+    \tableofcontents
+
+    \mainmatter
+    \chapter{Introduction}\label{ch:introduction}
+    \input{chapters/1_introduction}
+
+    \chapter{Boolean model}\label{ch:boolean-model}
+    \input{chapters/2_boolean_model}
+
+    \chapter{Threshold model}\label{ch:threshold-model}
+    \input{chapters/3_threshold_model}
+
+    \chapter{Ramp loss model}\label{ch:ramp_model}
+    \input{chapters/4_ramp_model}
+
+    \chapter{Additional experiments}\label{ch:experiments}
+    \input{chapters/5_additional_experiments}
+
+    \chapter{Performance on holdout dataset}\label{ch:holdout}
+    \input{chapters/6_holdout}
+
+    \chapter{Recommendations}\label{ch:recommendations}
+    \input{chapters/7_recommendations}
+
+    \chapter{Conclusion}\label{ch:conclusion}
+    \input{chapters/8_conclusion}
+
+%    \chapter{Corrections}\label{ch:corrections}
+%    \input{chapters/9_corrections}
+
+    \clearpage
+
+    \section*{Use of Artificial Intelligence}\label{sec:ai}
+    \addcontentsline{toc}{chapter}{Use of Artificial Intelligence}
+    \input{chapters/ai}
+
+%    \section*{Acknowledgements}\label{sec:ack}
+%    \addcontentsline{toc}{chapter}{Acknowledgements}
+%    \input{chapters/acknowledgements}
+
+    \printbibliography
+
+    \appendix
+    \include{chapters/appendix}
+
+
+\end{document}

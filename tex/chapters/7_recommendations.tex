@@ -1,0 +1,34 @@
+Based on the findings, we present three suggestions for future research, ranging from very related to our work to
+a completely novel approach.
+
+In \autoref{ch:ramp_model} we apply a ramp loss based on the distance of a point to a ruleset.
+The ramp loss model poses various difficulties.
+These include undesirable behavior of the additive variant (\autoref{sec:ramp-examples}),
+slow solve times for the pricing problems (even after implementing cutting planes described in \autoref{subsec:ramp-cutting-planes}),
+and a complicated pricing problem for the non-additive variant (\autoref{sec:ramp-nonadditive}).
+It is arguably difficult to work with and solve.
+An alternative strategy is to define an \textit{importance score}
+\[
+    \chi_i = \left[\frac{1}{\beta}|(\text{PD-L1 expression})_i - \alpha|\right]_0^1,
+\]
+where $[\cdot]$ is the clipping operator, $\alpha$ is the gene expression threshold and $\beta$ is the margin width.
+Then, consider
+\[
+    \sum_{i \in \P}\chi_i \zeta_i + \sum_{i \in \N} \chi_i \zeta_i
+\]
+as the loss function in the original master IP \eqref{eq:BM}.
+We may also consider a Hamming loss equivalent.
+This strategy effectively means that samples whose gene expression is closer to the target threshold are weighed less heavily.
+This is a much simpler adjustment of the boolean model or threshold model that is similar conceptually.
+In fact, it may avoid many of the artifacts observed in the ramp loss model and difficulties encountered in its implementation.
+
+Another suggestion is to re-evaluate use of DecoupleR as unquestioned input data.
+DecoupleR itself is an estimation method.
+In particular, it is one that assumes that TF affect target genes individually.
+Rather than treating TF activity estimation as data pre-processing,
+a suggestion is to unite TF activity score estimation and the search for TF combinations into a single, novel method.
+Perhaps a united approach, one that assumes combinatorial TF regulation from raw data onwards, can yield better results.
+
+Finally, it is suggested to use statistical methods to search for statistically significant concurrent TF activity,
+rather than attempt to predict PD-L1 expression using discrete, deterministic classifiers.
+An example of such a statistical method, albeit for a different use case, is LAMP~\cite{terada_statistical_2013}.

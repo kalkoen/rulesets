@@ -1,0 +1,19 @@
+{
+    "binary": [
+        [
+            "AR>=-1.84 Q(0.50)"
+        ],
+        [
+            "AR<-1.84 Q(0.50)"
+        ]
+    ],
+    "dualbound": 109.95604503099871,
+    "obj": 166.0,
+    "obj_cg": 0.0,
+    "obj_relaxation": 109.95604503099871,
+    "pricing_steps": [],
+    "soltime": 7200.078706,
+    "soltime_cg": 0.0,
+    "status": 23,
+    "status_cg": 0
+}

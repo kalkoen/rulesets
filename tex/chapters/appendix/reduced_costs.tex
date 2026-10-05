@@ -1,0 +1,95 @@
+\section{Boolean model}\label{sec:reduced_costs_boolean_model}
+To derive reduced cost \eqref{eq:BP_redcost}, recall that the dual of the linear program (LP)
+\begin{equation}\label{eq:LP_primal_general}
+    \begin{split}
+        \min & gx \\
+        \st & Ax \geq b, \\
+        & x \geq 0,
+    \end{split}
+\end{equation}
+is given by
+\begin{equation}\label{eq:LP_primal_dual}
+    \begin{split}
+        \max & yb \\
+        \st & yA \leq g, \\
+        & y \geq 0.
+    \end{split}
+\end{equation}
+Denote by $A_k$ the $k$-th column of $A$.
+The pricing problem asks whether there exists a column $k$ such that $yA_k > g$, which is equivalent to finding a $k$
+such that reduced cost
+\begin{equation}\label{eq:pricing_problem}
+    \rho_k = g_k - yA_k < 0.
+\end{equation}
+Observe that LP relaxation of the master problem \eqref{eq:BM} can be written as
+\begin{equation}\label{eq:BM_primal_vector}
+    \begin{split}
+        \min & \begin{bmatrix}
+                   \bm{1} & d
+        \end{bmatrix} \begin{bmatrix}
+                          \zeta \\ w
+        \end{bmatrix} \\
+        \st & \begin{bmatrix}
+                  I & A \\ 0 & -c
+        \end{bmatrix} \begin{bmatrix}
+                          \zeta \\ w
+        \end{bmatrix}
+        \geq \begin{bmatrix}
+                 \bm{1} \\ -C
+        \end{bmatrix}, \\
+        & \zeta, w \geq 0,
+    \end{split}
+\end{equation}
+where $\bm{1}$ is the all-one column vector,
+\begin{align*}
+    A_{ik} &= \Ind(k \in \K_i), & i \in \P, \; k \in \K, \\
+    d_k &= \sum_{i \in \N} \Ind(k \in \K_i), & k \in \K. \\
+\end{align*}
+and $c$ is the row vector holding the complexity of each rule.
+The dual is described by
+\begin{equation}\label{eq:BM_dual_vector}
+    \begin{split}
+        \max & \begin{bmatrix}
+                   \mu & \lambda
+        \end{bmatrix} \begin{bmatrix}
+                          \bm{1} \\ -C
+        \end{bmatrix} \\
+        \st & \begin{bmatrix}
+                  \mu & \lambda
+        \end{bmatrix} \begin{bmatrix}
+                          I & A \\ 0 & -c
+        \end{bmatrix}
+        \leq \begin{bmatrix}
+                 \bm{1} & d
+        \end{bmatrix}, \\
+        & \mu, \lambda \geq 0,
+    \end{split}
+\end{equation}
+Therefore, the reduced cost is given by
+\begin{equation}\label{eq:BP_redcost_vector_derivation}
+    \begin{split}
+        \rho_k &= d_k - \left(\mu A_k - \lambda c_k\right)
+        \\ &= \sum_{i \in \N} \Ind(k \in \K_i) - \sum_{i \in \P} \mu_i\Ind(k \in \K_i) + \lambda c_k.
+    \end{split}
+\end{equation}
+
+\section{Additive ramp loss model}\label{sec:reduced_costs_additive_ramp_loss}
+The derivation of the reduced cost for the additive ramp loss model \eqref{eq:RM} is analogous to the derivation for the boolean model.
+Consider \eqref{eq:BM_primal_vector}, only now $A$ is replaced by $\Gamma$, where
+\begin{align*}
+    \Gamma_{ik} &= \gamma_{ik}, & i \in \P, \; k \in \K,
+\end{align*}
+the $\bm{1}$-vector on the right-hand-side is replaced by a $\bm{2}$-vector,
+and we choose
+\begin{align*}
+    d_k &= \sum_{i \in \N} \gamma_{ik}, & k \in \K,
+\end{align*}
+This formulation corresponds precisely to the additive ramp loss model \eqref{eq:RM}.
+It follows that
+\begin{equation}\label{eq:RP_redcost_vector_derivation}
+    \rho_k = \sum_{i \in \N} \gamma_{ik} - \sum_{i \in \P} \mu_i\gamma_{ik} + \lambda c_k.
+\end{equation}
+
+\section{Non-additive ramp loss model}\label{sec:reduced_costs_nonadditive_ramp_loss}
+\input{chapters/appendix/reduced_costs_nonadditive}
+

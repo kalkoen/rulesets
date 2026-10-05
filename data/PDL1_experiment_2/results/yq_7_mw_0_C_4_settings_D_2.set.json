@@ -1,0 +1,107 @@
+{
+    "C": 4,
+    "binary": [
+        [
+            "MYC>=-3.198181",
+            "STAT3>=2.524060"
+        ],
+        [
+            "NFKB1>=1.588569",
+            "-STAT3>=0.942735"
+        ],
+        [
+            "STAT2>=1.945295",
+            "-FOXO1>=-0.032672"
+        ],
+        [
+            "STAT3>=0.840130",
+            "-SPI1>=1.134478"
+        ]
+    ],
+    "dualbound": 292.0,
+    "margin_width": 0.0,
+    "obj": 292.0,
+    "obj_cg": 292.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 340.0,
+            "pricer": 0,
+            "red_cost": -22.0,
+            "time": 1.90579
+        },
+        {
+            "lp_objective": 310.0,
+            "pricer": 0,
+            "red_cost": -8.0,
+            "time": 3.65681
+        },
+        {
+            "lp_objective": 298.0,
+            "pricer": 0,
+            "red_cost": -4.0,
+            "time": 5.185905
+        },
+        {
+            "lp_objective": 294.0,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 6.627312
+        },
+        {
+            "lp_objective": 294.0,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 8.059847
+        },
+        {
+            "lp_objective": 292.0,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 9.499741
+        },
+        {
+            "lp_objective": 292.0,
+            "pricer": 0,
+            "red_cost": -0.666666666666667,
+            "time": 10.939229
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "MYC>=-3.198181",
+            "STAT3>=2.524060",
+            1.0
+        ],
+        [
+            "NFKB1>=1.588569",
+            "-STAT3>=0.942735",
+            1.0
+        ],
+        [
+            "STAT2>=1.945295",
+            "-FOXO1>=-0.032672",
+            1.0
+        ],
+        [
+            "STAT3>=0.840130",
+            "-SPI1>=1.134478",
+            1.0
+        ]
+    ],
+    "soltime": 0.006723,
+    "soltime_cg": 13.760427,
+    "status": 1,
+    "status_cg": 1
+}

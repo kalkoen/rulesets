@@ -1,0 +1,32 @@
+In \autoref{ch:boolean-model}, a first experiment on TF activities and PD-L1 expression
+was conducted using a method designed for binary data.
+One drawback of this method is that, after binarization,
+information on which binary features belong to which TF is lost.
+This information could be used in the model, for instance to speed up computation.
+
+The TF activity scores are continuous.
+Instead of pre-binarizing via thresholding and employing the boolean-featured model,
+we adjust the boolean model to consider threshold clauses on continuous features.
+This can not only speed up solving,
+it sets the stage for future extensions that attempt to exploit the continuous nature of the TF data.
+This model, which we call the threshold model, is a simple adjustment of the boolean model and is our contribution.
+
+The structure of this chapter follows closely that of \autoref{ch:boolean-model}.
+A reader who is not interested in the mathematics and implementation of the method but rather the next experiments and their results can
+skip to \autoref{sec:threshold-methodology}.
+
+\section{Model description}\label{sec:threshold-model-description}
+\input{chapters/3_threshold/1_threshold_model_description}
+
+\section{Implementation}\label{sec:threshold-implementation}
+\input{chapters/3_threshold/2_threshold_implementation}
+
+\section{Methodology}\label{sec:threshold-methodology}
+\input{chapters/3_threshold/3_threshold_methodology}
+
+\section{Results}\label{sec:threshold-results}
+\input{chapters/3_threshold/4_threshold_results}
+
+\clearpage
+\section{Greedy algorithm}\label{sec:threshold_greedy}
+\input{chapters/3_threshold/5_greedy}

@@ -1,0 +1,43 @@
+The reformulations \eqref{eq:RM-obj} and \eqref{eq:RM-misP} affect the pricing problem.
+We will now derive the pricing problem, study its complexity and construct a mixed integer program (MIP) that can be used to solve it.
+Given non-negative dual values $(\bm{\mu}, \lambda) \in \R_+^\P \times \R_+$, the reduced cost of a rule $k \in \K$ is given by
+\begin{equation} \label{eq:RM-redcost}
+    \rho_k = \sum_{i \in \cN} \gamma_{ik} - \sum_{i \in \cP} \mu_{i}\gamma_{ik} + \lambda c_k.
+\end{equation}
+The derivation is discussed in \autoref{sec:reduced_costs_additive_ramp_loss}.
+Denote by $[\cdot]_a^b$ the clipping operator that clamps the value of $\cdot$ to $[a,b].$
+For $\beta > 0$, we have that
+\begin{equation}\label{eq:gamma_ik_min}
+\begin{split}
+        \gamma_{ik} &= \left[1 + \frac{1}{\beta} d_i(k) \right]_0^2 \\
+        &= \left[1 + \frac{1}{\beta}\umin{(j,\alpha) \in k} X_{ij} - \alpha\right]_0^2 \\
+        &= \umin{(j,\alpha) \in k} \left[1 + \frac{1}{\beta}(X_{ij} - \alpha)\right]_{0}^{2}, \tquad i \in \I,\; k \in \K\setminus\{\emptyset\}.
+\end{split}
+\end{equation}
+Define
+\begin{equation}\label{eq:gamma_{il}}
+    \gamma_{il} = \begin{cases}
+                      \left[1 + \frac{1}{\beta}(X_{ij} - \alpha)\right]_{0}^{2}, & \text{if $\beta > 0$,} \\
+                      2\cdot \Ind(X_{ij} \geq \alpha), & \text{if $\beta = 0$,}
+    \end{cases} \tquad i \in \I, \; l = (j,\alpha) \in \L.
+\end{equation}
+Then
+\begin{equation}\label{eq:f_min}
+    \gamma_{ik} = f_i(k) \coloneq \begin{cases}
+                               2, & k = \emptyset, \\
+                               \umin{l \in k} \gamma_{il}, & k\neq \emptyset, \\
+    \end{cases} \tquad i \in \I, k \in \K.
+\end{equation}
+Minimizing \eqref{eq:RM-redcost} is equivalent to solving
+\begin{equation}\label{eq:RP_set_formulation}
+    \umin{S \subseteq \L} \quad \sum\limits_{i \in \N} f_i(S)  - \sum\limits_{i \in \P}  \mu_i f_i(S) + \lambda c(S),
+\end{equation}
+where $c: \K \to \Z_+$ is a function measuring rule complexity.
+
+%Second, we may restrict the use of a clause if a more restrictive clause of the same feature is already chosen.
+%To describe this, order for each $j \in \J$ the clauses involving feature $j$ by the respective threshold $\alpha$ in non-decreasing order.
+%denote by $(j,(\eta))$ the clause involving feature $j$ with the $\eta$-th largest threshold.
+%Then the constraint is given by
+%\[z_{(j,(\eta))} \leq (1-)\]
+%Note that these two constraints have an identical effect for the binary problem.
+%However, for the LP relaxation, the constraints are not equivalent.

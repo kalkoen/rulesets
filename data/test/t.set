@@ -1,0 +1,6 @@
+rs/type = 1
+rs/method = 1
+
+rs/heuristic/enabled = false
+rs/exact/enabled = true
+rs/exact/D = 3

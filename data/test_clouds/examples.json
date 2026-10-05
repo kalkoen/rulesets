@@ -1,0 +1,77 @@
+{
+  "1": {
+    "title": "Example instance with two clouds",
+    "x1_lim": [0.0, 20.0],
+    "x2_lim": [0.0, 20.0],
+    "clouds": [
+      {
+        "n": 100,
+        "center": [8, 10],
+        "std": 2,
+        "y": 0
+      },
+      {
+        "n": 100,
+        "center": [12, 10],
+        "std": 2,
+        "y": 1
+      }
+    ]
+  },
+  "2": {
+    "title": "Example instance with three clouds",
+    "x1_lim": [0.0, 20.0],
+    "x2_lim": [0.0, 20.0],
+    "clouds": [
+      {
+        "n": 100,
+        "center": [8, 10],
+        "std": 2,
+        "y": 0
+      },
+      {
+        "n": 100,
+        "center": [12, 10],
+        "std": 2,
+        "y": 1
+      },
+      {
+        "n": 10,
+        "center": [5, 15],
+        "std": 1,
+        "y": 1
+      }
+    ]
+  },
+  "3": {
+    "title": "Example instance with four clouds",
+    "x1_lim": [0.0, 20.0],
+    "x2_lim": [0.0, 20.0],
+    "clouds": [
+      {
+        "n": 100,
+        "center": [10, 10],
+        "std": 4,
+        "y": 0
+      },
+      {
+        "n": 25,
+        "center": [15, 15],
+        "std": 2,
+        "y": 1
+      },
+      {
+        "n": 10,
+        "center": [3, 10],
+        "std": 2,
+        "y": 1
+      },
+      {
+        "n": 10,
+        "center": [10, 3],
+        "std": 2,
+        "y": 1
+      }
+    ]
+  }
+}

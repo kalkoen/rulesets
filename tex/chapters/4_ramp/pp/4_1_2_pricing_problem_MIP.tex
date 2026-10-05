@@ -1,0 +1,247 @@
+In this section, we explore a MIP formulation of the pricing problem \eqref{eq:RP_set_formulation} and discuss challenges in solving it.
+Recall the reduced cost \eqref{eq:RM-redcost}.
+Let $\bm{z}\in \{0,1\}^{\L}$ again be integer variables representing which clauses are used in the rule.
+Consider the MIP
+\begin{subequations}
+    \label{eq:RP}
+    \begin{align}
+        \min \quad & \sum_{i \in \cN} \gamma_i - \sum_{i \in \cP} \mu_i \gamma_i +
+        \lambda(\bm{z}) \label{eq:RP-obj} \\
+        \st \quad & \gamma_i \leq 2 - (2 - \gamma_{il})z_l, & l \in \L, &\; i \in \cP, \label{eq:RP-pos} \\
+        & \gamma_i \geq \gamma_{il} - \sum_{l' \in \L \fw \gamma_{il'} < \gamma_{il}} (\gamma_{il} - \gamma_{il'}) z_{l'} , & l \in \cL, &\; i \in \cN, \label{eq:RP-neg} \\
+        & \gamma_i \geq 2 - \sum_{l \in \L} 2z_l, & l \in \L, \label{eq:RP-fix} \\
+        & \sum_{l \in \L} z_l \leq D, \label{eq:RP-complex}\\
+        & \bm{z}\in \{0,1\}^{\L},~ \bm{\gamma}\in [0,2]^\I.\label{eq:RP-vars}\qquad
+    \end{align}
+\end{subequations}
+We also impose the one-clause-per-feature constraint as given in \eqref{eq:TP_one-per-feature}.
+
+In this formulation, constraints \eqref{eq:RP-pos} ensure that $\gamma_i$ for positive $i$ reflects $\gamma_{ik},$
+where $k$ is the chosen rule.
+Strictly speaking, this is only true for $i \in \P$ for which $\mu_i > 0$.
+For $i \in \P$ such that $\mu_i = 0$, the variable $\gamma_i$ is effectively redundant,
+so these variables need not be considered.
+For negative $i$, constraints \eqref{eq:RP-neg} and \eqref{eq:RP-fix} ensure this.
+We will now prove the claim for both positive and negative points.
+
+Denote by $\gopt, \zopt$ an optimal solution for this IP\@.
+Recall that $\zopt$ is binary.
+Define
+\[\sopt = \{l \in \L \fw \zopt[l] = 1\},\]
+and recall the definition of $f$ in \eqref{eq:f_min}.
+
+\begin{claim}\label{claim:TP_ramp-consP}
+    For all $i \in \P$ such that $\mu_i > 0,$ it holds that
+    \[\gopt[i] = f_i(\sopt).\]
+\end{claim}
+
+\begin{proof}
+    Let $i \in \P$ such that $\mu_i > 0$ and let $l \in \L$.
+    If $\zopt[l] = 0$, the corresponding constraint \eqref{eq:RP-pos} becomes redundant.
+    If $\zopt[l] = 1,$ the constraint becomes $\gamma_i \leq \gamma_{il}.$
+    Therefore, if $\sopt \neq \emptyset$ it holds that
+    \[\gamma_i \leq \umin{l \in \sopt} \gamma_{il}.\]
+    If $\sopt = \emptyset$, we have that $\gamma_i \leq 2$ by the variable bound.
+    In any case,
+    \[
+        \gamma_i \leq f_i(\sopt).
+    \]
+    There are no other constraints involving $\gamma_i$.
+    Since $\gamma_i$ has a negative coefficient in the objective, this inequality will be an equality in an optimal solution.
+    \qedhere
+\end{proof}
+
+\begin{claim}\label{claim:TP_ramp-consN}
+    For all $i \in \N$ it holds that
+    \[\gopt[i] = f_i(\sopt).\]
+\end{claim}
+
+
+\begin{proof}
+    Let $i \in \N$.
+    If $\sopt = \emptyset,$ then $\gopt[i] \geq 2 = f_i(\emptyset)$ by constraint \eqref{eq:RP-fix}.
+    So if $\sopt = \emptyset$, the statement holds.
+
+    Assume $\sopt \neq \emptyset.$
+    Observe that constraint $\eqref{eq:RP-fix}$ becomes redundant, as there is at least one $l$ such that $z_l = 1$.
+    Let $l^* \in \sopt$ such that \[\gamma_{il^*} = \umin{l \in \sopt} \gamma_{il}.\]
+    For this $i$ and $l$, the constraint \eqref{eq:RP-neg} is
+    \[\gamma_i \geq \gamma_{il}.\]
+    Now let $l \in \L$.
+    We consider the right hand side of \eqref{eq:RP-neg}.
+    We have that
+    \[\begin{split}
+          \gamma_{il} - \sum_{l' \in \L\,:\,\gamma_{il'} < \gamma_{il}} (\gamma_{il} - \gamma_{il'}) z_l
+          &= \gamma_{il} - \sum_{l' \in \sopt \,:\,\gamma_{il'} < \gamma_{il}} (\gamma_{il} - \gamma_{il'}).
+    \end{split}\]
+    If the sum is empty, then it must hold that $\gamma_{il} = \gamma_{il^*}$ and the right hand side equals $\gamma_{il^*}$.
+    If the sum is non-empty, we have
+    \[
+        \begin{split}
+            \gamma_{il} - \sum_{l' \in \sopt \,:\,\gamma_{il'} < \gamma_{il}} (\gamma_{il} - \gamma_{il'}) &\leq \gamma_{il} - \umax{l' \in \sopt \,:\,\gamma_{il'} < \gamma_{il}} (\gamma_{il} - \gamma_{il'}) \\
+            &= \umin{l' \in \sopt \,:\,\gamma_{il'} < \gamma_{il}} \gamma_{il'} \\
+            &= \gamma_{il^*}.
+        \end{split}
+    \]
+    Hence, $\gamma_i \geq \gamma_{il^*} = \umin{l \in \sopt} \gamma_{il}$ is the tightest constraint on $\gamma_i$, induced by $l^*$.
+
+    Combining the case $\sopt = \emptyset$ and $\sopt \neq \emptyset,$ we get that
+    \[
+        y_i \geq f_i(\sopt),
+    \]
+    is the tightest lower-bound on $\gamma_i$.
+    Since $\gamma_i$ has a positive coefficient in the objective, this inequality will be an equality for an optimal solution.
+    From this, the result follows.
+\end{proof}
+
+\begin{note}
+    In the process of constructing and implementing this MIP, constraint \eqref{eq:RP-fix} was overlooked.
+    Hence, it was not implemented when the experiments in this report were conducted.
+    Luckily, this mistake does not affect the experiments for various reasons.
+    First, the solving the MIP could not be done in reasonable time for the PD-L1 experiments,
+    hence only the unaffected heuristic pricer was used.
+    If the exact pricer implementation without constraint \eqref{eq:RP-fix} is used anyway, the effect is still limited.
+    We note that for any non-zero solution $\bm{z} \in \{0,1\}^\L,$ the variables $\bm{\gamma}$ are correctly modeled.
+    Hence, the reduced cost can only be incorrect when $\bm{z} = 0$.
+    For $\bm{z} = 0$, it can happen that some $\gamma_i$ are too low for negative $i$.
+    If so, the reduced cost is underestimated.
+    This is only problematic if, due to this error, the empty rule becomes the rule with the lowest reduced cost.
+    In this case, the rule would not be added to the master problem in our implementation,
+    and pricing would continue (with new shadow prices),
+    which may cause a rule with true negative reduced cost to be found.
+    However, the problem of underestimating $\gamma_i$ for negative $i$ only occurs if there is no
+    clause $l$ such that $\gamma_{il} = 2$.
+    This is the case when there is no clause that covers (further than the margin) the negative point.
+    In practice, we do not expect this to happen often,
+    as we include upper-bounds with low thresholds and lower-bounds with high thresholds.
+\end{note}
+
+The LP relaxation of \eqref{eq:RP} is not tight.
+The LP relaxation allows for \emph{spreading}, by which several entries of $\bm{z}$ admit a fractional value.
+\begin{example}[Spreading]\label{ex:branch1}
+    \begin{figure}
+        \includesvg[width=0.5\textwidth]{gen/branch_ex1.svg}
+        \caption{
+            An example problem with a two-dimensional feature space, composed of one positive datapoint $\bm{X}_2 = (2\tfrac{1}{2}, 2\tfrac{1}{2})$, two negative datapoints $\bm{X}_1 = (1\tfrac{1}{2}, 1\tfrac{1}{2}), \bm{X}_3 = (3\tfrac{1}{4}, 3\tfrac{1}{4})$ and clauses $a$, $b$, $f$ representing $X_{\cdot 1} \geq 3$,$X_{\cdot 2} \geq 3$ $X_{\cdot 1} \geq \tfrac{1}{4}$, respectively.
+            The margin width $\beta=1.$
+            The boundary of the margin is indicated with dotted lines.}
+        \label{fig:branch1}
+    \end{figure}
+    Let
+    %
+    \[
+        \mathcal{N} = \{1, 3\}, \quad \mathcal{P} = \{2\}, \quad
+        \mathcal{L} = \{a, b, f\}.
+    \]
+    Consider the two-dimensional feature space and lower-bounds in \autoref{fig:branch1}.
+    The matrix $(\gamma_{il})$ is given by
+    %
+    \[
+        \begin{array}{c|ccc}
+            & a    & b    & f \\
+            \hline
+            1 & 0    & 0    & 1 \\
+            2 & 1/2  & 1/2  & 1 \\
+            3 & 1/4  & 1/4  & 1 \\
+        \end{array}
+    \]
+    Choose $D = 3.$ In the initial pricing round, $\mu_i = 1$ and $\lambda = 0$.
+    The LP relaxation of~\eqref{eq:RP} attains an optimal objective value of $-1/2,$
+    by
+    %
+    \[
+        \bm{z} = \bigl(\tfrac{1}{2},\, \tfrac{1}{2},\, 0\bigr), \qquad
+        \gamma_1 = 0, \quad \gamma_2 = \tfrac{3}{4}, \quad \gamma_3 = \tfrac{1}{4}.
+    \]
+    Given $\bm{z}$, the values of $\bm{\gamma}$ can be computed directly.
+    The optimal objective value of the IP is $-1/4, $ attained by several solutions, examples being
+    \[\bm{z}=(1,0,0), \quad \bm{z}=(0,1,0), \quad \bm{z}=(1,1,0).\]
+    For any of these solutions, it holds that $\gamma_2 \leq 1/2$ because at least one of $a$ or $b$ is used.
+    Meanwhile, we have $\gamma_2 = \frac{3}{4}$ in an optimal LP solution, like the one shown above.
+    We refer to this as spreading, meaning the use of fractional values in $\bm{z}$ to admit larger $\gamma_i$ for $i \in \P,$ leading to a lower objective value.
+
+    In this example, the issue is resolved when branching on $z_a$ or $z_b$.
+    Under any of the branching decisions
+    \[z_a = 0,\; z_a = 1,\; z_b = 0, \text{ or } z_b = 1,\]
+    the resulting LP solution is integer and $\gamma_2 = 1/2.$
+\end{example}
+
+%\begin{example}[Spreading and branching]\label{ex:branch2}
+%    \begin{figure}
+%        \includesvg[width=0.5\textwidth]{gen/branch_ex2.svg}
+%        \caption{
+%            An example problem with a two-dimensional feature space, composed of one positive datapoint $\bm{X}_2 = (2\tfrac{1}{2}, 2\tfrac{1}{2})$, two negative datapoints $\bm{X}_1 = (1\tfrac{1}{2}, 1\tfrac{1}{2}), \bm{X}_3 = (3\tfrac{1}{4}, 3\tfrac{1}{4})$ and clauses $a, b, c, d, f$, representing $X_{\cdot 1} \geq 3$, $X_{\cdot 2} \geq 3$, $X_{\cdot 2} \geq 2\tfrac{3}{4}$, $X_{\cdot 2} \geq 2\tfrac{3}{4}$ and $X_{\cdot 1} \geq \tfrac{1}{4}$, respectively.
+%            The margin width $\beta=1.$
+%            The boundary of the margin is not shown.}
+%        \label{fig:branch2}
+%    \end{figure}
+%
+%    We consider the problem discussed in \autoref{ex:branch1} with two additional clauses $c$ and $d$, see \autoref{fig:branch2}.
+%    The matrix $(\gamma_{il})$ is given by
+%    %
+%    \[
+%        \begin{array}{c|ccccc}
+%              & a    & b    & c    & d    & f \\
+%            \hline
+%            1 & 0    & 0    & 0    & 0    & 1 \\
+%            2 & 1/2  & 1/2  & 3/4  & 3/4  & 1 \\
+%            3 & 1/4  & 1/4  & 1/2  & 1/2  & 1 \\
+%        \end{array}
+%    \]
+%    The LP relaxation of~\eqref{eq:RP} attains an optimal objective value of $-1/2,$
+%    achieved for example by
+%    %
+%    \[
+%        \bm{z} = \bigl(\tfrac{1}{4},\, \tfrac{1}{4},\, \tfrac{1}{4},\,
+%        \tfrac{1}{4},\, 0\bigr), \qquad
+%        \gamma_1 = 0, \quad \gamma_2 = \tfrac{7}{8}, \quad \gamma_3 = \tfrac{3}{8}.
+%    \]
+%    %
+%    In any solution to the IP that uses clause $a$ or $b$, it holds that $\gamma_2 \leq 1/2.$
+%    In any solution that uses clause $c$ or $d$, it holds that $\gamma_2 \leq 3/4.$
+%    Spreading is not necessarily prevented by branching on a variable with fractional value.
+%    Suppose we branch on $z_d.$ If $z_d = 0$ is fixed, there exists optimal LP solution
+%    \[
+%        \bm{z} = \bigl(\tfrac{1}{4},\, \tfrac{1}{4},\, \tfrac{1}{4},\,
+%        \tfrac{1}{2},\, 0\bigr), \qquad
+%        \gamma_1 = 0, \quad \gamma_2 = \tfrac{7}{8}, \quad \gamma_3 = \tfrac{3}{8},
+%    \]
+%    with objective value $-1/2.$
+%    If $z_d = 1$ is fixed, an optimal solution is given by
+%    \[
+%        \bm{z} = \bigl(\tfrac{1}{2},\, \tfrac{1}{2},\, \tfrac{1}{4},\,0,\, 1\bigr), \qquad
+%        \gamma_1 = 0, \quad \gamma_2 = \tfrac{3}{4}, \quad \gamma_3 = \tfrac{1}{4},
+%    \]
+%    again with objective value $-1/2.$
+%    If constraint \eqref{eq:TP_one-per-feature} is also added, an optimal solution when $z_d = 1$ is fixed is given by
+%    \[
+%        \bm{z} = \bigl(\tfrac{1}{2},\, 0,\, \tfrac{1}{2},\,1,\, 1\bigr), \qquad
+%        \gamma_1 = 0, \quad \gamma_2 = \tfrac{3}{4}, \quad \gamma_3 = \tfrac{3}{8},
+%    \]
+%    and has objective value $-3/8.$
+%    In all cases, an optimal LP solution after branching is still fractional.
+%    An analogous result is observed when branching on $z_c$.
+%    Branching on $z_a$ or $z_b$ is better.
+%    If $z_a = 1$ is fixed, for example, an optimal LP solution has objective value $-1/4$, the optimal IP objective value.
+%    The solution found by SCIP is integer, namely the solution that uses clauses $a$ and $b$.
+%    If $z_a = 0$ is fixed, the optimal LP objective value is $-9/20$, attained for example by
+%    \[
+%        \bm{z} = \bigl(0,\, \tfrac{1}{5},\, \tfrac{2}{5},\,
+%        \tfrac{2}{5},\, 0\bigr), \qquad
+%        \gamma_1 = 0, \quad \gamma_2 = \tfrac{9}{10}, \quad \gamma_3 = \tfrac{9}{20}.
+%    \]
+%    \todo{How would SCIP choose a variable to branch on? Would it systematically avoid $z_d$ and $z_c$?
+%    How would it work in more complicated examples? Is it then possible to choose these 'useless' branching variables?}
+%
+%    An alternative approach is branching on a set of variables.
+%    For instance, choose $S=\{a, b\}$ and consider the two branches
+%    \[\sum_{l \in S} z_l \geq 1, \text{ and } \sum_{l \in S} z_l = 0.\]
+%    This branching strategy by itself is not more effective than variable branching.
+%    However, each branch induces problem-specific variable bounds not captured by the LP\@.
+%    In the former branch, at least one of $a$ or $b$ is chosen, and therefore \[\gamma_2 \leq 1/2.\]
+%    Adding this constraint, which is equivalent to an updated upper bound on $\gamma_2$, this branch yields an integer solution.
+%    In the latter branch, it follows that \[\gamma_3 \geq 1/2.\]
+%    Even with this induced constraint, the branch does not yield an integer solution.
+%    Instead, spreading is observed over $c$ and $d$.
+%    Note that the set branching is a generalization of variable branching, as branching on some $S_1$ with one element is equivalent to branching on a variable.
+%\end{example}

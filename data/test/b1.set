@@ -1,0 +1,5 @@
+rs/type=0
+rs/method = 1
+rs/full/D = 3
+limits/time = 1000
+rs/exact/enabled = FALSE

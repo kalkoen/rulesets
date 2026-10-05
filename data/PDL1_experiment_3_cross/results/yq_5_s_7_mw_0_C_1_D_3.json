@@ -1,0 +1,94 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "AR>=0.000000",
+            "FOSL1>=109.140000",
+            "-NFATC1>=-3.885000"
+        ]
+    ],
+    "dualbound": 364.0,
+    "margin_width": 0.0,
+    "obj": 364.0,
+    "obj_cg": 364.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 616.0,
+            "pricer": 0,
+            "red_cost": -252.0,
+            "time": 3.681343
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -52.0,
+            "time": 6.005093
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -34.0,
+            "time": 6.851491
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -30.0,
+            "time": 7.490742
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -18.181818181818183,
+            "time": 8.203301
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -8.558139534883713,
+            "time": 8.797567
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -6.5624999999999964,
+            "time": 9.373782
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -0.6666666666666989,
+            "time": 9.957757
+        },
+        {
+            "lp_objective": 364.0,
+            "pricer": 0,
+            "red_cost": -0.2333333333333396,
+            "time": 10.557602
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "AR>=0.000000",
+            "FOSL1>=109.140000",
+            "-NFATC1>=-3.885000",
+            1.0
+        ]
+    ],
+    "soltime": 0.014702,
+    "soltime_cg": 11.166691,
+    "status": 1,
+    "status_cg": 1
+}

@@ -1,0 +1,87 @@
+{
+    "binary": [
+        [
+            "FOS>=-0.65 Q(0.33)",
+            "TBX21>=0.79 Q(0.83)",
+            "FOXO1<-1.16 Q(0.17)"
+        ],
+        [
+            "FOS>=2.11 Q(0.83)",
+            "FOSL1>=0.90 Q(0.83)",
+            "STAT1<-1.89 Q(0.33)"
+        ],
+        [
+            "GATA2>=1.41 Q(0.83)",
+            "IRF1>=1.71 Q(0.83)",
+            "FOXO1<0.25 Q(0.67)"
+        ],
+        [
+            "MYC>=-1.64 Q(0.83)",
+            "RELA>=2.58 Q(0.83)",
+            "FOXO1<0.25 Q(0.67)"
+        ],
+        [
+            "RELA>=2.58 Q(0.83)",
+            "STAT2>=1.22 Q(0.83)",
+            "STAT3<0.67 Q(0.67)"
+        ]
+    ],
+    "dualbound": 56.0,
+    "obj": 56.0,
+    "obj_cg": 56.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 77.0,
+            "pricer": 0,
+            "red_cost": -5.0,
+            "time": 0.23835599999999998
+        },
+        {
+            "lp_objective": 72.0,
+            "pricer": 0,
+            "red_cost": -3.0,
+            "time": 0.470603
+        },
+        {
+            "lp_objective": 62.0,
+            "pricer": 0,
+            "red_cost": -3.0,
+            "time": 0.678178
+        },
+        {
+            "lp_objective": 58.0,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 0.8840119999999999
+        },
+        {
+            "lp_objective": 56.8,
+            "pricer": 1,
+            "red_cost": -1.5999999999999996,
+            "time": 143.942273
+        },
+        {
+            "lp_objective": 56.25,
+            "pricer": 0,
+            "red_cost": -0.25,
+            "time": 144.136748
+        },
+        {
+            "lp_objective": 56.0,
+            "pricer": 1,
+            "red_cost": -1.0,
+            "time": 271.176637
+        },
+        {
+            "lp_objective": 56.0,
+            "pricer": 1,
+            "red_cost": -0.75,
+            "time": 418.0323
+        }
+    ],
+    "soltime": 0.008956,
+    "soltime_cg": 580.531056,
+    "status": 1,
+    "status_cg": 1
+}

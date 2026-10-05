@@ -1,0 +1,66 @@
+# stages:
+#   - prepare
+#   - generate
+#   - compile
+
+# generate_data:
+#   stage: prepare
+#   image: python:3.11-slim
+#   before_script:
+#     - pip install --upgrade pip
+#     - pip install pandas numpy matplotlib seaborn scikit-learn ucimlrepo
+#   script: 
+#     - export PYTHONPATH=$PYTHONPATH:.
+#     - python3 scripts/benchmark/prepare_data.py
+#     - python3 scripts/PDL1_experiment_1/prepare_data.py
+#   artifacts:
+#     untracked: false
+#     when: on_success
+#     access: all
+#     expire_in: 30 days
+#     paths:
+#       - data/benchmark/binarized/
+#       - data/PDL1_experiment_1/binarized/
+#   rules:
+#     - changes:
+#       - scripts/*/prepare_data.py
+
+# # Stage 1: Generate your files
+# process_results:
+#   stage: generate
+#   needs:
+#     - pipeline: $CI_PIPELINE_ID  
+#       job: generate_data
+#       ref: main
+#       artifacts: true
+#   image: python:3.11-slim
+#   before_script:
+#     - pip install --upgrade pip
+#     - pip install pandas numpy matplotlib seaborn scikit-learn
+#   script:
+#     - export PYTHONPATH=$PYTHONPATH:.
+#     - python3 scripts/process_experiments.py
+#   artifacts:
+#     paths:
+#       - tex/gen/
+#     when: on_success
+#     access: all
+#     expire_in: 30 days
+
+
+# compile_latex:
+#   stage: compile
+#   needs: ["process_results"]
+#   image: texlive/texlive:latest
+#   script:
+#     - cd tex
+#     - mkdir -p out
+#     - pdflatex -output-directory=out main.tex
+#     - bibtex out/main.aux || true
+#     - pdflatex -output-directory=out main.tex
+#   artifacts:
+#     when: on_success
+#     access: all
+#     expire_in: 30 days
+#     paths:
+#       - tex/out/main.pdf

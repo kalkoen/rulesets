@@ -1,0 +1,120 @@
+%``The main tactic that cancerous tissue applies to evade the immune system, is interaction with it,''
+%Mike van Santvoort writes in his PhD thesis.
+%Normally, the immune system detects and eliminates misbehaving cells.
+
+At the time of writing, cancer is still one of the leading causes of death in the Netherlands~\cite{noauthor_ranglijsten_nodate}.
+Roughly half of Dutch citizens are diagnosed with cancer at some point in their lifetime~\cite{noauthor_kans_nodate}.
+The human immune system is naturally capable of tracking, targeting and killing tumors.
+Sadly, tumor cells can develop methods to defend themselves from immune cells.
+Strategies include deactivating immune cells, evading detection, and keeping immune cells at a distance.
+As a result of these ``defenses'', many therapies designed to eradicate cancer, including immunotherapy,
+are ineffective for many tumors.
+
+One of the ways that cancerous tissue tries to evade the immune system is through the PD-L1 protein.
+PD-L1 is an important immune checkpoint, a brake that prevents our immune system from becoming overactive and attacking
+healthy tissue.
+Cancer cells can abuse PD-L1.
+As a result, PD-L1 has become a target for new cancer treatments, with
+FDA-approved immunotherapy targeting this protein~\cite{twomey_cancer_2021}.
+
+For the PD-L1 protein to be synthesized, the first step is transcription of its regulating gene CD274.
+To start transcription, certain proteins need to bind to the gene sequence.
+These proteins are called transcription factors, or TF for short.
+It is possible for a single TF to start transcription.
+In other cases, a combination of TFs, often in the form of a ``complex'', is required.
+If any of the TF in the complex is absent, transcription will not start.
+A gene is typically transcribed by several TFs and/or combinations of TFs.
+This creates an enormous search space that is difficult to traverse.
+
+Still, biologists and clinicians are interested in when and how combinations of TFs start synthesis of proteins like PD-L1.
+Who are the ``partners in crime'', helping PD-L1 be synthesized and ultimately helping cancer spread?
+Of course, the TF that enable production of PD-L1 in cancer cells may be the same ones acting in healthy cells.
+Still, for the sake of this investigation, we shall consider TFs acting together as ``partners in crime''
+and embark on an investigative journey.
+The knowledge gained could support identification of potential clinical targets, such that PD-L1 synthesis
+may be prevented from the very beginning.
+
+The aim of this research is to identify, from data, candidate groups of TF that may act together to enable PD-L1 production.
+The candidate groups could then be studied further, for instance in the lab.
+Understanding which groups are enabling the PD-L1 evasion tactic may ultimately help to develop strategies to prevent it.
+For even a moderate number of TFs and a moderate group size, the number of possible groups is large.
+Consequently, it is attractive or even necessary to study candidate groups systematically and computationally.
+
+We wish to design computational methods capable of identifying these groups from bulk transcriptomics,
+as such data is widely available.
+We wish to use TF activity data for our analysis,
+as a TF needs to be active to bind to a gene and contribute to transcription.
+Measuring how active a TF is inside a cell, however, is difficult.
+Readily available are bulk RNA sequencing data.
+These measure the average number of RNA transcripts across an entire group of cells in a tissue sample.
+The RNA transcript count will be simply referred to as ``gene expression''.
+Gene expression is not equivalent to protein activity.
+If gene expression is high, it does not necessarily mean that the resulting protein is active.
+Intermediate steps can affect the protein activity, like protein synthesis and post-translational modifications.
+Therefore, an existing method is used to estimate TF activity based on the gene expression profile in a tissue sample~\cite{badia-i-mompel_decoupler_2022}.
+
+The activation of the CD274 gene is represented by the PD-L1 gene expression.
+We refer this as simply ``PD-L1 expression'' and it will be the quantity of interest.
+In biological modeling, it is common to assume an ``OR'' relation between TFs and target gene expression, i.e.,
+``if TF A or TF B or TF C is active, then gene X is likely expressed''.
+When investigating which TF act together inside a complex, the natural analogue is to assume an ``AND'' gate.
+That is, ``if TF A and TF B are active, then gene X is likely expression''.
+In reality, different complexes may lead to a gene's transcription (expression), so a more fitting model is an
+``OR-of-ANDs''.
+Denote an ``OR'' by $\vee$ and an ``AND'' by $\wedge.$
+An example is
+\begin{gather*}
+    (\text{TF A is active} \wedge \text{TF B is active}) \lor (\text{TF C is active} \wedge \text{TF D is active})\\
+    \Longrightarrow \text{Gene X is expressed}.\\
+\end{gather*}
+From a mathematical perspective, this leads us to the subject of ``ruleset learning''~\cite{yang_learning_2022}.
+Ruleset learning is concerned precisely with learning a formula of this form from data.
+A major advantage of rulesets over, for instance, neural networks, is that rulesets are easily interpretable.
+
+There exist related data mining techniques known for their interpretability, like decision trees.
+Rulesets and decision trees are mathematically related; one can always be expressed in the form of the other.
+However, they differ conceptually and in terms of expressiveness.
+A relatively simple ruleset can be equivalent to a large, redundant decision tree and vice versa.
+Notably, decision trees hold a certain hierarchy; conditions checked higher up the tree are ``more important''.
+The root node, for instance, plays a pivotal role in all decisions.
+However, we are looking for a diverse set of relevant conditions.
+It is not obvious that activity of one TF individually should govern the entire decision process.
+Therefore, while substantial literature exists on optimal decision trees (\cite{van_der_linden_optimal_2026}),
+we do not consider decision trees suitable for this problem.
+Another related technique is optimal rule list mining, which was studied in~\cite{angelino_learning_2018}.
+A rule list (or decision list) is an ordered list of if-statements, evaluated sequentially to make a prediction.
+For instance,
+\begin{gather*}
+    \textbf{if } (\text{TF A is active} \wedge \text{TF B is active}) \textbf{ then } \text{predict ``Gene X expressed``},\\
+    \textbf{else if } (\text{TF C is active}) \textbf{ then } \text{predict ``Gene X expressed``}
+\end{gather*}
+Again there is a hierarchy; later rules assume that earlier rules were false.
+
+Therefore, we build upon earlier research into optimal rule sets.
+In particular, we employ the techniques proposed in~\cite{dash_boolean_2020}
+and later studied further in~\cite{lawless_interpretable_2023}.
+We will study whether rule sets can be effective in predicting PD-L1 expression from TF activity scores
+in the context of bulk transcriptomics.
+Furthermore, we will investigate whether the rule sets describe an intrinsic phenomenon in the data.
+Precisely, we study whether the rule sets found are consistent and generalize to unseen data.
+
+
+\section{Data}\label{sec:data}
+\input{chapters/1_introduction/1_data}
+
+\section{Outline}\label{sec:outline}
+In \autoref{ch:boolean-model} we apply the method studied in~\cite{lawless_interpretable_2023} to
+the Broad dataset to study whether high PD-L1 expression can be captured in a ruleset.
+In \autoref{ch:threshold-model} we describe a version of the model tailored to thresholded continuous
+features.
+We use it to conduct additional experiments to understand the behavior of the model on the Broad dataset.
+In \autoref{ch:ramp_model} we build upon the model of \autoref{ch:threshold-model} to study
+whether an alternative loss function, the ramp loss, can help produce more consistent rulesets.
+Based on these results, we perform final experiments in \autoref{ch:experiments}.
+In particular, we consider subsets of the data, a different dataset and an experiment in which TF are excluded
+to identify ``important'' TF\@.
+The rulesets that perform adequately on the Broad dataset are tested on the holdout dataset,
+Sanger, in \autoref{ch:holdout}.
+The performance of these rulesets is presented alongside the best performing rulesets on the Sanger dataset.
+We propose three recommendations for future research in \autoref{ch:recommendations}.
+Finally, concluding remarks are covered in \autoref{ch:conclusion}.

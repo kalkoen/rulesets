@@ -1,0 +1,42 @@
+Inferring logical rules from bulk transcriptomics turns out to be difficult.
+Logical rules perform poorly to predict PD-L1 gene expression across various attempted methods to infer them.
+Qualitatively different rules perform similarly, making it difficult to infer a consistent set of rules.
+The rules found for the training dataset, Broad, do not generalize well to the holdout dataset, Sanger.
+
+As a basis, the method treated in~\cite{lawless_interpretable_2023} was used to
+infer rulesets for PD-L1 expression from TF activity scores.
+In this method, continuous data is first discretized via thresholding.
+Then, an optimal ruleset is found via mathematical methods.
+Here, ``optimal'' means achieving a high accuracy in predicting a target boolean.
+The target boolean is whether PD-L1 expression exceeds a chosen threshold, representing whether PD-L1 is active or not.
+A ruleset is a collection of ``rules'', each rule consisting of one or more ``threshold clauses''.
+In our application, exceeding a threshold means that a TF exceeds a certain activity level.
+
+While this method has been shown to work well on a variety of datasets, it does not work well on our dataset
+(\autoref{ch:boolean-model}).
+When allowing moderate ruleset complexity (equivalent to at most five three-TF rules, or at most six two-TF rules plus a one-TF rule),
+accuracy is not high.
+In some cases, the results prove that no meaningfully better ruleset of this form exists (\autoref{sec:boolean_model_appendix}).
+
+Upon further inspection (\autoref{ch:threshold-model}),
+simple rulesets perform only marginally worse than the more complex rulesets found before.
+In particular, a rule with a single TF can yield a comparable accuracy.
+This suggests that rulesets of this form are not a good predictor for PD-L1 expression.
+Results also show that rulesets are not consistent when applying stratified cross-validation on the training dataset.
+
+\clearpage
+
+A novel variant of the base model, the ramp loss model (\autoref{ch:ramp_model}),
+was designed to find more consistent rulesets and possibly discover new, previously hidden rules.
+Both goals were not achieved; similar rulesets were found and
+these were not consistent among splits of the training dataset during stratified cross-validation.
+
+Additional experiments revealed that the base method works slightly better on tumors than on metastases.
+An additional experiment also revealed that the method works slightly better on raw TF gene expression data,
+rather than TF activity estimates, yielding qualitatively different results with slightly higher accuracy.
+However, rulesets based on gene expression data are not expected to be biologically meaningful.
+Finally, a TF exclusion experiment revealed that accuracy drops slightly upon exclusion of promising TF\@.
+
+Overall, inferring logical rules predicting high PD-L1 expression from combinatorial TF activity
+in the context of bulk transcriptomics was only marginally successful.
+Recommendations for further research are discussed in \autoref{ch:recommendations}.

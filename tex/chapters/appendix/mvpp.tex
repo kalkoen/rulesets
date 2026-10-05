@@ -1,0 +1,58 @@
+The Mixed Vertex Packing Problem, as described in~\cite{atamturk_mixed_2000}, is defined as
+\[
+    \max\{cx + dy \fw (x,y) \in \text{MVP}\},
+\]
+where
+\begin{align}
+        \text{MVP} = \{
+        \bm{x} \in \{0,1\}^V, \bm{y} \in \R^I \fw x_v + x_w &\leq 1, \quad &&(v,w) \in E \\
+        a_{vi}x_i + y_i &\leq u_i, \quad &&(v,i) \in F \\
+        0 \leq y_i &\leq u_i \quad &&i \in I
+        \},
+\end{align}
+is the Mixed Vertex Packing (MVP) polytope.
+Define
+\[
+    M(i) = \{v \in V \fw (v,i) \in F\}.
+\]
+\begin{proposition}[\cite{atamturk_mixed_2000}]
+    for $i \in I, $ let $T = \{v_1, v_2, \dots v_t\} \subseteq M(i)$
+    such that $a_{v_{j-1}k} < a_{v_{j}k}$ for $j = 2, \dots, t$.
+    Then the \emph{star inequality}
+    \begin{equation}\label{eq:MVPP_star}
+        \sum_{i \in T} \overline{a}_{vi}x_v + y_i \leq u_i,
+    \end{equation}
+    with
+    \[
+        \begin{split}
+            \overline{a}_{v_1 k} &= a_{v_1 k}, \\
+            \overline{a}_{v_j k} &= a_{v_j k} - a_{v_{j-1}k}, \quad j=2,3,\dots,t, \\
+        \end{split}
+    \]
+    is valid for $\conv(\text{MVP})$.
+\end{proposition}
+
+If $E=\emptyset,$ then $\conv(\text{MVP})$ turns out to have a relatively simple description.
+
+\begin{theorem}[\cite{atamturk_mixed_2000}]
+    If $E = \emptyset,$ then inequalities \eqref{eq:MVPP_star} together with inequalities
+    \begin{align}
+        0 \leq x_v &\leq 1, && v \in V, \\
+        0 \leq y_i &\leq u_i, && i \in I,
+    \end{align}
+    are sufficient to describe $\conv(\text{MVP}).$
+\end{theorem}
+
+In the MVP polytope, we recognize \eqref{eq:RP} with only the constraint \eqref{eq:RP-pos}.
+Precisely, choose
+\begin{align*}
+    V &= \L, \\
+    \bm{x} &= \bm{z}, \\
+    I &= \I, \\
+    \bm{y} &= \bm{\gamma}, \\
+    u_i &= 2, \quad && i \in \I, \\
+    a_{li} &= 2 - \gamma_{il}, \quad && i \in \I,\; l \in \L,
+    E = \emptyset.
+\end{align*}
+It is implied that $F=\L \times \I$.
+The star inequalities \eqref{eq:MVPP_star} for this instance yield the cutting planes \eqref{eq:RP-pos-cutting-planes}.

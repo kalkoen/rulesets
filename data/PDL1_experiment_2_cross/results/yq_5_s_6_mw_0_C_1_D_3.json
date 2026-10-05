@@ -1,0 +1,70 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "FOS>=-0.809287",
+            "FOSL1>=0.119733",
+            "STAT2>=-0.725630"
+        ]
+    ],
+    "dualbound": 394.0,
+    "margin_width": 0.0,
+    "obj": 394.0,
+    "obj_cg": 394.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 612.0,
+            "pricer": 0,
+            "red_cost": -218.0,
+            "time": 2.7555
+        },
+        {
+            "lp_objective": 394.0,
+            "pricer": 0,
+            "red_cost": -52.0,
+            "time": 4.658542
+        },
+        {
+            "lp_objective": 394.0,
+            "pricer": 0,
+            "red_cost": -15.333333333333336,
+            "time": 5.201123
+        },
+        {
+            "lp_objective": 394.0,
+            "pricer": 0,
+            "red_cost": -6.0,
+            "time": 5.747253
+        },
+        {
+            "lp_objective": 394.0,
+            "pricer": 0,
+            "red_cost": -10.0,
+            "time": 6.296061
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "FOS>=-0.809287",
+            "FOSL1>=0.119733",
+            "STAT2>=-0.725630",
+            1.0
+        ]
+    ],
+    "soltime": 0.010014,
+    "soltime_cg": 6.816137,
+    "status": 1,
+    "status_cg": 1
+}

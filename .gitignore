@@ -1,0 +1,81 @@
+# --- IDE Specific (CLion / JetBrains) ---
+.idea/
+cmake-build-*/
+*.iws
+*.out
+*.app
+
+# --- Build System (CMake) ---
+# If you build from the terminal instead of CLion
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+cmake_install.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+
+# --- Compiled Files / Executables ---
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.exe
+# Ignore your specific executable names
+code
+analyzer
+
+# --- External Library Artifacts ---
+# If SCIP or other libs generate temporary logs or local configs
+*.log
+scip.set
+
+# --- Python Integration ---
+# Since you mentioned running experiments via Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+
+build/
+build-backup/
+downloads/
+*.aux
+*.gz
+
+scripts/cg_data_gen
+#scripts/exploratory_data_analysis
+
+data/*/split
+data/*/binarized
+
+*.bbl
+*.blg
+
+/*.sh
+logs/
+.ondemand/
+
+tex/svg-inkscape
+tex/main.pdf
+tex/auxil
+
+.vscode
+
+data/large
+
+build-windows/
+release-windows/
+rule-sets-windows.zip
+scripts/R

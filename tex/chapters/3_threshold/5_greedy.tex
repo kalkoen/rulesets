@@ -1,0 +1,132 @@
+As an additional approach we explore a greedy algorithm with two goals in mind:
+to investigate whether this simpler approach performs similarly,
+and to verify that optimal rulesets for simple cases (low $C$ and $D$)
+are similar to those produced by our earlier, more complicated approach.
+
+In the greedy approach, we first find through brute force complete enumeration a rule with minimum \zo loss,
+so with maximum train accuracy.
+Then, the positively classified points are removed from the dataset and the cycle repeats.
+Note that this greedy method is essentially a strategy to find a rule list rather than a rule set.
+For $C=1$, the greedy approach finds an optimal ruleset.
+
+Mathematically, we consider in step $\tau$ the points $\I_\tau$ and the corresponding positive points $\P_\tau$ and negative points $\N_\tau.$
+Denote by rule $k_\tau$ the rule found in step $\tau$.
+Then $\I_1 = \I$ and
+\[\I_{\tau + 1} = \I_\tau \setminus \{i \in \I_\tau \fw k_\tau \in \K_{i}\} = \I_\tau \setminus \I_{\{k_\tau\}}, \tquad \tau \in \mathbb{N}_+.\]
+Equivalently,
+\[\I_{\tau + 1} = \{i \in \I_\tau \fw y_{\{k_\tau\}}(\bm{X}_i) \neq 1\}, \tquad \tau \in \mathbb{N}_+.\]
+
+\begin{algorithm}[h!]
+\caption{Greedy Ruleset Selection}
+\label{alg:greedy}
+\begin{algorithmic}[1]
+\Require $\I$, $\bm{X}$, $\bm{y}$, $C$, $D$
+\State $\I_1 \gets \I$
+\For{$\tau = 1, \dots, C$}
+    \State Find rule $k_\tau$ with at most $D$ clauses minimizing \zo loss w.r.t. $\I_\tau,$ $\bm{X},$ $y$
+    \State $\I_{\tau+1} \gets \{i \in \I_{\tau} \fw \hat{y}_{\{k_\tau\}}(\bm{X}_i) \neq 1\}$
+\EndFor \\
+\Return $(k_\tau)_{\tau=1,\dots,C}$
+\end{algorithmic}
+\end{algorithm}
+
+An advantage of the greedy algorithm is that it is easy to understand and to implement.
+Furthermore, discretization via thresholding is done in every step separately.
+This means that new, more relevant threshold values may be found in later steps,
+when a part of the points is no longer considered.
+A disadvantage is that there is no optimality guarantee for $C>1$.
+Additionally, the Python implementation, while highly readable, is slow.
+This is in part due to enumeration of all rules in each step, which is slow for larger values of $D$
+(in our experiments, for $D\geq 3$).
+Another aspect is the high-level nature of Python, hurting performance, despite the use of NumPy where possible.
+
+The results for $D=1$ are summarized in \autoref{tab:greedy_yq_4_5_mw_0_C_3_D_1}.
+While the greedy method was configured to continue after step two, there did not exist a rule that improved
+performance.
+The first rule provides reasonable performance.
+The second rule provides barely any improvement.
+For both $Q_y=0.5$ and $Q_y=0.6$, the same features appear in the rules.
+
+The results for $D=2$ are summarized in \autoref{tab:greedy_yq_4_5_mw_0_C_3_D_2}.
+In both tables, the value of adding another rule quickly diminishes.
+The second and third rules barely increase accuracy.
+The third rule found covers only a small fraction of the remaining positive points.
+%Compared to \autoref{tab:threshold_interpretable_results_C_1} and \autoref{tab:threshold_interpretable_results_C_2},
+%describing results of our earlier approach,
+%the accuracy observed is similar.
+Qualitatively, there is some overlap in the rules found, but there are differences.
+
+The previous method (\autoref{sec:threshold-results}) performs similar to the greedy method.
+Since for $C=1$ greedy is optimal, this suggests that the previous method is working as intended.
+Sometimes, the greedy method outperforms the previous method.
+There are two contributing factors for this.
+First, the greedy method has more freedom in later steps.
+Second, the previous approach is a heuristic, as it uses price-then-branch, and it was configured to use
+only the heuristic pricer.
+Nevertheless, overall performance is similar.
+
+The conclusion of the experiments in this chapter is two-fold.
+\begin{itemize}
+    \item Compared to \autoref{sec:boolean-results}, decreasing complexity only moderately decreases performance.
+    Instead, very simple rulesets can achieve a comparable accuracy, even when only using one clause per rule,
+    which was not expected.
+    It appears that the data is highly correlated and noisy, making it unsuitable for this off-the-shelf classifier model.
+    \item The rulesets found are not consistent.
+    The cross-validation experiment showed that rulesets vary among splits.
+    The inconsistency of rules is supported by the wide variety of TF combinations observed in this chapter's tables.
+\end{itemize}
+We will therefore alter the model in an attempt to make it more robust and handle noise better, hopefully
+providing more meaningful rulesets.
+
+%\begin{table}
+%    \centering
+%    \bwtable{gen/PDL1ex2/tab_greedy_yq_4_mw_0_C_3_D_2}
+%    \caption{}
+%    \label{tab:greedy_yq_4_mw_0_C_3_D_2}
+%\end{table}
+%
+%\begin{table}
+%    \centering
+%    \bwtable{gen/PDL1ex2/tab_greedy_yq_5_mw_0_C_3_D_2}
+%    \caption{}
+%    \label{tab:greedy_yq_5_mw_0_C_3_D_2}
+%\end{table}
+
+\begin{table}
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_yq_4_mw_0_C_3_D_1}
+    \vspace{1em}
+    \bwtable{gen/PDL1ex2/tab_greedy_yq_5_mw_0_C_3_D_1}
+    \caption{Rules found in each step of the greedy algorithm, for $Q_y=0.5$ (top) and $Q_y=0.6$ (bottom).
+    The full Broad dataset is used for training and $D=1$.
+    In both cases, accuracy cannot be improved by any additional rule after step two.}
+    \label{tab:greedy_yq_4_5_mw_0_C_3_D_1}
+\end{table}
+
+\begin{table}
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_yq_4_mw_0_C_3_D_2}
+    \vspace{1em}
+    \bwtable{gen/PDL1ex2/tab_greedy_yq_5_mw_0_C_3_D_2}
+    \caption{Rules found in each step of the greedy algorithm, for $Q_y=0.5$ (top) and $Q_y=0.6$ (bottom).
+    The full Broad dataset is used for training and $D=2$.}
+    \label{tab:greedy_yq_4_5_mw_0_C_3_D_2}
+\end{table}
+
+
+%It can be formulated as follows:~
+%\begin{subequations}
+%    \label{eq:TP}
+%    \begin{align}
+%        \min \quad & \sum_{i \in \cN} \delta_i - \sum_{i \in \cP} \mu_i \delta_i +
+%        \lambda \label{eq:TP-obj} \\
+%        \st \quad & |J|\delta_i + \sum_{j \in \J} z_{ij} \leq |J|, & i \in \I, \label{eq:TP-con1}\\
+%        & \delta_i +  \sum_{j \in J} z_{ij} \geq  1, & i \in \I,  \label{eq:TP-con2}\\
+%        & z_{ij} \geq z_{i'j} & \forall\, i \in \I,\, j \in \J, \, :\, X_{ij} \leq X_{i'j}, \label{eq:TP-con3} \\
+%        & \mathrlap{\delta\in \{0,1\}^\I,~z\in\{0,1\}^{\I\times \J}.}\label{eq:TP-vars}
+%    \end{align}
+%\end{subequations}
+%Here $z_{ij}$ encodes whether point $i$ is cut off by feature $j$ in the chosen rule.
+%Note that the rule complexity is not capped at $D$ in this formulation.
+%In practice, this IP is hard to solve, due to its size.
+

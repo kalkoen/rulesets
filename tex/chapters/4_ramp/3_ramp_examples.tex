@@ -1,0 +1,167 @@
+In this section, we study the behavior of the ramp loss model on some simple, artificial data.
+These examples employ a ``full master problem'', meaning all relevant rules (columns) are considered.
+Precisely, given a positive integer $D$, all possible rules with at most $D$ clauses satisfying the following conditions are considered:
+\begin{itemize}
+    \item A feature appears at most once in any rule.
+    So a feature appears in at most one clause within a rule.
+    \item A feature and their negated version do not appear together in any rule.
+    This means a feature cannot appear in both a ``$\geq$''-clause and a ``$\leq$''-clause within a rule.
+\end{itemize}
+The examples are in two dimensions.
+Recall that for $\beta = 0$, the ramp loss model is equivalent to the threshold model.
+
+\begin{example}[Two clouds]\label{ex:two_clouds}
+    \begin{figure}
+        \includesvg[width=\textwidth]{gen/test_clouds/example_1.svg}
+        \caption{Instance of \autoref{ex:two_clouds}. The example consists of a negative and a positive cloud of $100$ points each, following $\mathcal{N}((8, 10), 2)$ and $\mathcal{N}((12, 10), 2)$ respectively.}
+        \label{fig:two_clouds}
+    \end{figure}
+    We construct two clouds of points according to multivariate normals.
+    Precisely,
+    \begin{itemize}
+        \item A cloud of $100$ negative points drawn from $\text{Normal}((8, 10), 2)$,
+        \item A cloud of $100$ positive points drawn from $\text{Normal}((12, 10), 2)$.
+    \end{itemize}
+    Hence, the cloud centers share $x_2$ but differ in $x_1$.
+    An instance is depicted in \autoref{fig:two_clouds}
+    Choosing $c=1$ as rule complexity, we solve the ramp loss model for the parameters
+    \[C \in \{1,2\}, \quad \beta \in \{0, 0.5, 1, 2, 3, 4, 5\}, \quad D = \{2\}.\]
+
+    \begin{figure}
+        \includesvg[width=.8\textwidth]{gen/test_clouds/results/O_1_C_1_mw_0_additive.set.svg}
+        \caption{Solution to an instance of \autoref{ex:two_clouds} computed with the ramp loss model, configured with $C=1$, $\beta=0$, $D=2$.}
+        \label{fig:two_clouds_solution_simple}
+    \end{figure}
+    For $\beta=0,$ the solution contains only the rule
+    $x_1 \geq 9.88$ regardless of $C$.
+    So, for this example, an increase in $C$ does not cause the model to behave differently.
+    This solution is depicted in \autoref{fig:two_clouds_solution_simple}.
+
+    For $C=1$ fixed, the same solution is found for $\beta$ up until and including $\beta = 4$.
+    For $C=1, \; \beta=5,$ the rule is $x_1 \geq 10.73$ instead.
+    We conclude that for $C=1$, the ramp loss model finds a sensible solution for any of the tested $\beta$.
+
+    For $C > 1$, $\beta > 0$, the model behaves peculiarly: all solutions consist of two rules.
+    For $C=2$, $\beta = 0.5$ the ruleset consists of two adjacent, non-overlapping rules, as depicted in \autoref{fig:two_clouds_solution_bad_a}.
+    The same holds for $C=2$, $\beta=1$, as shown in \autoref{fig:two_clouds_solution_bad_b}.
+    These rulesets achieve a much lower objective than the rule $x_1 \geq 9.88$ found earlier.
+    For $\beta=0.5,$ this can be partly attributed to the exclusion of the lower left corner in the covered region.
+    More interestingly, for $\beta=1$, the choice of this ruleset can be attributed to the additive nature of the model.
+    To see this, recall that points near a margin induce a loss, even if the point resides on the desired side of the covered region.
+    Looking closer, constraint \eqref{eq:RM-misP} implies that the loss of a positive point decreases as the number of margins it is in increases.
+    In particular, being in two or more margins can be equivalent to being far inside the covered region, which gives a loss of $0$.
+    This encourages the use of more than one rule.
+    From $\beta=2$ onwards, the ruleset consists of two rules, one of which is contained in the other.
+    This is depicted in \autoref{fig:two_clouds_solution_bad_2}.
+    The objective is again much lower than the simple rule $x_1 \geq 9.88$.
+    This phenomenon can again be attributed to the additive nature of the model.
+
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_0.5_additive.set.svg}
+            \caption{}
+            \label{fig:two_clouds_solution_bad_a}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_1_additive.set.svg}
+            \caption{}
+            \label{fig:two_clouds_solution_bad_b}
+        \end{subfigure}
+        \caption{Solutions to an instance of \autoref{ex:two_clouds} computed with the ramp loss model, configured with $C=2$, $\beta=0.5$ (a) and $C=2$, $\beta=1$ (b), respectively.}
+        \label{fig:two_clouds_solution_bad}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_2_additive.set.svg}
+            \caption{}
+            \label{fig:two_clouds_solution_bad_2_a}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_1_C_2_mw_3_additive.set.svg}
+            \caption{}
+            \label{fig:two_clouds_solution_bad_2_b}
+        \end{subfigure}
+        \caption{Solutions to an instance of \autoref{ex:two_clouds} computed with the ramp loss model, configured with $C=2$, $\beta=2$ (a) and $C=2$, $\beta=3$ (b), respectively.}
+        \label{fig:two_clouds_solution_bad_2}
+    \end{figure}
+
+\end{example}
+
+\begin{example}[Three clouds]\label{ex:three_clouds}
+    \begin{figure}
+        \includesvg[width=\textwidth]{gen/test_clouds/example_2.svg}
+        \caption{Instance of \autoref{ex:three_clouds}. The example consists of a negative cloud of $100$ points, a positive cloud of $100$ points and a positive cloud of $10$ points.
+        The point clouds have distributions $\text{Normal}((8, 10), 2)$, $\text{Normal}((12, 10), 2)$ and $\text{Normal}((5,15), 1)$, respectively.}
+        \label{fig:three_clouds}
+    \end{figure}
+    Consider \autoref{ex:two_clouds} with an additional positive cloud of $10$ points, drawn from $\text{Normal}((5, 15), 1)$.
+    An instance is depicted in \autoref{fig:three_clouds}.
+    We again solve the ramp loss model for parameters
+    \[C \in \{1,2,3\}, \quad \beta \in \{0, 0.5, 1, 2, 3, 4, 5\}, \quad D\in \{2\}.\]
+    For $C = 1$, the rule $x_1 \geq 9.71$ is found for all $\beta$ up until and including $\beta = 4$.
+    For $C = 1$, $\beta = 5$, the rule is $x_1 \geq 8.77$ instead.
+    Notably, the margin covers every point in the positive cloud of $10$ points in this case.
+    For $C = 2$ and $\beta \in \{0, 0.5, 1\},$ the ruleset
+    \[
+        x_1 \geq 9.71 \quad \vee \quad  \left(x_1 \leq 8.03 \; \wedge \; x_2 \geq 13.36\right)
+    \]
+    is found.
+    This solution is depicted in \autoref{fig:three_clouds_solution_good}.
+    \begin{figure}
+        \includesvg[width=.8\textwidth]{gen/test_clouds/results/O_2_C_2_mw_0_additive.set.svg}
+        \caption{Solution to an instance of \autoref{ex:three_clouds} computed with the ramp loss model, configured with $C=2$, $\beta=0$, $D=2$.}
+        \label{fig:three_clouds_solution_good}
+    \end{figure}
+    For $C=2$, $\beta=2$ the resulting ruleset is different and may be considered reasonable.
+    This ruleset is depicted in \autoref{fig:three_clouds_solution_bad_a}.
+    For $C=2$, $\beta>2$, rulesets consist of overlapping rules and ignore the positive cloud of 10 points.
+    An example is depicted in \autoref{fig:three_clouds_solution_bad_b}.
+    For $C=3$, the solutions are similar to the $C=2$ case of \autoref{ex:two_clouds},
+    but with an extra rule to accommodate the additional positive point cloud.
+    An example is shown in \autoref{fig:three_clouds_solution_bad_2}.
+
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_2_C_2_mw_2_additive.set.svg}
+            \caption{}
+            \label{fig:three_clouds_solution_bad_a}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{.48\textwidth}
+            \centering
+            \includesvg[width=\textwidth]{gen/test_clouds/results/O_2_C_2_mw_3_additive.set.svg}
+            \caption{}
+            \label{fig:three_clouds_solution_bad_b}
+        \end{subfigure}
+        \caption{Solutions to an instance of \autoref{ex:three_clouds} computed with the ramp loss model, configured with $C=2$, $\beta=2$ (a) and $C=2$, $\beta=3$ (b), respectively.}
+        \label{fig:three_clouds_solution_bad}
+    \end{figure}
+
+    \begin{figure}
+        \includesvg[width=.8\textwidth]{gen/test_clouds/results/O_2_C_3_mw_1_additive.set.svg}
+        \caption{Solution to an instance of \autoref{ex:three_clouds} computed with the ramp loss model, configured with $C=3$, $\beta=1$, $D=2$.}
+        \label{fig:three_clouds_solution_bad_2}
+    \end{figure}
+
+\end{example}
+
+In these two examples, the model behaves as desired when $\beta = 0$.
+When a margin is introduced, freedom to choose rules results in undesirable rulesets.
+The clearest example of this is \autoref{fig:three_clouds_solution_bad_b}, where a positive point cloud is ignored,
+because overlapping rules are beneficial in terms of loss, due to additivity in the model.
+From a practitioner's perspective, the problem is sometimes solved by limiting $C$ and $\beta$.
+After all, for adequate choice of $C$ and $\beta$, the model produces results considered reasonable.
+However, the results suggest that the model in its current form is not suitable for the problem at hand.
+Therefore, we introduce a version of the model where positive points no longer benefit from being in more than one margin.
+We refer to this model as the non-additive ramp loss moel.

@@ -1,0 +1,122 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "FOSL1>=174.630000",
+            "-NFATC1>=-3.905000"
+        ]
+    ],
+    "dualbound": 332.75,
+    "margin_width": 0.8,
+    "obj": 332.75,
+    "obj_cg": 332.75,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 460.0,
+            "pricer": 0,
+            "red_cost": -127.25000000000003,
+            "time": 1.749816
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -32.399999999999984,
+            "time": 3.433177
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -10.39375000000011,
+            "time": 4.8991299999999995
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -13.45624999999983,
+            "time": 6.401855
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -3.1520996093749147,
+            "time": 7.913107
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -3.0625,
+            "time": 9.379044
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -4.568749999999888,
+            "time": 10.850233
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -2.6000000000000547,
+            "time": 12.318582
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -1.9437500000000334,
+            "time": 13.797708
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -1.47916666666673,
+            "time": 15.282398
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -1.7499999999999671,
+            "time": 16.785102
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -0.2450000000000454,
+            "time": 18.256498
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -0.13750000000000284,
+            "time": 19.668216
+        },
+        {
+            "lp_objective": 332.75,
+            "pricer": 0,
+            "red_cost": -0.2254687499999628,
+            "time": 21.096014
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "FOSL1>=174.630000",
+            "-NFATC1>=-3.905000",
+            1.0
+        ]
+    ],
+    "soltime": 0.15248399999999998,
+    "soltime_cg": 22.569026,
+    "status": 1,
+    "status_cg": 1
+}

@@ -1,0 +1,93 @@
+The non-additive ramp-loss model formulation \eqref{eq:NRM} can be written as
+\begin{equation}\label{eq:NRM_primal_vector}
+    \begin{split}
+        \min & \begin{bmatrix}
+                   \bm{1} & d
+        \end{bmatrix} \begin{bmatrix}
+                          \zeta \\ w
+        \end{bmatrix} \\
+        \st & \begin{bmatrix}
+                  \hat{I} & \hat{H} \\
+                  I & \mathbf{2} \\
+                  0 & -c
+        \end{bmatrix} \begin{bmatrix}
+                          \zeta \\ w
+        \end{bmatrix}
+        \geq \begin{bmatrix}
+                 \bm{2} + \eta \\ \bm{2} \\  -C
+        \end{bmatrix}, \\
+        & \zeta, w \geq 0,
+    \end{split}
+\end{equation}
+where $\hat{I} \in \R^{(\P \times \K)\times \P}$, $\hat{H}\in \R^{(\P \times \K) \times \K}$ such that
+\begin{align*}
+    \hat{I}_{[ik']i'} &= \Ind(i = i') & i, i' \in \P, \quad k' \in \K, \\
+    \hat{H}_{[ik']k} &= \eta_{ik'} - \eta_{ik}, & i \in \P, \quad k', k \in \K,
+\end{align*}
+and $c, d$ are the same as before.
+Furthermore, $\mathbf{2}$ is the all-two matrix on the left hand side
+and the all-two column vector on the right hand side.
+The dual then consists of variables $\mu \in \R_+^{\P \times \K}$, $\theta \in \R_+^{\P}$ and $\lambda \in \R_+$.
+The reduced cost of a rule $k$ is given by
+\begin{equation}\label{eq:NRP_redcost_vector_derivation}
+    \begin{split}
+        \rho_k &= d_k - \left(\mu \hat{H}_k + \theta\mathbf{2} - \lambda c_k\right) \\
+        &= \sum_{i \in \N} \gamma_{ik} - \sum_{\substack{i \in \P, k' \in \K \\ \eta_{ik} < \eta_{ik'}}} \mu_{ik'}(\eta_{ik'}-\eta_{ik}) + \sum_{i \in \P} 2\theta_i + \lambda c_k. \\
+        &= \sum_{i \in \N} \gamma_{ik} - \sum_{\substack{i \in \P, k' \in \K \\ \eta_{ik} < \eta_{ik'}}} \mu_{ik'}\eta_{ik'} + \sum_{\substack{i \in \P, k' \in \K \\ \eta_{ik} < \eta_{ik'}}} \mu_{ik'}\eta_{ik} + \sum_{i \in \P} 2\theta_i + \lambda c_k. \\
+    \end{split}
+\end{equation}
+The chosen rule influences what elements are included in the sum.
+This makes translating the reduced cost to a MIP non-trivial and complicated.
+
+
+%%Observe that the second sum is a constant.
+%%And the third sum is a linear combination of $\eta_{ik}$`s.
+%\textcolor{red}{TODO: Problem: a new column also brings new rows, which include existing columns.
+%And finding a column includes shadow prices of columns that don't exist. This will get complicated.}
+
+The formulation \eqref{eq:NRMa} may be written as
+\begin{equation}\label{eq:NRMa_primal_vector}
+    \begin{split}
+        \min & \begin{bmatrix}
+                   \bm{1} & d & 0
+        \end{bmatrix} \begin{bmatrix}
+                          \zeta \\ w \\ u
+        \end{bmatrix} \\
+        \st &
+        \begin{bmatrix}
+            I & 0 & -\hat{H} \\
+            0 & 0 & \hat{I}^u \\
+            0 & 0 & -\hat{I}^u \\
+            0 & \hat{I}^w & -I \\
+            0 & -c & 0
+        \end{bmatrix}
+        \begin{bmatrix}
+            \zeta \\ w \\ u
+        \end{bmatrix}
+        \geq \begin{bmatrix}
+                 \bm{2} \\ 1 \\ -1 \\ 0 \\ -C
+        \end{bmatrix}, \\
+        & \zeta, w, u \geq 0,
+    \end{split}
+\end{equation}
+where $\hat{H}, \hat{I}^u \in \R^{\P \times (\P \times \K)}$, $\hat{I}^w \in \R^{(\P \times \K) \times \K}$, given by
+\begin{align*}
+    \hat{H}_{i[i',k]} &= \eta_{ik} \Ind(i = i'), & i \in \P, \quad [i', k] \in \P \times \K, \\
+    \hat{I}^u_{i[i'k]} &= \Ind(i = i'), & i \in \P, \quad [i', k] \in \P \times \K, \\
+    \hat{I}^w_{[ik']k} &= \Ind(k = k'), & [i, k'] \in \P \times \K, \quad k \in \K,
+\end{align*}
+The dual then consists of variables
+\begin{align*}
+    \mu &\in \R_+^\P, \\
+    \nu_1 &\in \R_+^\P, \\
+    \nu_2 &\in \R_+^\P, \\
+    \theta &\in \R_+^{\P \times \K}, \\
+    \lambda &\in \R_+.
+\end{align*}
+The reduced cost of a rule $k$ is given by
+\begin{equation}\label{eq:NRPa_redcost_vector_derivation}
+    \begin{split}
+        \rho_k &= d_k - \theta \hat{I}^w_k + \lambda c_k \\
+        &= \sum_{i \in \N} \gamma_{ik} - \sum_{i \in \P} \theta_{ik} + \lambda c_k.
+    \end{split}
+\end{equation}

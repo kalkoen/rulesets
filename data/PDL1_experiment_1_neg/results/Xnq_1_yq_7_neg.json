@@ -1,0 +1,31 @@
+{
+    "binary": [
+        [
+            "RELA>=0.03 Q(0.50)",
+            "FOXO1<-0.24 Q(0.50)",
+            "STAT4<0.45 Q(0.50)"
+        ]
+    ],
+    "dualbound": 161.0,
+    "obj": 161.0,
+    "obj_cg": 161.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 170.0,
+            "pricer": 0,
+            "red_cost": -9.0,
+            "time": 0.040787
+        },
+        {
+            "lp_objective": 161.0,
+            "pricer": 1,
+            "red_cost": -2.0,
+            "time": 36.224993
+        }
+    ],
+    "soltime": 0.028687999999999998,
+    "soltime_cg": 111.782693,
+    "status": 1,
+    "status_cg": 1
+}

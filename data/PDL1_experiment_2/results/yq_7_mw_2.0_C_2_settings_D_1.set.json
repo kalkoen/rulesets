@@ -1,0 +1,26 @@
+{
+    "C": 2,
+    "binary": [],
+    "dualbound": 340.0,
+    "margin_width": 2.0,
+    "obj": 340.0,
+    "obj_cg": 340.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [],
+    "soltime": 0.117422,
+    "soltime_cg": 0.14457499999999998,
+    "status": 1,
+    "status_cg": 1
+}

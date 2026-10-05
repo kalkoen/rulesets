@@ -1,0 +1,8 @@
+Dataset,Citation,Test acc. (\%) in \cite{{lawless_interpretable_2023}},$C$
+banknote,\cite{lohweg_banknote_2012},99.1 0.3,25
+heart,\cite{janosi_heart_1989},78.9 2.4,12
+ILPD,\cite{ramana_ilpd_2022},69.6 1.2,11
+ionosphere,\cite{sigillito_ionosphere_1989},90.0 1.8,13
+tic-tac-toe,\cite{aha_tic-tac-toe_1991},100.0 0.0,32
+transfusion,\cite{yeh_blood_2008},77.9 1.4,6
+WDBC,\cite{wolberg_william_breast_1993},94.0 1.2,14

@@ -1,0 +1,89 @@
+{
+    "binary": [
+        [
+            "RELA>=-2.46 Q(0.10)",
+            "MYC<-3.19 Q(0.70)",
+            "TBX21<-0.46 Q(0.20)"
+        ],
+        [
+            "RELA>=0.01 Q(0.50)",
+            "STAT2>=-0.52 Q(0.40)"
+        ]
+    ],
+    "dualbound": 200.0,
+    "obj": 200.0,
+    "obj_cg": 383.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 383.0,
+            "pricer": 0,
+            "red_cost": -160.0,
+            "time": 1.395205
+        },
+        {
+            "lp_objective": 223.0,
+            "pricer": 0,
+            "red_cost": -40.0,
+            "time": 2.6161659999999998
+        },
+        {
+            "lp_objective": 210.25,
+            "pricer": 0,
+            "red_cost": -20.0,
+            "time": 3.8433289999999998
+        },
+        {
+            "lp_objective": 200.0,
+            "pricer": 0,
+            "red_cost": -11.600000000000001,
+            "time": 5.008817
+        },
+        {
+            "lp_objective": 199.0,
+            "pricer": 0,
+            "red_cost": -9.0,
+            "time": 6.112424
+        },
+        {
+            "lp_objective": 196.78415300546447,
+            "pricer": 0,
+            "red_cost": -6.25,
+            "time": 7.17815
+        },
+        {
+            "lp_objective": 195.39473684210526,
+            "pricer": 0,
+            "red_cost": -2.21052631578947,
+            "time": 8.233083
+        },
+        {
+            "lp_objective": 195.34375,
+            "pricer": 0,
+            "red_cost": -0.9978197674419,
+            "time": 9.272634
+        },
+        {
+            "lp_objective": 195.34375,
+            "pricer": 1,
+            "red_cost": -0.9999999999999929,
+            "time": 3841.953867
+        },
+        {
+            "lp_objective": 195.34375,
+            "pricer": 0,
+            "red_cost": -0.13958333333335204,
+            "time": 3842.960615
+        },
+        {
+            "lp_objective": 195.34375,
+            "pricer": 1,
+            "red_cost": -0.6891447368420955,
+            "time": 7200.0025
+        }
+    ],
+    "soltime": 0.21373799999999998,
+    "soltime_cg": 7200.002625,
+    "status": 1,
+    "status_cg": 23
+}

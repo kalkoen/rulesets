@@ -1,0 +1,12 @@
+{
+    "binary": [],
+    "dualbound": 85.0,
+    "obj": 85.0,
+    "obj_cg": 85.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [],
+    "soltime": 0.026935999999999998,
+    "soltime_cg": 11.648934,
+    "status": 1,
+    "status_cg": 1
+}

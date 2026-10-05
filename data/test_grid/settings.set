@@ -1,0 +1,24 @@
+rs/type = 1
+rs/method = 1
+rs/rule_complexity_type = 0
+rs/full/D = 3
+
+rs/threshold/quantiles = "9"
+rs/threshold/nonadditive = true
+
+
+rs/iterative/enabled = false
+rs/iterative/D = 3
+rs/iterative/max_candidates = 1000000
+
+rs/exact/enabled = false
+rs/exact/D = 3
+
+rs/heuristic/enabled = true
+rs/heuristic/beam_widths = "10,10,10"
+rs/heuristic/deep = false
+rs/heuristic/max_candidates = 1
+rs/heuristic/diversity = 1
+
+rs/cg_timelimit = 7200
+limits/time = 10800

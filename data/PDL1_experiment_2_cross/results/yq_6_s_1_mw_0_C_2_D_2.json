@@ -1,0 +1,101 @@
+{
+    "C": 2,
+    "binary": [
+        [
+            "FOS>=0.019209",
+            "FOSL1>=0.393380"
+        ],
+        [
+            "STAT2>=1.951719",
+            "-STAT3>=-1.528751"
+        ]
+    ],
+    "dualbound": 360.0,
+    "margin_width": 0.0,
+    "obj": 360.0,
+    "obj_cg": 360.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 458.0,
+            "pricer": 0,
+            "red_cost": -82.0,
+            "time": 1.745609
+        },
+        {
+            "lp_objective": 376.0,
+            "pricer": 0,
+            "red_cost": -30.0,
+            "time": 3.36175
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -18.0,
+            "time": 4.9483239999999995
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -12.0,
+            "time": 6.187876
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -10.591549295774648,
+            "time": 7.415665
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -4.473895582329318,
+            "time": 8.62323
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -3.588785046728988,
+            "time": 9.824447
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -1.0799999999999956,
+            "time": 10.996169
+        },
+        {
+            "lp_objective": 360.0,
+            "pricer": 0,
+            "red_cost": -0.3571428571428559,
+            "time": 12.162401
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "FOS>=0.019209",
+            "FOSL1>=0.393380",
+            1.0
+        ],
+        [
+            "STAT2>=1.951719",
+            "-STAT3>=-1.528751",
+            1.0
+        ]
+    ],
+    "soltime": 0.009881,
+    "soltime_cg": 13.287981,
+    "status": 1,
+    "status_cg": 1
+}

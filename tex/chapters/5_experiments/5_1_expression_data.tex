@@ -1,0 +1,107 @@
+The use of the DecoupleR model (\cite{badia-i-mompel_decoupler_2022, badia-i-mompel_transcription_nodate}) raises some suspicion.
+The model itself assumes that TF act individually to regulate a set of target genes.
+A prior knowledge matrix, in our case based on CollecTRI (\cite{muller-dott_expanding_2023}),
+describes which TF are known to up- or downregulate which genes.
+The gene expressions of all the TF's target genes are then use to ``reverse engineer'' (estimate) the TF activity.
+DecoupleR's output is taken as an undisputed truth onwards.
+It is unclear whether combinatoric effects can be observed from output of a model that does not assume combinatoric behavior.
+
+Furthermore, the rules we have found may fail to capture real-life phenomena
+and instead reflect information from the prior knowledge matrix.
+Due to the construction of the DecoupleR model, TFs that target similar genes will have similar activity estimates.
+This may partly explain the high cross-correlations observed in \autoref{fig:corr_activity}.
+As a result, even if TF activity differs in reality,
+the DecoupleR model can make TF activities hard to distinguish.
+This, in turn, can make finding meaningful rules difficult.
+Instead, the rules may represent the prior knowledge matrix, meaning nothing of interest is learned.
+
+As a curiosity, we use the threshold model (\autoref{ch:threshold-model}) on the raw gene expression data instead.
+We do not use raw read counts but normalized TPM counts, meant to be comparable across samples.
+While this is not expected to yield a result with a realistic interpretation,
+it can possibly give insight in how the model behaves.
+
+\autoref{fig:tpm_accuracy_mw_0.svg} shows the results, in the same way as \autoref{fig:threshold_accuracy_mw_0.svg} does.
+The interpretable results for $C=1$ and $D=1,2,3$ are given in \autoref{tab:tpm_interpretable_results_C_1}.
+The interpretable results for $C=2$ are given in \autoref{tab:tpm_interpretable_results_C_2}.
+
+It follows that the accuracy achieved is higher compared to the experiments with TF activity estimates.
+Furthermore, qualitatively different results are observed.
+This indicates that gene expression is indeed not equivalent to TF activity.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.7\textwidth]{gen/PDL1ex3/PDL1ex3_fig_accuracy_mw_0.svg}
+    \caption{Accuracy of results for the full Broad dataset, using gene expression as input, for $C=1,2,3,4,5$, $D=1,2,3,4$ and $Q_y=0.5,0.6,0.7,0.8,0.9.$}
+    \label{fig:tpm_accuracy_mw_0.svg}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex3/PDL1ex3_tab_interpretable_mw_0_C_1}
+    \caption{Results for the full Broad dataset, using gene expression as input, for $C=1$ and small rules ($D=1,2,3$).}
+    \label{tab:tpm_interpretable_results_C_1}
+\end{table}
+
+\begin{table}[h]
+    \bwtable{gen/PDL1ex3/PDL1ex3_tab_interpretable_mw_0_C_2}
+    \caption{Results for the full Broad dataset, using gene expression input, for $C=2$ and small rules ($D=1,2,3$).}
+    \label{tab:tpm_interpretable_results_C_2}
+\end{table}
+
+Train accuracy is not the full story.
+It remains unclear whether the results are biologically meaningful.
+To study whether these results are meaningful in a mathematical sense,
+we perform the exclusion experiment on this dataset too.
+If there is a substantial drop in performance upon exclusion of a TF or a combination of TFs,
+then this suggests that there do exist rules for the gene expression dataset that are more important than others.
+
+The TF exclusion tables for $Q_y=0.5,0.6$ and $D=2$, the same parameters used earlier,
+can be found in \autoref{tab:exclusion_tpm}.
+Accuracy decreases remain small (between $0$ and $2$ percentage points), with two notable exceptions:
+FOSL1 and IRF1.
+In particular, for $Q_y=0.6$, excluding FOSL1 and IRF1 results in a substantial performance drop.
+In the case $D=1$, exclusion of FOSL1 causes maximum attainable train accuracy to drop $9$ percentage points.
+Then removing IRF1 has little effect.
+More notably, for $D=2$, excluding FOSL1 and IRF1 causes an $8$ percentage point drop in the left branch and a
+$9$ percentage point drop in the right branch, which we consider a substantial decrease.
+
+This suggests that FOSL1 is an important TF with respect to this dataset, and that FOSL1 and IRF1 are an important
+combination.
+Furthermore, it shows that an exclusion experiment can yield new insights into TF combinations.
+By extension, it strengthens the idea that TF activity estimates, as used in previous chapters,
+are not suitable for inferring rulesets.
+
+\clearpage
+\begin{landscape}
+    \vspace*{\fill}
+    \begin{center}
+        \captionof{table}{TF exclusion table as described in \autoref{sec:exclusion} for raw gene expression data,
+            as described in \autoref{sec:gene_expression}.
+        \\ Case $Q_y=0.5$ (top) and $Q_y=0.6$ (bottom), $D=1$ (left) and $D=2$ (right).}
+        \vspace{1.5em}
+
+        \label{tab:exclusion_tpm}
+        \begin{minipage}{0.1\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.5_D_1_mw_0_depth_3_tpm}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.85\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.5_D_2_mw_0_depth_3_tpm}
+        \end{minipage}
+
+        \vspace{1.5em}
+
+        \begin{minipage}{0.1\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.6_D_1_mw_0_depth_3_tpm}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.85\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.6_D_2_mw_0_depth_3_tpm}
+        \end{minipage}
+    \end{center}
+    \vspace*{\fill}
+\end{landscape}

@@ -1,0 +1,103 @@
+It is worth investigating whether there is a difference in results when considering only tumors or only metastases.
+If the model performs substantially better on these subsets than on their union,
+this is valuable on its own and provides a valuable new insight.
+Precisely, it suggests that good rulesets for tumors contradict good rulesets for metastases.
+
+Furthermore, a metastasis tends to have more genetic mutations than a tumor.
+If more mutations cause more complicated and more unique behavior within the cell,
+it may be harder to deduce general rules governing PD-L1 expression in metastases.
+Again, focusing on one or the other independently could be useful in this case.
+
+A related hypothesis is that metastases have higher PD-L1 expression due to their tendency for more mutations.
+To investigate this, the distribution of PD-L1 expression per tissue type is shown in \autoref{fig:tissue_status_density_broad}.
+Note that cell lines belonging to Papiloma or Normal are disregarded due to a lack of samples.
+The density graphs have a similar shape.
+The mean PD-L1 expression per tissue status is also similar.
+Alternatively, if the hypothesis is true, we expect to see relatively many metastases among samples with high PD-L1 expression.
+The tissue status distribution per PD-L1 expression quantile bin is depicted in \autoref{fig:tissue_status_quantile_broad}.
+This histogram does not suggest the balance of tumors and metastases changes significantly with PD-L1 expression.
+Thus, the results suggest that the hypothesis is false.
+
+Still, there may be a difference in the behavior of the model between tumors and metastases.
+To test this, the greedy method was used on the Broad dataset for tumors and metastases separately.
+Both the tumors in Broad and the metastases in Broad were treated as separate datasets,
+each undergoing independent discretization, and were subjected to the algorithm independently.
+We consider $Q_y = 0.5, 0.6$ and $D=2$.
+These values of $Q_y$ are the ones that were identified as most promising in \autoref{sec:boolean-results}.
+The choice $D=2$ is practical: the greedy method is easier to use,
+and for $D=2$, the greedy method is orders of magnitude faster than for higher $D$.
+It is not purely practical;
+in \autoref{sec:threshold-results} it was shown that performance barely increased when increasing $D$.
+However, these results need not extend to this experiment.
+It may be that other values of $Q_y$ and higher values of $D$ yield better results on these subsets.
+
+The results are shown in \autoref{tab:greedy_type_tumor_yq_4_mw_0_C_3_D_2} through
+\autoref{tab:greedy_type_metastasis_yq_5_mw_0_C_3_D_2}.
+We note, without further analysis,
+that first rules found in each of the four variants are all qualitatively different.
+
+In all four cases, there is effectively no value in adding more than one rule.
+Recall that after the first rule is found, all covered points are stripped away and the best rule for the remaining points
+is found through enumeration.
+Therefore, there is simply no effective rule for the leftover points.
+
+Accuracy is slightly higher for tumors.
+Therefore, the results of this experiment suggest that
+PD-L1 expression is slightly more easily captured in a ruleset for tumors.
+However, this says nothing about whether the rulesets are biologically meaningful.
+
+Accuracy for metastases is lower than what is observed for the full dataset.
+This suggests that contradicting rulesets between tumors and metastases are not the cause of low performance when using the full dataset.
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includesvg[width=0.8\textwidth]{gen/data/tissue_type_density_broad.svg}
+    \caption{Density of PD-L1 expression for tissue types Tumor, Metastasis and Unknown in the Broad dataset.}
+    \label{fig:tissue_status_density_broad}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \includesvg[width=0.8\textwidth]{gen/data/tissue_type_quantile_broad.svg}
+    \caption{Distribution of tissue type within various quantile bins of PD-L1 expression in the Broad dataset}
+    \label{fig:tissue_status_quantile_broad}
+\end{figure}
+
+\clearpage
+
+\vspace*{\fill}
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_type_tumor_yq_4_mw_0_C_3_D_2.tex}
+    \caption{Results of the greedy method for tumors, $Q_y = 0.5$.}
+    \label{tab:greedy_type_tumor_yq_4_mw_0_C_3_D_2}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_type_tumor_yq_5_mw_0_C_3_D_2.tex}
+    \caption{Results of the greedy method for tumors, $Q_y = 0.6$.}
+    \label{tab:greedy_type_tumor_yq_5_mw_0_C_3_D_2}
+\end{table}
+\vspace*{\fill}
+
+\clearpage
+
+\vspace*{\fill}
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_type_metastasis_yq_4_mw_0_C_3_D_2.tex}
+    \caption{Results of the greedy method for metastases, $Q_y = 0.5$.}
+    \label{tab:greedy_type_metastasis_yq_4_mw_0_C_3_D_2}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \bwtable{gen/PDL1ex2/tab_greedy_type_metastasis_yq_5_mw_0_C_3_D_2.tex}
+    \caption{Results of the greedy method for metastases, $Q_y = 0.6$.}
+    \label{tab:greedy_type_metastasis_yq_5_mw_0_C_3_D_2}
+\end{table}
+\vspace*{\fill}

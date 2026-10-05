@@ -1,0 +1,35 @@
+{
+    "binary": [
+        [
+            "STAT2>=-0.20 Q(0.50)"
+        ]
+    ],
+    "dualbound": 260.0,
+    "obj": 260.0,
+    "obj_cg": 260.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 425.0,
+            "pricer": 0,
+            "red_cost": -165.0,
+            "time": 0.031072
+        },
+        {
+            "lp_objective": 260.0,
+            "pricer": 0,
+            "red_cost": -14.0,
+            "time": 0.050886999999999995
+        },
+        {
+            "lp_objective": 260.0,
+            "pricer": 0,
+            "red_cost": -1.0,
+            "time": 0.068034
+        }
+    ],
+    "soltime": 0.022321999999999998,
+    "soltime_cg": 1.015855,
+    "status": 1,
+    "status_cg": 1
+}

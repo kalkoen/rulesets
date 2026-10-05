@@ -1,0 +1,98 @@
+We consider an approach from literature that is capable of learning logical rules from binary data.
+It is a binary classification approach, meaning the input is a set of points,
+their binary features and for each point a target boolean (True/False).
+The output is a boolean formula in Disjunctive Normal Form (DNF, OR-of-ANDs).
+
+A DNF is a disjunction (OR) of one or more conjunctions (AND).
+We refer to a conjunction as simply a ``rule''.
+A rule consists of one more clauses.
+In the boolean setting, a clause is a literal, meaning a feature or its negation.
+For instance, if $A$ is a feature representing whether TF A is active,
+then the corresponding clauses are $A$ and $\neg A$ (``not A'').
+If $A$ and $B$ are features, then an example of a rule is
+\[(A \wedge \neg B),\]
+meaning ``$A$ and not $B$''.
+A disjunction of rules is what we call a ruleset.
+For instance,
+\[(A \wedge B) \vee (B \wedge \neg C),\]
+meaning ``Either $A$ and $B$, or $B$ and not $C$'',
+is a ruleset.
+In practice, negated literals do not need to be modeled separately,
+as a feature's negated values can be added as a separate feature during pre-processing.
+
+The goal of the approach is to find a ruleset describing the points that have target value ``True''.
+We say those points are positive points, whereas points with a target value of ``False'' are called negative points.
+Negative points should not satisfy the ruleset.
+Hence, the ruleset found should evaluate to ``True'' for positive points and ``False'' for negative points.
+In other words, the ruleset is a binary classifier and the target values are the (binary) class labels.
+The objective of this approach is to find a ruleset that maximizes accuracy, that is to maximize
+\[\frac{\text{\# correctly classified points}}{\text{\text{\# points}}},\]
+where ``\#'' stands for ``number of''.
+Since the number of points is constant, we may multiply by it and instead maximize
+\[\text{\# correctly classified points}.\]
+This is equivalent to minimizing
+\[\text{\# points} - \text{\# correctly classified points},\]
+as we simply negate and add a constant.
+This is equal to
+\[\text{\# misclassified points}.\]
+Separating positive and negative points, we find this equal to
+\begin{equation}\label{eq:nr_of_falses}
+    \text{\# false negatives} + \text{\# false positives}.
+\end{equation}
+Hence, maximizing accuracy and minimizing this quantity are equivalent.
+In \cite{lawless_interpretable_2023}, it turns out to be easier to minimize a similar quantity, namely
+\begin{equation}\label{eq:nr_of_falses_hamming}
+\text{\# false negatives} + \text{\# times a rule satisfies a negative point.}
+\end{equation}
+For every rule in the ruleset, it counts how many negative points it covers.
+Hence, we do not just count whether a negative point is misclassified, but we count how often.
+It follows that \eqref{eq:nr_of_falses_hamming} is at least as large as \eqref{eq:nr_of_falses}.
+If the rules do not ``overlap'' much, then \eqref{eq:nr_of_falses_hamming} is close to \eqref{eq:nr_of_falses}.
+This method has been shown to work well on a variety of binary datasets.
+
+We wish to apply this method to TF data and PD-L1 expression.
+Conceptually, the target boolean should represent whether PD-L1 is ``Expressed'' (positive) or ``Not expressed'' (negative).
+A simple and intuitive way to do this is via thresholding.
+That is, the target considered is
+\[\text{PD-L1 expression} \geq \text{PD-L1 threshold}.\]
+A natural choice for the threshold is a quantile level observed in the data, i.e.\ the $0.5$ quantile, which is the median.
+However, which quantile should be chosen is unclear, as there is no clear definition for a gene being expressed or not expressed.
+\autoref{fig:pdl1_expression_broad} suggests any of the depicted quantiles ($0.5$, $0.6$, $0.7$, $0.8$, $0.9$)
+could be a meaningful threshold.
+
+A feature should represent whether a TF is ``Active'' or ``Inactive''
+Again, these states do not have a clear definition as the data is continuous.
+For features, we have the freedom to add several binary features per TF\@, for instance
+\[
+    \begin{split}
+        \text{TF} &\geq \text{$0.1$ quantile}, \\
+        \text{TF} &\geq \text{$0.2$ quantile}, \\
+        \vdots & \tquad \vdots \\
+        \text{TF} &\geq \text{$0.9$ quantile}. \\
+    \end{split}
+\]
+These binary features are meant to represent different activity levels,
+e.g., ``at least somewhat active'', ``at least moderately active'', et cetera.
+
+In this chapter, we first cover the mathematical background of the method
+(\autoref{sec:boolean-model-description} and \autoref{sec:boolean-pricing-problem}).
+Then we briefly discuss our implementation and compare its performance to the performance of an implementation from literature
+(\autoref{sec:boolean-implementation}).
+Next, we discuss the methodology for a first experiment on PD-L1 and TF data (\autoref{sec:boolean-methodology})
+Finally, we discuss the results (\autoref{sec:boolean-results}).
+A reader who is not interested in the mathematics and the implementation may skip to \autoref{sec:boolean-methodology}.
+
+\section{Model description}\label{sec:boolean-model-description}
+\input{chapters/2_boolean/1_boolean_model_description}
+
+\section{Pricing problem}\label{sec:boolean-pricing-problem}
+\input{chapters/2_boolean/2_boolean_pricing_problem}
+
+\section{Implementation}\label{sec:boolean-implementation}
+\input{chapters/2_boolean/3_boolean_implementation}
+
+\section{Methodology}\label{sec:boolean-methodology}
+\input{chapters/2_boolean/4_boolean_methodology}
+
+\section{Results}\label{sec:boolean-results}
+\input{chapters/2_boolean/5_boolean_results}

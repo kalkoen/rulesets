@@ -1,0 +1,36 @@
+\begin{table}[h]
+    \resizebox{\textwidth}{!}{
+    \input{gen_formatted/data/descr_broad}
+    }
+    \caption{Descriptive statistics for Broad dataset.}
+    \label{tab:descr_broad}
+\end{table}
+
+\begin{table}[h]
+    \resizebox{\textwidth}{!}{
+    \input{gen_formatted/data/descr_sanger}
+    }
+    \caption{Descriptive statistics for Sanger dataset.}
+    \label{tab:descr_sanger}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{gen/data/fig_corr_activity_extra.svg}
+        \caption{TF activity estimates}
+        \label{fig:corr_activity}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{gen/data/fig_corr_TPM_extra.svg}
+        \caption{TF gene expression}
+        \label{fig:corr_TPM}
+    \end{subfigure}
+    \caption{Cross-correlation matrices for TF activity estimates (a) and TF gene expression (b), including correlation with PD-L1 expression (bottom row of each matrix).}
+    \label{fig:corr_combined}
+\end{figure}

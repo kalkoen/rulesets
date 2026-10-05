@@ -1,0 +1,5 @@
+# Disable diffing and text-processing for your specific JSON files
+data/*/results/*.json -diff -text
+
+# Disable diffing and text-processing for PDF files
+*.pdf -diff -text

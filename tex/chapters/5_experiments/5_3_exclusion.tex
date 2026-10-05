@@ -1,0 +1,66 @@
+Evidently, learning logical rules from bulk transcriptomics is not easy.
+Rather than focussing on the rulesets produced and their consistency,
+we will now attempt to identify TF that are ``important''.
+That is, TF that are essential to classifying PD-L1 expression ``well'' with rulesets.
+
+To do this, we argue by exclusion: if a TF being excluded from the dataset causes performance to drop substantially,
+then this TF may be considered important.
+
+Consider $C=1, D=2$.
+If the best possible ruleset is, for instance,
+\[
+    \text{TF A} \wedge \text{TF B},
+\]
+then removing any TF other than A or B from the dataset will not remove this solution.
+Therefore, removing any TF unequal to A or B will have no effect on the maximum attainable performance.
+In other words, the only removals that have any effect on performance are either the removal of A or the removal of B\@.
+
+We use this idea to build a tree.
+First, the best ruleset is found.
+For each TF in the ruleset, a branch is created in which it is excluded.
+Then the best ruleset is found and the process repeats.
+We consider
+\[
+    C=1, \quad D=1,2, \quad \text{and} \quad Q_y=0.5,0.6.
+\]
+Since it is feasible to solve these cases to optimality with the greedy method, this method is used.
+
+For the results, see \autoref{tab:exclusion}.
+The reduction in accuracy upon exclusion of a TF is between $0$ and $2$ percentage points.
+We consider this to be small,
+suggesting that there are no combinations of TF that are truly important to maintain comparable training accuracy.
+Still, these tables may provide some insight to a biologist.
+
+\clearpage
+
+\begin{landscape}
+    \vspace*{\fill}
+    \begin{center}
+        \captionof{table}{TF exclusion table as described in \autoref{sec:exclusion}. \\ Case $Q_y=0.5$ (top) and $Q_y=0.6$ (bottom), $D=1$ (left) and $D=2$ (right).}
+        \vspace{1.5em}
+
+        \label{tab:exclusion}
+        \begin{minipage}{0.1\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.5_D_1_mw_0_depth_3}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.85\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.5_D_2_mw_0_depth_3}
+        \end{minipage}
+
+        \vspace{1.5em}
+
+        \begin{minipage}{0.1\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.6_D_1_mw_0_depth_3}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.85\linewidth}
+            \centering
+            \input{gen/exclusion/tab_exclusion_Qy_0.6_D_2_mw_0_depth_3}
+        \end{minipage}
+    \end{center}
+    \vspace*{\fill}
+\end{landscape}

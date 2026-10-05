@@ -1,0 +1,94 @@
+The gene expression datasets used are Broad and Sanger.
+These were extracted from the ``RNA-Seq 2022-06-24'' data collection,
+downloaded from the Cell Model Passports hub~\cite{van_der_meer_cell_2019, noauthor_cell_nodate}.
+This collection contains RNA transcript counts of thousands of genes, including PD-L1, for hundreds of samples.
+The measurements of each sample were done on cancer cell lines.
+These are derived from human tissue and are often immortalized.
+The advantage is that cancer cell lines behave more consistently in experiments compared to fresh human cancer tissue.
+We refer to a sample as a ``datapoint'' or simply ``point''.
+Combined, the datasets contain $1291$ points.
+These are too few points to use methods likes neural networks.
+
+For each sample, the tissue status and tissue type is also recorded in the dataset.
+The samples consist of a wide variety of cancer types found in various types of tissue.
+Tissue status among the samples is not homogenous.
+Sample counts per dataset and tissue status are given in \autoref{tab:data_counts}.
+
+\begin{table}[h]
+    \centering
+    \input{gen_formatted/data/counts}
+    \caption{Sample counts by dataset and tissue type.}
+    \label{tab:data_counts}
+\end{table}
+
+Out of all candidate TF, a total of 18 were selected to be of interest.
+This selection was based on literature, in particular two criteria:
+(1) the TF can physically bind to the CD274 gene sequence and (2)
+there is a recorded functional response in literature.
+A recorded functional response means that some significant change in PD-L1 expression is associated
+with the activity of the TF\@.
+
+The TF activities are estimated using DecoupleR model~\cite{badia-i-mompel_decoupler_2022, badia-i-mompel_transcription_nodate},
+using CollecTRI as prior knowledge~\cite{muller-dott_expanding_2023}.
+DecoupleR estimates TF activity in a sample based on the full gene expression profile (thousands of genes).
+Simply put, it estimates TF activity based on the expression (level of under- or overregulation)
+of the genes it regulates (according to the prior knowledge).
+The output is, for each TF, a ``TF activity score'', also referred to as ``TF activity'' or ``TF activity estimate''.
+Descriptive statistics for the corresponding TF activities and PD-L1 expression in both Broad and Sanger
+can be found in \autoref{tab:descr_broad} and \autoref{tab:descr_sanger}, respectively.
+
+
+
+The cross-correlation matrix of TF activity scores is depicted in \autoref{fig:corr_activity}.
+The cross-correlation matrix of the TF gene expressions (used to calculate TF activities) is depicted in \autoref{fig:corr_TPM}.
+Notably, TF activity scores are highly correlated.
+This indicates that the selected TFs tend to be active or inactive simultaneously.
+This may be expected, if these TFs are known to regulate similar genes.
+Meanwhile, gene expressions are not highly correlated.
+This suggests that gene expression is not an accurate indicator of simultaneous TF activity.
+Alternatively, TF activity scores could be biased towards showing correlation due to the method of estimation.
+Both figures also include correlation with PD-L1 expression in the bottom row.
+The PD-L1 expression shows relatively low correlation with TF activity scores and gene expressions, respectively.
+This indicates that activity or expression of a single TF does not explain PD-L1 expression substantially.
+This motivates us further to consider the effect of groups of TFs.
+
+
+PD-L1 expression for Broad and Sanger dataset combined was normalized to mean $0$ and standard deviation $1$,
+The histogram of PD-L1 expression of Broad samples is depicted in \autoref{fig:pdl1_expression_broad}.
+It shows that the majority of observations clusters around the minimum.
+Note that the plot starts at the minimum observed expression value and is capped at an expression value of $0.5$,
+while the maximum observed PD-L1 expression is $3.55$.
+
+\begin{figure}
+    \centering
+    \includesvg[width=\textwidth]{gen/data/pdl1_expression_broad.svg}
+    \caption{Histogram of PD-L1 expression in Broad dataset. Increasing quantiles are also depicted from left to right using vertical lines.}
+    \label{fig:pdl1_expression_broad}
+\end{figure}
+
+The goal is to infer general combinations of TF contributing to PD-L1 expression.
+Hence, it is important that the rulesets produced generalize to other datasets.
+This means rulesets need to be tested on unseen data.
+Broad serves as the training set.
+Cross-validation will be used on splits of Broad to study how well the results various methods, under various parameters, generalize.
+Sanger serves as the holdout dataset and will be used only once, at the very end (\autoref{ch:holdout}).
+This is the ultimate test whether the method is able to produce general rulesets.
+
+%
+%\section{Transcription Factor activity}\label{sec:data_TF_activity}
+%Gene expression is not equivalent to protein activity.
+%If gene expression is high, it does not necessarily mean that the resulting protein is active.
+%There are intermediate steps that can affect the protein activity.
+%For a TF to bind to a gene, however, the TF needs to be active.
+%Therefore, using gene expression directly may not be suitable for our analysis.
+%To address this issue, an estimate of TF activities is calculated using
+%the decoupleR model with CollecTRI as prior knowledge network
+%\cite{badia-i-mompel_decoupler_2022, muller-dott_expanding_2023, badia-i-mompel_transcription_nodate}.
+%
+%DecoupleR estimates TF activity based on the expression of all genes in the dataset via a collection of linear models. \todo{How much should I go into this model?}
+%
+%
+%
+
+%
+%\subsection{Tissue status}\label{subsec:tissue_status}

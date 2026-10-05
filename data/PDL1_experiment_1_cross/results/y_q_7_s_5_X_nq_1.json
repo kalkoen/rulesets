@@ -1,0 +1,25 @@
+{
+    "binary": [
+        [
+            "FOSL1>=-0.05 Q(0.50)",
+            "STAT1>=-1.14 Q(0.50)",
+            "FOXO1<-0.21 Q(0.50)"
+        ]
+    ],
+    "dualbound": 142.0,
+    "obj": 142.0,
+    "obj_cg": 142.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 153.0,
+            "pricer": 0,
+            "red_cost": -11.0,
+            "time": 0.020649
+        }
+    ],
+    "soltime": 0.02178,
+    "soltime_cg": 53.027259,
+    "status": 1,
+    "status_cg": 1
+}

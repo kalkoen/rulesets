@@ -1,0 +1,78 @@
+{
+    "binary": [
+        [
+            "FOSL1>=-0.02 Q(0.50)",
+            "STAT2>=-0.18 Q(0.50)",
+            "STAT6>=0.60 Q(0.50)"
+        ],
+        [
+            "RELA>=0.00 Q(0.50)",
+            "FOXO1<-0.25 Q(0.50)",
+            "STAT6<0.60 Q(0.50)"
+        ]
+    ],
+    "dualbound": 195.0,
+    "obj": 195.0,
+    "obj_cg": 193.38888888888889,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 306.0,
+            "pricer": 0,
+            "red_cost": -102.0,
+            "time": 0.036478
+        },
+        {
+            "lp_objective": 204.0,
+            "pricer": 0,
+            "red_cost": -23.0,
+            "time": 0.065283
+        },
+        {
+            "lp_objective": 194.28571428571428,
+            "pricer": 0,
+            "red_cost": -8.000000000000009,
+            "time": 0.095468
+        },
+        {
+            "lp_objective": 193.61111111111111,
+            "pricer": 0,
+            "red_cost": -2.0,
+            "time": 0.124677
+        },
+        {
+            "lp_objective": 193.38888888888889,
+            "pricer": 1,
+            "red_cost": -3.6111111111111107,
+            "time": 23.294248
+        },
+        {
+            "lp_objective": 193.38888888888889,
+            "pricer": 1,
+            "red_cost": -1.9444444444444438,
+            "time": 44.836645
+        },
+        {
+            "lp_objective": 193.38888888888889,
+            "pricer": 1,
+            "red_cost": -1.481481481481465,
+            "time": 70.824159
+        },
+        {
+            "lp_objective": 193.38888888888889,
+            "pricer": 1,
+            "red_cost": -1.9444444444444464,
+            "time": 96.348082
+        },
+        {
+            "lp_objective": 193.38888888888889,
+            "pricer": 0,
+            "red_cost": -0.05555555555555358,
+            "time": 96.377778
+        }
+    ],
+    "soltime": 0.050880999999999996,
+    "soltime_cg": 122.190519,
+    "status": 1,
+    "status_cg": 1
+}

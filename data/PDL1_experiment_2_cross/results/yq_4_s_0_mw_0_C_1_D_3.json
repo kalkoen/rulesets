@@ -1,0 +1,94 @@
+{
+    "C": 1,
+    "binary": [
+        [
+            "FOS>=-0.827147",
+            "IRF1>=-1.611158",
+            "STAT2>=-0.487175"
+        ]
+    ],
+    "dualbound": 444.0,
+    "margin_width": 0.0,
+    "obj": 444.0,
+    "obj_cg": 444.0,
+    "obj_relaxation": 1e+20,
+    "pricing_steps": [
+        {
+            "lp_objective": 764.0,
+            "pricer": 0,
+            "red_cost": -320.0,
+            "time": 5.248382
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -62.0,
+            "time": 8.317326
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -42.0,
+            "time": 9.44423
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -24.999999999999993,
+            "time": 10.319584
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -16.000000000000007,
+            "time": 10.955663
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -12.653465346534627,
+            "time": 11.617705
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -7.499999999999979,
+            "time": 12.180543
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -9.248000000000022,
+            "time": 12.791379
+        },
+        {
+            "lp_objective": 444.0,
+            "pricer": 0,
+            "red_cost": -2.808510638297882,
+            "time": 13.39286
+        }
+    ],
+    "quantile_levels": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9
+    ],
+    "relaxation": [
+        [
+            "FOS>=-0.827147",
+            "IRF1>=-1.611158",
+            "STAT2>=-0.487175",
+            1.0
+        ]
+    ],
+    "soltime": 0.021282,
+    "soltime_cg": 14.00226,
+    "status": 1,
+    "status_cg": 1
+}
